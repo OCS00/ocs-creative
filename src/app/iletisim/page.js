@@ -1,130 +1,190 @@
 "use client";
+import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ShieldAlert } from "lucide-react";
+import { Mail, Phone, Clock, Check, Send } from "lucide-react"; // MapPin yerine Clock ekledim
+import { motion } from "framer-motion";
+
+// Hizmet Seçenekleri
+const SERVICES = [
+  "Web Tasarım & Yazılım",
+  "Mobil Uygulama",
+  "E-Ticaret",
+  "UI/UX Tasarım",
+  "SEO & Growth",
+  "Marka Kimliği",
+  "Diğer"
+];
 
 export default function ContactPage() {
+  const [selectedServices, setSelectedServices] = useState([]);
+
+  // Hizmet seçip/bırakma fonksiyonu
+  const toggleService = (service) => {
+    if (selectedServices.includes(service)) {
+      setSelectedServices(selectedServices.filter((s) => s !== service));
+    } else {
+      setSelectedServices([...selectedServices, service]);
+    }
+  };
+
   return (
-    <main className="bg-[#0a0a0a] min-h-screen text-white selection:bg-indigo-500/30">
+    <main className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30">
       <Navbar />
 
-      {/* 1. BAŞLIK ALANI */}
-      <section className="pt-40 pb-10 px-6 text-center">
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-6">
-          Bize <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Ulaşın.</span>
-        </h1>
-        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-          Yeni bir proje başlatmak veya mevcut hizmetinizle ilgili destek almak için aşağıdaki kanalları kullanabilirsiniz.
-        </p>
-      </section>
+      {/* Arka Plan Dokusu (Grid) */}
+      <div className="fixed inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>
 
-      {/* 2. İLETİŞİM KARTLARI & FORM */}
-      <section className="py-10 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <section className="relative z-10 pt-40 pb-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             
-            {/* SOL TARA: BİLGİLER */}
-            <div className="space-y-8">
-                {/* İletişim Bilgileri */}
-                <div className="bg-[#111] border border-white/10 p-8 rounded-3xl space-y-6">
-                    <h3 className="text-2xl font-bold mb-4">İletişim Bilgileri</h3>
-                    
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-indigo-500/10 rounded-full flex items-center justify-center text-indigo-400">
-                            <Mail size={20} />
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-400">E-Posta</p>
-                            <a href="mailto:info@ocscreative.com" className="text-lg font-semibold hover:text-indigo-400 transition">info@ocscreative.com</a>
-                        </div>
-                    </div>
+            {/* SOL TARAF: BİLGİ & MOTİVASYON */}
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <span className="text-indigo-400 font-bold tracking-widest text-xs uppercase mb-4 inline-block">
+                BİZE ULAŞIN
+              </span>
+              <h1 className="text-5xl md:text-6xl font-extrabold mb-8 tracking-tight leading-tight">
+                Bir sonraki büyük <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">
+                  fikri konuşalım.
+                </span>
+              </h1>
+              <p className="text-xl text-gray-400 mb-12 leading-relaxed font-light">
+                Dijital dönüşüm yolculuğunuzda size rehberlik etmeye hazırız. 
+                Projenizi detaylandırın, stratejimizi belirleyelim.
+              </p>
 
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-purple-500/10 rounded-full flex items-center justify-center text-purple-400">
-                            <Phone size={20} />
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-400">Telefon / WhatsApp</p>
-                            <a href="tel:+905555555555" className="text-lg font-semibold hover:text-purple-400 transition">+90 555 555 55 55</a>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-pink-500/10 rounded-full flex items-center justify-center text-pink-400">
-                            <MapPin size={20} />
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-400">Konum</p>
-                            <p className="text-lg font-semibold">İstanbul, Türkiye</p>
-                        </div>
-                    </div>
+              {/* İletişim Kartları */}
+              <div className="space-y-8">
+                
+                {/* 1. E-Mail */}
+                <div className="flex items-start gap-6 group">
+                  <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition-colors">
+                    <Mail size={20} className="text-gray-300 group-hover:text-indigo-400"/>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">E-Mail</h3>
+                    <p className="text-xl font-medium text-white">hello@ocscreative.com</p>
+                  </div>
                 </div>
 
-                {/* Destek Politikası (Müşteriyi Eğiten Kısım) */}
-                <div className="bg-indigo-900/10 border border-indigo-500/20 p-8 rounded-3xl">
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-indigo-400">
-                        <ShieldAlert size={24} />
-                        Destek Politikamız
-                    </h3>
-                    <p className="text-gray-300 text-sm mb-4 leading-relaxed">
-                        Mevcut müşterilerimiz için teknik destek süreci hafta içi <strong>09:00 - 18:00</strong> saatleri arasındadır.
-                    </p>
-                    <ul className="space-y-3">
-                        <li className="flex gap-3 text-sm text-gray-400">
-                            <Clock size={16} className="text-indigo-400 mt-1 min-w-[16px]" />
-                            <span>Acil durumlar (Site kapanması vb.) haricindeki talepler 24 saat içinde yanıtlanır.</span>
-                        </li>
-                        <li className="flex gap-3 text-sm text-gray-400">
-                            <MessageSquare size={16} className="text-indigo-400 mt-1 min-w-[16px]" />
-                            <span>İçerik girişi ve yeni özellik eklemeleri standart destek kapsamına dahil değildir.</span>
-                        </li>
-                    </ul>
+                {/* 2. Telefon */}
+                <div className="flex items-start gap-6 group">
+                  <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition-colors">
+                    <Phone size={20} className="text-gray-300 group-hover:text-indigo-400"/>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Telefon</h3>
+                    <p className="text-xl font-medium text-white">+90 (555) 123 45 67</p>
+                  </div>
                 </div>
-            </div>
 
-            {/* SAĞ TARAF: FORM */}
-            <div className="bg-[#111] border border-white/10 p-8 md:p-10 rounded-3xl">
-                <h3 className="text-2xl font-bold mb-2">Bize Yazın</h3>
-                <p className="text-gray-400 mb-8">Projenizi anlatın veya sorunuzu sorun.</p>
+                {/* 3. Çalışma Saatleri (Ofis yerine bunu koyduk) */}
+                <div className="flex items-start gap-6 group">
+                  <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition-colors">
+                    <Clock size={20} className="text-gray-300 group-hover:text-indigo-400"/>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Çalışma Saatleri</h3>
+                    <p className="text-lg text-gray-300">Pzt - Cum: 09:00 - 18:00</p>
+                    <p className="text-sm text-gray-500 mt-1">Remote / İstanbul</p>
+                  </div>
+                </div>
 
-                <form className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300">Adınız Soyadınız</label>
-                            <input type="text" placeholder="John Doe" className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-indigo-500 focus:outline-none transition" />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300">Telefon</label>
-                            <input type="text" placeholder="0555..." className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-indigo-500 focus:outline-none transition" />
-                        </div>
+              </div>
+            </motion.div>
+
+            {/* SAĞ TARAF: İNTERAKTİF FORM */}
+            <motion.div 
+               initial={{ opacity: 0, x: 50 }}
+               animate={{ opacity: 1, x: 0 }}
+               transition={{ duration: 0.8, delay: 0.2 }}
+               className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-8 md:p-10 relative overflow-hidden"
+            >
+               {/* Form Arkasındaki Işık */}
+               <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+               <form className="relative z-10 space-y-8">
+                  
+                  {/* 1. Hizmet Seçimi */}
+                  <div>
+                    <label className="block text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">
+                      Hangi konuda destek alacaksınız?
+                    </label>
+                    <div className="flex flex-wrap gap-3">
+                      {SERVICES.map((service) => {
+                        const isSelected = selectedServices.includes(service);
+                        return (
+                          <button
+                            key={service}
+                            type="button"
+                            onClick={() => toggleService(service)}
+                            className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 flex items-center gap-2 ${
+                              isSelected
+                                ? "bg-indigo-600 border-indigo-500 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)]"
+                                : "bg-white/5 border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
+                            }`}
+                          >
+                            {isSelected && <Check size={14} />}
+                            {service}
+                          </button>
+                        );
+                      })}
                     </div>
+                  </div>
 
+                  {/* 2. Kişisel Bilgiler */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">E-Posta Adresi</label>
-                        <input type="email" placeholder="ornek@sirket.com" className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-indigo-500 focus:outline-none transition" />
+                      <label className="text-sm font-bold text-gray-400 uppercase tracking-wider">Adınız Soyadınız</label>
+                      <input 
+                        type="text" 
+                        placeholder="Örn: Ahmet Yılmaz" 
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all"
+                      />
                     </div>
-
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Konu</label>
-                        <select className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl p-4 text-gray-300 focus:border-indigo-500 focus:outline-none transition">
-                            <option>Yeni Web Sitesi Projesi</option>
-                            <option>Mevcut Site Revizesi</option>
-                            <option>Teknik Destek Talebi</option>
-                            <option>Diğer</option>
-                        </select>
+                      <label className="text-sm font-bold text-gray-400 uppercase tracking-wider">E-Posta Adresiniz</label>
+                      <input 
+                        type="email" 
+                        placeholder="ahmet@sirket.com" 
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all"
+                      />
                     </div>
+                  </div>
 
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Mesajınız</label>
-                        <textarea rows="4" placeholder="Projenizden veya sorununuzdan bahsedin..." className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-indigo-500 focus:outline-none transition"></textarea>
-                    </div>
+                  {/* 3. Proje Detayı */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-400 uppercase tracking-wider">Proje Detayları</label>
+                    <textarea 
+                      rows="4" 
+                      placeholder="Projenizden kısaca bahsedin..." 
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all resize-none"
+                    ></textarea>
+                  </div>
 
-                    <button className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-lg transition shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2">
-                        <Send size={20} />
-                        Gönder
-                    </button>
-                </form>
-            </div>
+                  {/* 4. Gönder Butonu */}
+                  <button 
+                    type="button"
+                    className="w-full py-5 bg-white text-black rounded-xl font-bold text-lg hover:bg-indigo-50 transition-colors flex items-center justify-center gap-2 group shadow-lg shadow-white/10"
+                  >
+                    Teklifi Gönder <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </button>
 
+                  <p className="text-xs text-center text-gray-500 mt-4">
+                    Formu göndererek <a href="#" className="underline hover:text-white">Gizlilik Politikası</a>'nı kabul etmiş olursunuz.
+                  </p>
+
+               </form>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 

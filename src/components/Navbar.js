@@ -1,92 +1,119 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { siteConfig } from "@/data/siteConfig";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-// Ajans Menüsü
-const navigation = [
+const NAV_LINKS = [
   { name: "Ana Sayfa", href: "/" },
-  { name: "Hakkımızda", href: "/hakkimda" },
-  { name: "Hizmetler", href: "/hizmetler" },
-  { name: "Projeler", href: "/projeler" }, // 🔥 BURAYI DEĞİŞTİRDİK (Eskiden /#referanslar idi)
+  { name: "Projeler", href: "/projeler" },
+  { name: "Hakkımda", href: "/hakkimda" },
+  { name: "Hizmetler", href: "/hizmetler" }, 
   { name: "İletişim", href: "/iletisim" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
-  // Scroll olunca navbarın rengini değiştirme efekti
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-dark-900/90 backdrop-blur-md border-b border-dark-700 py-4" : "bg-transparent py-6"}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          
-          {/* LOGO (Yazı Olarak) */}
-          <Link href="/" className="text-2xl font-bold tracking-tighter text-white group">
-            OCS <span className="text-primary group-hover:text-white transition-colors">Creative</span>
-            <span className="w-2 h-2 bg-primary rounded-full inline-block ml-1 animate-pulse"></span>
-          </Link>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        scrolled
+          ? "bg-[#030303]/80 backdrop-blur-xl border-white/10 py-4"
+          : "bg-transparent border-transparent py-6"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        
+        {/* LOGO: OCS (Beyaz) Creative (İndigo/Mor) */}
+        <Link href="/" className="flex items-center gap-1 group">
+           <span className="text-2xl font-bold tracking-tight text-white">
+             OCS <span className="text-indigo-500">Creative</span>
+             <span className="text-indigo-500">.</span>
+           </span>
+        </Link>
 
-          {/* DESKTOP MENU */}
-          <div className="hidden md:flex items-center gap-8">
-            {navigation.map((item) => (
-              <Link 
-                key={item.name} 
-                href={item.href} 
-                className="text-sm font-medium text-gray-300 hover:text-primary transition-colors hover:tracking-wide duration-300"
-              >
-                {item.name}
-              </Link>
-            ))}
-            
-            <Link 
-              href="/iletisim" 
-              className="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2 hover:gap-3"
+        {/* DESKTOP MENU */}
+        <div className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={`text-sm font-medium transition-colors relative hover:text-white ${
+                pathname === link.href ? "text-white" : "text-gray-400"
+              }`}
             >
-              Teklif Al <ArrowRight size={16} />
+              {link.name}
+              {pathname === link.href && (
+                <motion.span
+                  layoutId="underline"
+                  className="absolute left-0 top-full block h-px w-full bg-indigo-500 mt-1"
+                />
+              )}
             </Link>
-          </div>
-
-          {/* MOBILE MENU BUTTON */}
-          <button 
-            className="md:hidden text-white"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          ))}
         </div>
+
+        {/* CTA BUTTON */}
+        <div className="hidden md:block">
+          <Link
+            href="/iletisim"
+            className="px-5 py-2.5 rounded-full bg-white text-black text-sm font-bold hover:bg-indigo-50 transition-colors flex items-center gap-2"
+          >
+            Teklif Al
+          </Link>
+        </div>
+
+        {/* MOBILE MENU BUTTON */}
+        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
 
       {/* MOBILE MENU */}
-      {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-dark-900 border-b border-dark-700 p-4 flex flex-col gap-4 shadow-2xl">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-gray-300 hover:text-primary font-medium py-2 border-b border-dark-700/50"
-              onClick={() => setIsOpen(false)}
-            >
-              {item.name}
-            </Link>
-          ))}
-           <Link 
-            href="/iletisim"
-            className="bg-primary text-center text-white py-3 rounded-lg font-bold mt-2"
-            onClick={() => setIsOpen(false)}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-full left-0 w-full bg-[#0a0a0a] border-b border-white/10 p-6 md:hidden shadow-2xl"
           >
-            Hemen Başlayalım
-          </Link>
-        </div>
-      )}
+            <div className="flex flex-col gap-6">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`text-lg font-medium ${
+                    pathname === link.href ? "text-indigo-400" : "text-gray-300"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <Link
+                href="/iletisim"
+                onClick={() => setIsOpen(false)}
+                className="w-full py-4 rounded-xl bg-indigo-600 text-white font-bold text-center"
+              >
+                Projemi Başlat
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

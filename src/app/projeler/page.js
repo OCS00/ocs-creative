@@ -1,153 +1,184 @@
 "use client";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Cta from "@/components/Cta";
-import { ArrowUpRight, Code2, Layout, Smartphone, Search } from "lucide-react";
+import Cta from "@/components/Cta"; 
+import { client } from "@/sanity/lib/client"; 
+import { urlForImage } from "@/sanity/lib/image"; 
 import Link from "next/link";
-import Image from "next/image";
-
-// Örnek Proje Verileri (Resimler için public klasörüne jpg atman lazım, yoksa renkli kutu çıkar)
-const projects = [
-  {
-    id: 1,
-    title: "SMMM Yavuz Şahin",
-    category: "Kurumsal Web Tasarım",
-    description: "Mali müşavirlik ofisi için güven veren, mobil uyumlu ve KDV hesaplama araçları içeren modern bir web sitesi.",
-    tags: ["Next.js", "Tailwind", "SEO"],
-    image: "/referans-smmm.jpg", 
-    color: "from-blue-600 to-blue-900",
-    link: "https://yavuzsahin.com"
-  },
-  {
-    id: 2,
-    title: "Av. Osman Özkaya", // Gerçek adını hatırlıyorsan buraya yaz (Örn: Av. Mehmet Yılmaz)
-    category: "Kurumsal & Randevu Sistemi",
-    description: "Hukuk bürosu için geliştirdiğimiz; müvekkillerin kolayca randevu alabildiği, makalelerin yayınlandığı, SEO uyumlu ve Premium tasarımlı web projesi.",
-    tags: ["Next.js", "Tailwind CSS", "Randevu Modülü"],
-    image: "/referans-avukat.jpg", // 🔥 Oraya attığın resim burada görünecek
-    color: "from-slate-800 to-slate-900", // Siyah/Gri asil renkler
-    link: "#" // Eğer canlıdaysa linkini koy, yoksa # kalsın
-  },
-  {
-    id: 3,
-    title: "Glory Cord",
-    category: "Kurumsal Web Tasarım",
-    description: "Moda sektörü için geliştirilen, yüksek dönüşüm odaklı ve hızlı e-ticaret arayüz tasarımı.",
-    tags: ["Next.js", "Tailwind", "SEO"],
-    image: "/referans-eticaret.jpg",
-    color: "from-purple-600 to-purple-900",
-    link: "#"
-  },
-  {
-    id: 4,
-    title: "Palm Architecture Studio",
-    category: "Kurumsal Web Tasarım",
-    description: "Peyzaj Tasarım ve Uygulama Hizmetleri",
-    tags: ["Next.js", "Tailwind", "SEO"],
-    image: "/referans-startup.jpg",
-    color: "from-green-600 to-green-900",
-    link: "#"
-  }
-];
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
 export default function ProjectsPage() {
+  const [projects, setProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  
+  // KATEGORİLER ARTIK SABİT DEĞİL, STATE İÇİNDE
+  const [categories, setCategories] = useState(["Tümü"]); 
+  const [activeCategory, setActiveCategory] = useState("Tümü");
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        // Tüm projeleri çek
+        const query = `*[_type == "project"] | order(publishedAt desc){
+          _id,
+          title,
+          category, 
+          status,
+          mainImage,
+          tags,
+          slug
+        }`;
+        const data = await client.fetch(query);
+        
+        setProjects(data);
+        setFilteredProjects(data);
+
+        // --- SİHİRLİ KISIM BURASI ---
+        // 1. Projelerden sadece kategorileri al (data.map)
+        // 2. Boş olanları filtrele (.filter)
+        // 3. Tekrarlananları sil (new Set)
+        // 4. Başına "Tümü" ekle
+        const uniqueCategories = ["Tümü", ...new Set(data.map(item => item.category).filter(Boolean))];
+        
+        setCategories(uniqueCategories); // Butonları oluştur
+        // ---------------------------
+
+      } catch (error) {
+        console.error("Sanity Hatası:", error);
+      }
+    };
+    fetchProjects();
+  }, []);
+
+  const handleFilter = (category) => {
+    setActiveCategory(category);
+    if (category === "Tümü") {
+      setFilteredProjects(projects);
+    } else {
+      setFilteredProjects(projects.filter(p => p.category === category));
+    }
+  };
+
   return (
-    <main className="bg-dark-900 min-h-screen text-white">
+    <main className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30 relative">
       <Navbar />
+        {/* ARKA PLAN */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
+      </div>
 
-      {/* 1. HERO BÖLÜMÜ */}
-      <section className="pt-40 pb-20 px-4 relative overflow-hidden">
-        {/* Arka plan ışıkları */}
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] pointer-events-none"></div>
-
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">
-            PORTFOLYO
-          </span>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            İmzamızı Attığımız <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Dijital Eserler</span>
-          </h1>
-          <p className="text-gray-400 text-xl max-w-2xl mx-auto leading-relaxed">
-            Bizim için her proje, anlatılmayı bekleyen yeni bir başarı hikayesidir. İşte gururla sunduğumuz işlerden bazıları.
-          </p>
-        </div>
+      <div className="relative z-10">
+      <section className="pt-40 pb-16 px-6 text-center">
+         <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
+            Seçilmiş <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">
+              Başarı Hikayeleri.
+            </span>
+         </h1>
       </section>
 
-      {/* 2. FİLTRE BUTONLARI (Görsel Amaçlı) */}
-      <section className="pb-16 px-4">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-4">
-            {['Tümü', 'Web Tasarım', 'E-Ticaret', 'Mobil Uygulama', 'SEO'].map((item, i) => (
-                <button key={i} className={`px-6 py-2 rounded-full border text-sm font-bold transition-all ${i === 0 ? 'bg-white text-dark-900 border-white' : 'bg-transparent border-dark-700 text-gray-400 hover:border-primary hover:text-white'}`}>
-                    {item}
-                </button>
-            ))}
-        </div>
-      </section>
-
-      {/* 3. PROJE GALERİSİ */}
-      <section className="pb-24 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-          {projects.map((project) => (
-            <div key={project.id} className="group relative rounded-3xl overflow-hidden bg-dark-800 border border-dark-700 hover:border-primary/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
-              
-              {/* RESİM ALANI (Yükseklik ayarlı) */}
-              <div className="relative h-[400px] overflow-hidden">
-                 {/* Renkli Overlay (Hover'da kaybolur) */}
-                 <div className={`absolute inset-0 bg-gradient-to-b ${project.color} opacity-20 group-hover:opacity-0 transition-opacity duration-500 z-10`}></div>
-                 
-                 {/* Siyah Gradyan (Yazıların okunması için alt kısım) */}
-                 <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent z-20"></div>
-
-                 {/* Resim Placeholder (Eğer resim yoksa renkli kutu) */}
-                 <div className={`w-full h-full bg-gradient-to-br ${project.color} opacity-40`}></div>
-                 
-                 {/* 🔥 Eğer gerçek resim varsa alttaki satırı aç: 
-                 <Image src={project.image} alt={project.title} fill className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
-                 */}
-                 
-                 {/* Kategorisi (Sol üst köşe) */}
-                 <div className="absolute top-6 left-6 z-30">
-                    <span className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider">
-                        {project.category}
-                    </span>
-                 </div>
-              </div>
-
-              {/* İÇERİK ALANI (Kartın Altı) */}
-              <div className="absolute bottom-0 left-0 w-full p-8 z-30 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <h3 className="text-3xl font-bold text-white mb-3 flex items-center gap-3">
-                    {project.title}
-                    <ArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
-                </h3>
-                <p className="text-gray-300 mb-6 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                    {project.description}
-                </p>
-                
-                {/* Etiketler */}
-                <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag, i) => (
-                        <span key={i} className="text-xs font-bold text-gray-400 bg-dark-900/80 px-3 py-1 rounded-lg border border-dark-600">
-                            #{tag}
-                        </span>
-                    ))}
-                </div>
-              </div>
-            </div>
+      {/* DİNAMİK FİLTRELER */}
+      <section className="px-6 mb-16">
+        <div className="flex flex-wrap justify-center gap-3">
+          {categories.map((cat, index) => (
+            <button
+              key={index}
+              onClick={() => handleFilter(cat)}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${
+                activeCategory === cat
+                  ? "bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+                  : "bg-white/5 text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+              }`}
+            >
+              {cat}
+            </button>
           ))}
         </div>
-
-        {/* Daha Fazla Yükle Butonu */}
-        <div className="text-center mt-16">
-            <button className="px-8 py-4 bg-dark-800 border border-dark-700 rounded-full text-white font-bold hover:bg-dark-700 transition-all shadow-lg hover:shadow-primary/20">
-                Daha Fazla Proje Yükle
-            </button>
-        </div>
       </section>
 
+      {/* PROJELER GRID */}
+      <section className="px-6 pb-32 max-w-7xl mx-auto">
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <AnimatePresence>
+            {filteredProjects.map((project) => (
+              <motion.div
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                key={project._id}
+                className="group relative"
+              >
+                 <Link href={project.status === "inProgress" ? "#" : `/projeler/${project.slug.current}`} className={`block h-full ${project.status === "inProgress" ? "cursor-default" : "cursor-pointer"}`}>
+                  
+                  <div className="relative h-[450px] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#111]">
+                    {/* Görsel Kontrolü */}
+                    {project.mainImage ? (
+                        <img 
+                        src={urlForImage(project.mainImage).url()} 
+                        alt={project.title}
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                        />
+                    ) : (
+                        <div className="h-full w-full flex items-center justify-center bg-gray-900 text-gray-600">Görsel Yok</div>
+                    )}
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-300"></div>
+
+                    <div className="absolute top-6 left-6 flex gap-2">
+                      <span className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/10 rounded-full text-xs font-semibold text-white">
+                        {project.category}
+                      </span>
+                      {project.status === 'published' && (
+                          <span className="px-3 py-1 bg-green-500/20 border border-green-500/30 text-green-400 rounded-full text-xs font-bold flex items-center gap-1">
+                              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Yayında
+                          </span>
+                      )}
+                      {project.status === 'inProgress' && (
+                          <span className="px-3 py-1 bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 rounded-full text-xs font-bold flex items-center gap-1">
+                              <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span> Yapım Aşamasında
+                          </span>
+                      )}
+                    </div>
+
+                    {project.status === 'published' && (
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                        <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-2xl">
+                            <ArrowUpRight className="text-white" size={32} />
+                        </div>
+                        </div>
+                    )}
+
+                    <div className="absolute bottom-0 left-0 w-full p-8 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <h3 className="text-3xl font-bold text-white mb-3">{project.title}</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {project.tags && project.tags.map((tag, i) => (
+                          <span key={i} className="text-[11px] font-medium text-gray-300 tracking-wide bg-white/5 px-2 py-1 rounded border border-white/5">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {filteredProjects.length === 0 && (
+            <div className="text-center py-20 bg-white/5 rounded-2xl border border-white/10 mt-10">
+              <p className="text-gray-500">Henüz proje bulunamadı.</p>
+            </div>
+        )}
+      </section>
+      
       <Cta />
       <Footer />
+      </div>
     </main>
   );
 }

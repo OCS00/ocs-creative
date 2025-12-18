@@ -1,5 +1,5 @@
-// Oluşturduğumuz hizmet şemasını çağırıyoruz
 import service from './service'
+import project from './projects'
+import profile from './profile' // 👈 Bak bunu ekledik!
 
-// Ve sisteme tanıtıyoruz
-export const schemaTypes = [service]
+export const schemaTypes = [service, project, profile]

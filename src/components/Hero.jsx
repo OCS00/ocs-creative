@@ -1,107 +1,128 @@
 "use client";
+import React, { useRef, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Code2, Rocket, Globe } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight, Sparkles, Play } from "lucide-react";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
 export default function Hero() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }) {
+    let { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark-900 pt-20">
+    <section
+      className="relative min-h-[100vh] flex items-center justify-center overflow-hidden bg-black group"
+      onMouseMove={handleMouseMove}
+    >
+      {/* --- 1. YILDIZ ALANI (CSS İLE) --- */}
+      {/* Bu katman sabit duran, çok hafif yıldızları oluşturur */}
+      <div className="absolute inset-0 z-0 opacity-40"
+           style={{
+             backgroundImage: `radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+                               radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+                               radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
+                               radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+                               radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+                               radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0))`,
+             backgroundSize: '200px 200px'
+           }}
+      ></div>
+
+      {/* --- 2. MOUSE SPOTLIGHT (GİZLİ GÜÇ) --- */}
+      {/* Mouse'un olduğu yerde devasa, renkli bir aydınlatma oluşturur */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-500 group-hover:opacity-100 z-1"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              800px circle at ${mouseX}px ${mouseY}px,
+              rgba(79, 70, 229, 0.15),
+              transparent 80%
+            )
+          `,
+        }}
+      />
       
-      {/* --- ARKA PLAN EFEKTLERİ (NEON PARLAMALAR) --- */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        {/* Sol Üst Mor Işık */}
-        <div className="absolute -top-[20%] -left-[10%] w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
-        {/* Sağ Alt Mavi Işık */}
-        <div className="absolute top-[20%] -right-[10%] w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
-      </div>
+      {/* --- 3. PRO GRID DOKUSU (ÇOK HAFİF) --- */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-1"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        
-        {/* 1. KÜÇÜK ETİKET */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800 border border-dark-700 text-primary text-sm font-medium mb-8 hover:border-primary/50 transition-colors cursor-default"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-          </span>
-          Dijital Çözüm Ortağınız
-        </motion.div>
 
-        {/* 2. ANA BAŞLIK (H1) */}
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 leading-tight"
+      {/* --- 4. HAREKETLİ IŞIK ŞERİTLERİ (SHOOTING STARS) --- */}
+      {/* Arka planda ara sıra kayan ışık çizgileri */}
+      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-indigo-500/20 to-transparent opacity-20"></div>
+      <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-purple-500/20 to-transparent opacity-20"></div>
+      
+      {/* --- İÇERİK --- */}
+      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center mt-[-50px]">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
-          Markanızı <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-secondary">
-            Geleceğe Taşıyın
-          </span>
-        </motion.h1>
-
-        {/* 3. AÇIKLAMA (P) */}
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed"
-        >
-          Sadece güzel görünen değil, <strong>sonuç getiren</strong> web siteleri tasarlıyoruz. 
-          Modern yazılım teknolojileri ve stratejik SEO ile rakiplerinizin önüne geçin.
-        </motion.p>
-
-        {/* 4. BUTONLAR */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Link 
-            href="/iletisim" 
-            className="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-bold text-lg transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 flex items-center justify-center gap-2 group"
-          >
-            Hemen Başlayalım <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-          </Link>
           
-          <Link 
-            href="/#referanslar" 
-            className="w-full sm:w-auto px-8 py-4 bg-dark-800 hover:bg-dark-700 text-white border border-dark-700 hover:border-gray-500 rounded-full font-bold text-lg transition-all flex items-center justify-center"
-          >
-            İşlerimizi Gör
-          </Link>
-        </motion.div>
+          {/* Rozet */}
+          <div className="inline-flex items-center gap-2 py-2 px-6 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-2xl mb-12 shadow-2xl shadow-indigo-500/10 cursor-default">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+            </span>
+            <span className="text-sm font-bold tracking-[0.2em] text-gray-300 uppercase">
+              OCS Creative Studio
+            </span>
+          </div>
 
-        {/* 5. İSTATİSTİKLER / GÜVEN ÖGELERİ (Alt Kısım) */}
-        <motion.div 
-          initial={{ opacity: 0, mt: 40 }}
-          animate={{ opacity: 1, mt: 80 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-dark-800/50 max-w-4xl mx-auto"
-        >
-          <div className="flex flex-col items-center">
-            <Globe className="w-8 h-8 text-secondary mb-2 opacity-80" />
-            <h3 className="text-2xl font-bold text-white">%100</h3>
-            <p className="text-gray-500 text-sm">Mobil Uyumlu</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <Rocket className="w-8 h-8 text-primary mb-2 opacity-80" />
-            <h3 className="text-2xl font-bold text-white">Hızlı</h3>
-            <p className="text-gray-500 text-sm">Yüksek Performans</p>
-          </div>
-          <div className="col-span-2 md:col-span-1 flex flex-col items-center">
-            <Code2 className="w-8 h-8 text-purple-400 mb-2 opacity-80" />
-            <h3 className="text-2xl font-bold text-white">Modern</h3>
-            <p className="text-gray-500 text-sm">Temiz Kodlama</p>
-          </div>
-        </motion.div>
+          {/* Başlık (Devasa ve Keskin) */}
+          <h1 className="text-6xl md:text-8xl lg:text-[110px] font-bold tracking-tighter text-white mb-8 leading-[0.9] drop-shadow-2xl">
+            Beyond <br />
+            <span className="bg-gradient-to-b from-white via-white to-gray-500 bg-clip-text text-transparent">
+              Boundaries.
+            </span>
+          </h1>
 
+          {/* Alt Metin */}
+          <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed mb-12">
+            Limitleri kaldırın. <span className="text-white font-medium">Next.js 14</span> mimarisi ve <span className="text-white font-medium">Ödüllü Tasarım</span> anlayışıyla markanızı geleceğe taşıyoruz.
+          </p>
+          
+          {/* Butonlar */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            
+            {/* Primary Button */}
+            <Link href="/projeler">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="group relative px-10 py-5 bg-white text-black font-bold text-lg rounded-full overflow-hidden shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Projeleri Gör <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform"/>
+                </span>
+              </motion.button>
+            </Link>
+
+            {/* Secondary Button */}
+            <Link href="/iletisim">
+              <motion.button
+                 whileHover={{ scale: 1.05 }}
+                 whileTap={{ scale: 0.95 }}
+                 className="px-10 py-5 rounded-full border border-white/10 bg-white/[0.05] backdrop-blur-xl text-white font-medium text-lg hover:bg-white/10 transition-colors flex items-center gap-3"
+              >
+                <Play size={16} fill="currentColor" />
+                Tanışalım
+              </motion.button>
+            </Link>
+          </div>
+
+        </motion.div>
       </div>
+
+      {/* Alt Dekorasyon (Sahne Işığı Efekti) */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-indigo-600/10 blur-[150px] pointer-events-none rounded-t-full"></div>
     </section>
   );
 }

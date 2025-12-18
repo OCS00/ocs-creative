@@ -13,7 +13,8 @@
     "@sanity/vision": "^3.37.1",
     "@tailwindcss/typography": "^0.5.19",
     "@vercel/analytics": "^1.6.1",
-    "framer-motion": "^11.0.8",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.18.2",
     "lucide-react": "^0.344.0",
     "next": "14.2.3",
     "next-sanity": "^9.0.17",
@@ -21,7 +22,8 @@
     "react-dom": "^18",
     "rss-parser": "^3.13.0",
     "sanity": "^3.37.1",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.1.19",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",
