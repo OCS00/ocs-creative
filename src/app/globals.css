@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* 🔥 MODERN DARK THEME */
+  --background: #0B0F19; /* Derin Uzay Siyahı */
+  --foreground: #F8FAFC; /* Parlak Beyaz Yazılar */
+  
+  /* ANA RENK: Elektrik Mavisi */
+  --primary: #3B82F6; 
+  --primary-hover: #2563EB;
+  
+  /* İKİNCİL RENK: Neon Mor (Vurgular için) */
+  --secondary: #8B5CF6;
+  
+  /* KART RENGİ: Zeminden bir tık açık */
+  --card-bg: #111827;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-inter), sans-serif;
+  overflow-x: hidden; /* Sağa sola taşmayı engeller */
+}
+
+/* Özel Kaydırma Çubuğu (Scrollbar) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0F19;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Metin Seçim Rengi */
+::selection {
+  background: var(--primary);
+  color: white;
+}
