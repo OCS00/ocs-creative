@@ -3,54 +3,37 @@
 @tailwind utilities;
 
 :root {
-  /* 🔥 MODERN DARK THEME */
-  --background: #0B0F19; /* Derin Uzay Siyahı */
-  --foreground: #F8FAFC; /* Parlak Beyaz Yazılar */
-  
-  /* ANA RENK: Elektrik Mavisi */
-  --primary: #3B82F6; 
-  --primary-hover: #2563EB;
-  
-  /* İKİNCİL RENK: Neon Mor (Vurgular için) */
-  --secondary: #8B5CF6;
-  
-  /* KART RENGİ: Zeminden bir tık açık */
-  --card-bg: #111827;
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 3, 3, 3; /* #030303 */
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-inter), sans-serif;
-  overflow-x: hidden; /* Sağa sola taşmayı engeller */
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  overflow-x: hidden; /* Yanlara taşmayı engeller */
 }
 
-/* Özel Kaydırma Çubuğu (Scrollbar) */
+/* --- PREMIUM SCROLLBAR TASARIMI --- */
+/* Webkit tarayıcılar (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 8px; /* Çubuğun genişliği */
 }
+
 ::-webkit-scrollbar-track {
-  background: #0B0F19;
+  background: #0a0a0a; /* Çubuğun arka planı */
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #333; /* Kaydıran kısım */
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: #4f46e5; /* Üzerine gelince İndigo olsun */
 }
 
-/* Metin Seçim Rengi */
+/* Seçilen metin rengi (Selection) */
 ::selection {
-  background: var(--primary);
-  color: white;
-}
-/* Kayan Yazı Animasyonu */
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
-.animate-scroll {
-  animation: scroll 20s linear infinite;
+  background: rgba(79, 70, 229, 0.3); /* İndigo arkaplan */
+  color: #fff;
 }
