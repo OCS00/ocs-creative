@@ -19,8 +19,7 @@ export default function Hero() {
       className="relative min-h-[100vh] flex items-center justify-center overflow-hidden bg-black group"
       onMouseMove={handleMouseMove}
     >
-      {/* --- 1. YILDIZ ALANI (CSS İLE) --- */}
-      {/* Bu katman sabit duran, çok hafif yıldızları oluşturur */}
+      {/* --- 1. YILDIZ ALANI --- */}
       <div className="absolute inset-0 z-0 opacity-40"
            style={{
              backgroundImage: `radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
@@ -33,8 +32,7 @@ export default function Hero() {
            }}
       ></div>
 
-      {/* --- 2. MOUSE SPOTLIGHT (GİZLİ GÜÇ) --- */}
-      {/* Mouse'un olduğu yerde devasa, renkli bir aydınlatma oluşturur */}
+      {/* --- 2. MOUSE SPOTLIGHT --- */}
       <motion.div
         className="pointer-events-none absolute -inset-px opacity-0 transition duration-500 group-hover:opacity-100 z-1"
         style={{
@@ -48,12 +46,10 @@ export default function Hero() {
         }}
       />
       
-      {/* --- 3. PRO GRID DOKUSU (ÇOK HAFİF) --- */}
+      {/* --- 3. PRO GRID DOKUSU --- */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-1"></div>
 
-
-      {/* --- 4. HAREKETLİ IŞIK ŞERİTLERİ (SHOOTING STARS) --- */}
-      {/* Arka planda ara sıra kayan ışık çizgileri */}
+      {/* --- 4. HAREKETLİ IŞIK ŞERİTLERİ --- */}
       <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-indigo-500/20 to-transparent opacity-20"></div>
       <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-purple-500/20 to-transparent opacity-20"></div>
       
@@ -76,7 +72,7 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* Başlık (Devasa ve Keskin) */}
+          {/* Başlık */}
           <h1 className="text-6xl md:text-8xl lg:text-[110px] font-bold tracking-tighter text-white mb-8 leading-[0.9] drop-shadow-2xl">
             Beyond <br />
             <span className="bg-gradient-to-b from-white via-white to-gray-500 bg-clip-text text-transparent">
@@ -84,9 +80,9 @@ export default function Hero() {
             </span>
           </h1>
 
-          {/* Alt Metin */}
+          {/* YENİ PAZARLAMA METNİ (GİZEMLİ VE GÜÇLÜ) */}
           <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed mb-12">
-            Limitleri kaldırın. <span className="text-white font-medium">Next.js 14</span> mimarisi ve <span className="text-white font-medium">Ödüllü Tasarım</span> anlayışıyla markanızı geleceğe taşıyoruz.
+            Markanızı dijital dünyada hak ettiği zirveye taşıyın. <span className="text-white font-medium">Stratejik kurgu</span> ve <span className="text-white font-medium">kusursuz tasarım</span> anlayışımızla, izleyicilerinizi etkileyen eşsiz deneyimler yaratıyoruz.
           </p>
           
           {/* Butonlar */}
@@ -121,7 +117,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Alt Dekorasyon (Sahne Işığı Efekti) */}
+      {/* Alt Dekorasyon */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-indigo-600/10 blur-[150px] pointer-events-none rounded-t-full"></div>
     </section>
   );
