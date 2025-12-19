@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Cta from "@/components/Cta"; 
+import Cta from "@/components/ctta"; 
 import { client } from "@/sanity/lib/client"; 
 import { urlForImage } from "@/sanity/lib/image"; 
 import Link from "next/link";

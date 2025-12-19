@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Cta from "@/components/Cta"; 
+import Cta from "@/components/ctta"; 
 import { PortableText } from "@portabletext/react"; 
 import * as LucideIcons from "lucide-react"; 
 import { Check, X, Zap, Layers, ShieldCheck, BarChart3, Search, PenTool, Code, Rocket, ArrowRight, Star, ChevronRight, Cpu, Globe, Smartphone, Database, Layout, Sparkles, MessageCircle } from "lucide-react";
