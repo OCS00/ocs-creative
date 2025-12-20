@@ -57,9 +57,9 @@ export default function Footer() {
         {/* Telif Hakkı */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-600">
           <p>© 2024 OCS Creative Studio. Tüm hakları saklıdır.</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-gray-400">Gizlilik Politikası</a>
-            <a href="#" className="hover:text-gray-400">Kullanım Şartları</a>
+          <div className="flex flex-col md:flex-row gap-6 text-sm text-gray-500">
+            <Link href="/yasal" className="hover:text-white transition-colors">Gizlilik Politikası</Link>
+            <Link href="/yasal" className="hover:text-white transition-colors">Hizmet Şartları</Link>
           </div>
         </div>
       </div>

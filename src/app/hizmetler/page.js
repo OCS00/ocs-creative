@@ -3,19 +3,38 @@ import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Cta from "@/components/Cta"; 
-import { PortableText } from "@portabletext/react"; 
-import * as LucideIcons from "lucide-react"; 
-import { Check, X, Zap, Layers, ShieldCheck, BarChart3, Search, PenTool, Code, Rocket, ArrowRight, Star, ChevronRight, Cpu, Globe, Smartphone, Database, Layout, Sparkles, MessageCircle } from "lucide-react";
-import { motion } from "framer-motion"; 
+import { 
+  Check, X, Zap, Layers, ShieldCheck, BarChart3, Search, 
+  PenTool, Code, Rocket, ArrowRight, Star, ChevronRight, 
+  Globe, Smartphone, Database, Layout, Sparkles, ChevronDown 
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion"; 
+
+// --- GÜVENLİ ICON EŞLEŞTİRMESİ ---
+// Build hatası almamak için string isimlerini bileşenlere burada eşliyoruz
+const iconMap = {
+  Code: Code,
+  Layout: Layout,
+  Database: Database,
+  Smartphone: Smartphone,
+  PenTool: PenTool,
+  BarChart3: BarChart3
+};
 
 export default function ServicesPage() {
   const [showComparison, setShowComparison] = useState(false);
+  // SSS için hangi sorunun açık olduğunu tutan state
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
   
-  // STATİK HİZMET VERİLERİ (Sanity'e sonra eklersin)
+  // HİZMET VERİLERİ
   const services = [
     {
       title: "High-End Web Development",
-      description: "Sıradan şablonlar yok. Next.js 14 mimarisi üzerinde, SEO uyumlu, ışık hızında açılan ve Google Core Web Vitals standartlarını %100 karşılayan özel yazılımlar.",
+      description: "Sıradan şablonlar yok. Next.js 15 mimarisi üzerinde, SEO uyumlu, ışık hızında açılan ve Google Core Web Vitals standartlarını %100 karşılayan özel yazılımlar.",
       iconName: "Code"
     },
     {
@@ -47,8 +66,8 @@ export default function ServicesPage() {
 
   // TEKNOLOJİ ROZETLERİ
   const techStack = [
-    { name: "Next.js 14", icon: Globe },
-    { name: "React", icon: Code },
+    { name: "Next.js 15", icon: Globe },
+    { name: "React 19", icon: Code },
     { name: "Tailwind CSS", icon: Layers },
     { name: "Framer Motion", icon: Sparkles },
     { name: "Sanity CMS", icon: Database },
@@ -60,7 +79,7 @@ export default function ServicesPage() {
     {
       category: "TEKNİK ALTYAPI & PERFORMANS",
       items: [
-        { name: "Yazılım Dili / Altyapı", startup: "Next.js 14 (Static)", kurumsal: "Next.js 14 (SSR)", enterprise: "Next.js 14 (Edge)" },
+        { name: "Yazılım Dili / Altyapı", startup: "Next.js (Static)", kurumsal: "Next.js (SSR)", enterprise: "Next.js (Edge)" },
         { name: "Sunucu & Hosting", startup: "Vercel Standart", kurumsal: "Vercel Pro CDN", enterprise: "AWS / Vercel Enterprise" },
         { name: "Sayfa Açılış Hızı (Google)", startup: "90+ Puan", kurumsal: "95-100 Puan", enterprise: "100 Puan (Garanti)" },
         { name: "Siber Güvenlik (SSL/DDoS)", startup: "Standart Koruma", kurumsal: "Gelişmiş Firewall", enterprise: "Enterprise Shield" },
@@ -70,8 +89,8 @@ export default function ServicesPage() {
       category: "TASARIM & DENEYİM (UI/UX)",
       items: [
         { name: "Tasarım Yaklaşımı", startup: "Modern UI Kit", kurumsal: "Özel Tasarım Sistem", enterprise: "Bespoke (Terzi İşi)" },
-        { name: "Mobil Uyumluluk (Responsive)", startup: "Tam Uyumlu", kurumsal: "Cihaza Özel UX", enterprise: "Mobile-First Mimari" },
-        { name: "Karanlık Mod (Dark Mode)", startup: "-", kurumsal: "Opsiyonel", enterprise: "Otomatik / Seçmeli" },
+        { name: "Mobil Uyumluluk", startup: "Tam Uyumlu", kurumsal: "Cihaza Özel UX", enterprise: "Mobile-First Mimari" },
+        { name: "Karanlık Mod", startup: "-", kurumsal: "Opsiyonel", enterprise: "Otomatik / Seçmeli" },
         { name: "Animasyonlar", startup: "Temel Geçişler", kurumsal: "Framer Motion", enterprise: "WebGL / 3D Sahne" },
       ]
     },
@@ -84,14 +103,6 @@ export default function ServicesPage() {
       ]
     },
     {
-      category: "PAZARLAMA & SEO",
-      items: [
-        { name: "SEO Altyapısı", startup: "Temel (Meta)", kurumsal: "Teknik SEO (Schema)", enterprise: "Full SEO Suite" },
-        { name: "Google Entegrasyonları", startup: "Analytics", kurumsal: "GTM + Search Console", enterprise: "Dönüşüm Takibi API" },
-        { name: "Çoklu Dil Desteği", startup: "-", kurumsal: "Opsiyonel (2 Dil)", enterprise: "Sınırsız (i18n)" },
-      ]
-    },
-     {
       category: "DESTEK & SÜREÇ",
       items: [
         { name: "Teslim Süresi", startup: "3-5 İş Günü", kurumsal: "7-14 İş Günü", enterprise: "Proje Bazlı" },
@@ -99,6 +110,14 @@ export default function ServicesPage() {
         { name: "Eğitim", startup: "Dokümantasyon", kurumsal: "Online Toplantı", enterprise: "Yerinde / Ekip Eğitimi" },
       ]
     }
+  ];
+
+  // SSS Verisi
+  const faqs = [
+    { question: "Ödeme süreci nasıl işliyor?", answer: "Proje başlangıcında %50 avans alıyoruz. Kalan ödemeyi proje tesliminde, tüm kontroller yapılıp onayınız alındıktan sonra talep ediyoruz." },
+    { question: "Teslim süresi ne kadar?", answer: "Startup paketleri ortalama 3-5 iş günü, Kurumsal paketler ise kapsamına göre 7-14 iş günü sürmektedir. Enterprise projeler için özel takvim oluşturulur." },
+    { question: "Hosting ve Domain dahil mi?", answer: "İlk yıl için yüksek hızlı Vercel hosting altyapısını hediye ediyoruz. Domain (alan adı) tescili müşteriye aittir, yönlendirme konusunda yardımcı oluyoruz." },
+    { question: "Site bittikten sonra destek veriyor musunuz?", answer: "Kesinlikle. Her paketimizin kendine ait bir ücretsiz destek süresi vardır. Bu sürede çıkabilecek teknik sorunlara anında müdahale ediyoruz." }
   ];
 
   // Animasyonlar
@@ -177,7 +196,7 @@ export default function ServicesPage() {
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
               >
                   {services.map((service, index) => {
-                      const IconComponent = LucideIcons[service.iconName] || LucideIcons.Zap;
+                      const IconComponent = iconMap[service.iconName] || Zap;
                       return (
                           <motion.div 
                             key={index} 
@@ -190,9 +209,6 @@ export default function ServicesPage() {
                               <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
                               <div className="text-gray-400 text-sm leading-relaxed mb-6 flex-grow">
                                   {service.description}
-                              </div>
-                              <div className="mt-auto pt-4 border-t border-white/5 flex items-center text-sm font-semibold text-indigo-400 group-hover:text-white transition-colors cursor-pointer">
-                                  Teknik Detaylar <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform"/>
                               </div>
                           </motion.div>
                       )
@@ -229,8 +245,8 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* 4. FİYAT PAKETLERİ */}
-        <section className="py-24 px-6 relative">
+        {/* 4. FİYAT PAKETLERİ (Entegre) */}
+        <section className="py-24 px-6 relative" id="pricing">
           <div className="max-w-7xl mx-auto">
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-16">
                   <h2 className="text-3xl font-bold text-white mb-4">Yatırım Planları</h2>
@@ -274,8 +290,10 @@ export default function ServicesPage() {
                           <li className="flex items-center gap-3 text-white text-sm"><Check size={18} className="text-indigo-400"/> <strong>Sanity CMS Yönetim Paneli</strong></li>
                           <li className="flex items-center gap-3 text-white text-sm"><Check size={18} className="text-indigo-400"/> Blog / Haberler Modülü</li>
                       </ul>
-                      <button className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold transition shadow-lg shadow-indigo-500/25 mb-4">Projeyi Başlat</button>
-                      <button onClick={() => setShowComparison(true)} className="text-xs text-center text-gray-400 hover:text-white underline decoration-gray-600 underline-offset-4">Teknik Karşılaştırma Tablosu</button>
+                      <a href="/iletisim" className="block w-full">
+                        <button className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold transition shadow-lg shadow-indigo-500/25 mb-4">Projeyi Başlat</button>
+                      </a>
+                      <button onClick={() => setShowComparison(true)} className="w-full text-xs text-center text-gray-400 hover:text-white underline decoration-gray-600 underline-offset-4">Teknik Karşılaştırma Tablosu</button>
                   </motion.div>
 
                   {/* ENTERPRISE */}
@@ -293,7 +311,9 @@ export default function ServicesPage() {
                           <li className="flex items-center gap-3 text-gray-300 text-sm"><Check size={18} className="text-yellow-500"/> Çoklu Dil (i18n) Altyapısı</li>
                           <li className="flex items-center gap-3 text-gray-300 text-sm"><Check size={18} className="text-yellow-500"/> Özel WebGL Animasyonlar</li>
                       </ul>
-                      <button onClick={() => setShowComparison(true)} className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-sm font-semibold transition border border-white/10">Detayları İncele</button>
+                      <a href="/iletisim" className="block w-full">
+                        <button className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-sm font-semibold transition border border-white/10">İletişime Geç</button>
+                      </a>
                   </motion.div>
               </motion.div>
                {/* Tablo Butonu */}
@@ -306,75 +326,90 @@ export default function ServicesPage() {
         </section>
 
         {/* 5. MODAL - DETAYLI KARŞILAŞTIRMA TABLOSU */}
-        {showComparison && (
-          <div className="fixed inset-0 z-[999] flex items-center justify-center p-2 md:p-4">
-              <motion.div initial={{opacity:0}} animate={{opacity:1}} className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={() => setShowComparison(false)}></motion.div>
-              <motion.div initial={{scale:0.9, opacity:0}} animate={{scale:1, opacity:1}} className="relative w-full max-w-6xl bg-[#111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden h-[90vh] flex flex-col">
-                  
-                  <div className="flex justify-between items-center p-6 border-b border-white/10 bg-[#161616]">
-                      <div>
-                        <h3 className="text-xl md:text-2xl font-bold text-white">Paket Karşılaştırması</h3>
-                        <p className="text-sm text-gray-400">Teknik özellikler ve kapsam detayları.</p>
-                      </div>
-                      <button onClick={() => setShowComparison(false)} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition hover:rotate-90"><X size={24} className="text-gray-400" /></button>
-                  </div>
+        <AnimatePresence>
+          {showComparison && (
+            <div className="fixed inset-0 z-[999] flex items-center justify-center p-2 md:p-4">
+                <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={() => setShowComparison(false)}></motion.div>
+                <motion.div initial={{scale:0.95, opacity:0}} animate={{scale:1, opacity:1}} exit={{scale:0.95, opacity:0}} className="relative w-full max-w-6xl bg-[#111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden h-[90vh] flex flex-col">
+                    
+                    <div className="flex justify-between items-center p-6 border-b border-white/10 bg-[#161616]">
+                        <div>
+                          <h3 className="text-xl md:text-2xl font-bold text-white">Paket Karşılaştırması</h3>
+                          <p className="text-sm text-gray-400">Teknik özellikler ve kapsam detayları.</p>
+                        </div>
+                        <button onClick={() => setShowComparison(false)} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition hover:rotate-90"><X size={24} className="text-gray-400" /></button>
+                    </div>
 
-                  <div className="overflow-auto flex-1 p-0 md:p-6">
-                      <table className="w-full text-left border-collapse">
-                          <thead className="sticky top-0 bg-[#111] z-10 shadow-lg border-b border-white/10">
-                              <tr>
-                                  <th className="p-4 text-gray-400 font-medium w-1/4 bg-[#111]">Özellikler</th>
-                                  <th className="p-4 text-orange-400 font-bold text-center w-1/4 bg-[#111]">STARTUP</th>
-                                  <th className="p-4 text-indigo-400 font-bold text-center w-1/4 bg-[#1a1a1a] border-x border-indigo-500/20 relative">KURUMSAL</th>
-                                  <th className="p-4 text-yellow-400 font-bold text-center w-1/4 bg-[#111]">ENTERPRISE</th>
-                              </tr>
-                          </thead>
-                          <tbody className="text-sm">
-                              {comparisonData.map((category, index) => (
-                                <React.Fragment key={index}>
-                                  <tr className="bg-white/[0.03] border-y border-white/5">
-                                    <td colSpan="4" className="p-3 text-xs font-bold text-gray-300 uppercase tracking-widest pl-6">
-                                      {category.category}
-                                    </td>
-                                  </tr>
-                                  {category.items.map((item, i) => (
-                                    <tr key={i} className="hover:bg-white/[0.02] border-b border-white/5 transition-colors">
-                                      <td className="p-4 text-gray-400 pl-6">{item.name}</td>
-                                      <td className="p-4 text-center text-white font-medium">{item.startup}</td>
-                                      <td className="p-4 text-center text-white font-medium bg-white/[0.02] border-x border-white/5">{item.kurumsal}</td>
-                                      <td className="p-4 text-center text-white font-medium">{item.enterprise}</td>
+                    <div className="overflow-auto flex-1 p-0 md:p-6">
+                        <table className="w-full text-left border-collapse min-w-[800px]">
+                            <thead className="sticky top-0 bg-[#111] z-10 shadow-lg border-b border-white/10">
+                                <tr>
+                                    <th className="p-4 text-gray-400 font-medium w-1/4 bg-[#111]">Özellikler</th>
+                                    <th className="p-4 text-orange-400 font-bold text-center w-1/4 bg-[#111]">STARTUP</th>
+                                    <th className="p-4 text-indigo-400 font-bold text-center w-1/4 bg-[#1a1a1a] border-x border-indigo-500/20 relative">KURUMSAL</th>
+                                    <th className="p-4 text-yellow-400 font-bold text-center w-1/4 bg-[#111]">ENTERPRISE</th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-sm">
+                                {comparisonData.map((category, index) => (
+                                  <React.Fragment key={index}>
+                                    <tr className="bg-white/[0.03] border-y border-white/5">
+                                      <td colSpan="4" className="p-3 text-xs font-bold text-gray-300 uppercase tracking-widest pl-6">
+                                        {category.category}
+                                      </td>
                                     </tr>
-                                  ))}
-                                </React.Fragment>
-                              ))}
-                          </tbody>
-                      </table>
-                  </div>
+                                    {category.items.map((item, i) => (
+                                      <tr key={i} className="hover:bg-white/[0.02] border-b border-white/5 transition-colors">
+                                        <td className="p-4 text-gray-400 pl-6">{item.name}</td>
+                                        <td className="p-4 text-center text-white font-medium">{item.startup}</td>
+                                        <td className="p-4 text-center text-white font-medium bg-white/[0.02] border-x border-white/5">{item.kurumsal}</td>
+                                        <td className="p-4 text-center text-white font-medium">{item.enterprise}</td>
+                                      </tr>
+                                    ))}
+                                  </React.Fragment>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
-                  <div className="p-6 border-t border-white/10 bg-[#161616] flex justify-end gap-4">
-                    <span className="text-xs text-gray-500 self-center hidden md:block">* Fiyatlara KDV dahil değildir. Hosting ilk yıl hediyedir.</span>
-                    <button onClick={() => setShowComparison(false)} className="px-8 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition">Kapat</button>
-                  </div>
-              </motion.div>
-          </div>
-        )}
+                    <div className="p-6 border-t border-white/10 bg-[#161616] flex justify-end gap-4">
+                      <span className="text-xs text-gray-500 self-center hidden md:block">* Fiyatlara KDV dahil değildir. Hosting ilk yıl hediyedir.</span>
+                      <button onClick={() => setShowComparison(false)} className="px-8 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition">Kapat</button>
+                    </div>
+                </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
 
-        {/* 6. SSS */}
+        {/* 6. SSS - YENİLENMİŞ VE ANIMASYONLU */}
         <section className="py-20 px-6 max-w-4xl mx-auto border-t border-white/5 mt-10">
           <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-3xl font-bold text-center mb-10">Sıkça Sorulan Sorular</motion.h2>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="space-y-4">
-              <motion.details variants={fadeInUp} className="group bg-[#111] border border-white/5 p-6 rounded-2xl cursor-pointer hover:bg-[#161616] transition">
-                  <summary className="flex justify-between items-center font-semibold text-lg list-none">Ödeme süreci nasıl işliyor?<span className="transition group-open:rotate-180"><Check className="rotate-45" /></span></summary>
-                  <p className="text-gray-400 mt-4 leading-relaxed">Proje başlangıcında %40 avans alıyoruz. Kalan ödemeyi proje tesliminde ve onayınızdan sonra talep ediyoruz.</p>
-              </motion.details>
-               <motion.details variants={fadeInUp} className="group bg-[#111] border border-white/5 p-6 rounded-2xl cursor-pointer hover:bg-[#161616] transition">
-                  <summary className="flex justify-between items-center font-semibold text-lg list-none">Teslim süresi ne kadar?<span className="transition group-open:rotate-180"><Check className="rotate-45" /></span></summary>
-                  <p className="text-gray-400 mt-4 leading-relaxed">Startup paketleri ortalama 3-5 iş günü, Kurumsal paketler ise kapsamına göre 7-14 iş günü sürmektedir.</p>
-              </motion.details>
-              <motion.details variants={fadeInUp} className="group bg-[#111] border border-white/5 p-6 rounded-2xl cursor-pointer hover:bg-[#161616] transition">
-                  <summary className="flex justify-between items-center font-semibold text-lg list-none">Hosting ve Domain dahil mi?<span className="transition group-open:rotate-180"><Check className="rotate-45" /></span></summary>
-                  <p className="text-gray-400 mt-4 leading-relaxed">İlk yıl için yüksek hızlı hosting hizmetini hediye ediyoruz. Domain (alan adı) tescili müşteriye aittir.</p>
-              </motion.details>
+              {faqs.map((faq, i) => (
+                <motion.div key={i} variants={fadeInUp} className="group bg-[#111] border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-colors">
+                  <button 
+                    onClick={() => toggleFaq(i)}
+                    className="w-full flex justify-between items-center p-6 text-left font-semibold text-lg focus:outline-none"
+                  >
+                    {faq.question}
+                    <ChevronDown size={20} className={`text-gray-500 transition-transform duration-300 ${openFaq === i ? 'rotate-180 text-white' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {openFaq === i && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      >
+                        <div className="px-6 pb-6 text-gray-400 leading-relaxed text-sm md:text-base border-t border-white/5 pt-4">
+                          {faq.answer}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ))}
           </motion.div>
         </section>
 

@@ -9,9 +9,7 @@ import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image"; 
 import { ArrowRight, Code, Layout, Smartphone, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
-
-// Referans Logoları (Marquee için)
-const BRANDS = ["Vortex", "Lumina", "Focus", "Nexa", "Sphere", "Globa", "Vortex", "Lumina"];
+import Clients from "@/components/Clients"; // Bizim eklediğimiz profesyonel Marquee
 
 export default function Home() {
   const [latestProjects, setLatestProjects] = useState([]);
@@ -20,7 +18,6 @@ export default function Home() {
   useEffect(() => {
     const fetchLatestProjects = async () => {
       try {
-        // Query Anlamı: Tipi 'project' olanları al -> Oluşturulma tarihine göre (yeni > eski) sırala -> İlk 2 tanesini getir.
         const query = `*[_type == "project"] | order(_createdAt desc)[0...2]{
           _id,
           title,
@@ -44,24 +41,9 @@ export default function Home() {
       
       {/* 1. HERO BÖLÜMÜ */}
       <Hero />
-
-      {/* 2. GÜVENEN MARKALAR (Marquee) */}
-      <section className="py-10 border-y border-white/5 bg-black/50 overflow-hidden relative z-20">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#030303] via-transparent to-[#030303] z-10 pointer-events-none"></div>
-        <div className="flex max-w-full">
-          <motion.div 
-            className="flex gap-16 items-center whitespace-nowrap"
-            animate={{ x: "-50%" }}
-            transition={{ duration: 20, ease: "linear", repeat: Infinity }}
-          >
-            {[...BRANDS, ...BRANDS, ...BRANDS].map((brand, i) => (
-              <span key={i} className="text-2xl font-bold text-gray-800 uppercase tracking-widest hover:text-gray-500 transition-colors cursor-default select-none">
-                {brand}
-              </span>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      
+      {/* 2. LOGO ŞERİDİ (Eski kod silindi, sadece bu çalışacak) */}
+      <Clients />
 
       {/* 3. BENTO GRID HİZMETLER */}
       <section className="py-32 px-6 relative z-10">
@@ -72,7 +54,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
-            {/* Kart 1 */}
+            {/* Kart 1: Web Development */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -91,7 +73,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Kart 2 */}
+            {/* Kart 2: UI/UX */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -108,7 +90,7 @@ export default function Home() {
                </div>
             </motion.div>
 
-            {/* Kart 3 */}
+            {/* Kart 3: Mobil */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -125,7 +107,7 @@ export default function Home() {
                </div>
             </motion.div>
 
-            {/* Kart 4 */}
+            {/* Kart 4: SEO & Growth */}
             <motion.div 
                initial={{ opacity: 0, y: 20 }}
                whileInView={{ opacity: 1, y: 0 }}
@@ -169,7 +151,7 @@ export default function Home() {
                   <Link 
                     href={`/projeler/${project.slug?.current}`} 
                     key={project._id}
-                    className={`group cursor-pointer block ${index === 1 ? 'md:mt-20' : ''}`} // İkinci projeyi aşağı iter (Asimetri)
+                    className={`group cursor-pointer block ${index === 1 ? 'md:mt-20' : ''}`} 
                   >
                      <div className="relative h-[400px] rounded-2xl overflow-hidden mb-6 border border-white/10 bg-[#111]">
                         {project.mainImage && (
@@ -189,7 +171,6 @@ export default function Home() {
                 ))}
              </div>
            ) : (
-             // Eğer henüz proje eklenmediyse boş durmasın diye Placeholder göster
              <div className="text-center py-12 border border-dashed border-white/10 rounded-2xl bg-white/5">
                 <p className="text-gray-400 mb-4">Henüz yayınlanmış proje bulunmuyor.</p>
                 <Link href="/studio" className="text-indigo-400 underline hover:text-indigo-300">Panele gidip proje ekleyin.</Link>
