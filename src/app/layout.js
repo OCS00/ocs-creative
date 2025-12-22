@@ -5,9 +5,12 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
+// ... importlar aynı kalsın
+
 export const metadata = {
-  title: "OCS Creative Studio",
-  description: "Dijital Çözüm Ortağınız",
+  title: "OCS Creative | Yeni Nesil Web Tasarım & Dijital Ajans",
+  description: "İstanbul merkezli dijital stüdyo. Next.js ve Sanity teknolojileriyle ışık hızında, SEO uyumlu, özel web tasarım ve mobil uygulama çözümleri üretiyoruz.",
+  // İstersen ikon, openGraph vs. buraya eklersin
 };
 
 export default function RootLayout({ children }) {

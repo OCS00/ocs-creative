@@ -9,7 +9,7 @@ import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image"; 
 import { ArrowRight, Code, Layout, Smartphone, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
-import Clients from "@/components/Clients"; // Bizim eklediğimiz profesyonel Marquee
+import Clients from "@/components/Clients"; 
 
 export default function Home() {
   const [latestProjects, setLatestProjects] = useState([]);
@@ -18,10 +18,12 @@ export default function Home() {
   useEffect(() => {
     const fetchLatestProjects = async () => {
       try {
-        const query = `*[_type == "project"] | order(_createdAt desc)[0...2]{
+        // DÜZELTME: category->title YERİNE sadece category YAPTIK.
+        // Çünkü şemada kategori referans değil, düz string.
+        const query = `*[_type == "project"] | order(publishedAt desc)[0...2]{
           _id,
           title,
-          "category": category->title, 
+          category, 
           mainImage,
           slug
         }`;
@@ -42,7 +44,7 @@ export default function Home() {
       {/* 1. HERO BÖLÜMÜ */}
       <Hero />
       
-      {/* 2. LOGO ŞERİDİ (Eski kod silindi, sadece bu çalışacak) */}
+      {/* 2. LOGO ŞERİDİ */}
       <Clients />
 
       {/* 3. BENTO GRID HİZMETLER */}
