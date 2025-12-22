@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Mail, Phone, Clock, Check, Send } from "lucide-react"; // MapPin yerine Clock ekledim
+import { Mail, Phone, Clock, Check, Send, Loader2 } from "lucide-react"; // Loader2 eklendi
 import { motion } from "framer-motion";
 
 // Hizmet Seçenekleri
@@ -18,6 +18,8 @@ const SERVICES = [
 
 export default function ContactPage() {
   const [selectedServices, setSelectedServices] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // Yükleniyor durumu
+  const [formStatus, setFormStatus] = useState(null); // Başarılı/Hata durumu
 
   // Hizmet seçip/bırakma fonksiyonu
   const toggleService = (service) => {
@@ -25,6 +27,42 @@ export default function ContactPage() {
       setSelectedServices(selectedServices.filter((s) => s !== service));
     } else {
       setSelectedServices([...selectedServices, service]);
+    }
+  };
+
+  // FORMU GÖNDERME FONKSİYONU (YENİ EKLENEN KISIM)
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Sayfa yenilenmesini engelle
+
+    const formData = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      projectDetails: e.target.details.value,
+      services: selectedServices
+    };
+
+    setIsLoading(true);
+    setFormStatus(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setFormStatus("success");
+        e.target.reset(); // Formu temizle
+        setSelectedServices([]); // Seçimleri sıfırla
+      } else {
+        setFormStatus("error");
+      }
+    } catch (error) {
+      console.error("Form Hatası:", error);
+      setFormStatus("error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,7 +123,7 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                {/* 3. Çalışma Saatleri (Ofis yerine bunu koyduk) */}
+                {/* 3. Çalışma Saatleri */}
                 <div className="flex items-start gap-6 group">
                   <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition-colors">
                     <Clock size={20} className="text-gray-300 group-hover:text-indigo-400"/>
@@ -110,7 +148,7 @@ export default function ContactPage() {
                {/* Form Arkasındaki Işık */}
                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-               <form className="relative z-10 space-y-8">
+               <form className="relative z-10 space-y-8" onSubmit={handleSubmit}>
                   
                   {/* 1. Hizmet Seçimi */}
                   <div>
@@ -144,7 +182,9 @@ export default function ContactPage() {
                     <div className="space-y-2">
                       <label className="text-sm font-bold text-gray-400 uppercase tracking-wider">Adınız Soyadınız</label>
                       <input 
+                        name="name" // Backend için name eklendi
                         type="text" 
+                        required // Zorunlu alan
                         placeholder="Örn: Ahmet Yılmaz" 
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all"
                       />
@@ -152,7 +192,9 @@ export default function ContactPage() {
                     <div className="space-y-2">
                       <label className="text-sm font-bold text-gray-400 uppercase tracking-wider">E-Posta Adresiniz</label>
                       <input 
+                        name="email" // Backend için name eklendi
                         type="email" 
+                        required // Zorunlu alan
                         placeholder="ahmet@sirket.com" 
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all"
                       />
@@ -163,7 +205,9 @@ export default function ContactPage() {
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-400 uppercase tracking-wider">Proje Detayları</label>
                     <textarea 
+                      name="details" // Backend için name eklendi
                       rows="4" 
+                      required // Zorunlu alan
                       placeholder="Projenizden kısaca bahsedin..." 
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all resize-none"
                     ></textarea>
@@ -171,14 +215,37 @@ export default function ContactPage() {
 
                   {/* 4. Gönder Butonu */}
                   <button 
-                    type="button"
-                    className="w-full py-5 bg-white text-black rounded-xl font-bold text-lg hover:bg-indigo-50 transition-colors flex items-center justify-center gap-2 group shadow-lg shadow-white/10"
+                    type="submit" // Submit olarak değiştirildi
+                    disabled={isLoading} // Yüklenirken tıklanamaz
+                    className="w-full py-5 bg-white text-black rounded-xl font-bold text-lg hover:bg-indigo-50 transition-colors flex items-center justify-center gap-2 group shadow-lg shadow-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Teklifi Gönder <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="animate-spin" /> Gönderiliyor...
+                        </>
+                    ) : (
+                        <>
+                            Teklifi Gönder <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        </>
+                    )}
                   </button>
 
+                  {/* BAŞARI MESAJI */}
+                  {formStatus === "success" && (
+                    <div className="mt-4 p-4 bg-green-500/20 border border-green-500/30 text-green-400 rounded-xl text-center animate-in fade-in">
+                        Mesajınız başarıyla alındı! En kısa sürede size dönüş yapacağız. 🚀
+                    </div>
+                  )}
+
+                  {/* HATA MESAJI */}
+                  {formStatus === "error" && (
+                    <div className="mt-4 p-4 bg-red-500/20 border border-red-500/30 text-red-400 rounded-xl text-center animate-in fade-in">
+                        Bir hata oluştu. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.
+                    </div>
+                  )}
+
                   <p className="text-xs text-center text-gray-500 mt-4">
-                    Formu göndererek <a href="#" className="underline hover:text-white">Gizlilik Politikası</a>'nı kabul etmiş olursunuz.
+                    Formu göndererek <a href="/yasal" className="underline hover:text-white">Gizlilik Politikası</a>'nı kabul etmiş olursunuz.
                   </p>
 
                </form>

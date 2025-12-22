@@ -1,16 +1,15 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-// 1. İMPORT ET
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleAnalytics } from "@next/third-parties/google"; // 1. Ekle
+import CookieBanner from "@/components/CookieBanner"; // 2. Ekle
 
 const inter = Inter({ subsets: ["latin"] });
 
-// ... importlar aynı kalsın
-
 export const metadata = {
   title: "OCS Creative | Yeni Nesil Web Tasarım & Dijital Ajans",
-  description: "İstanbul merkezli dijital stüdyo. Next.js ve Sanity teknolojileriyle ışık hızında, SEO uyumlu, özel web tasarım ve mobil uygulama çözümleri üretiyoruz.",
-  // İstersen ikon, openGraph vs. buraya eklersin
+  description: "İstanbul merkezli dijital stüdyo...",
+  icons: { icon: '/favicon.ico' }, // Varsa favicon yolun
 };
 
 export default function RootLayout({ children }) {
@@ -18,8 +17,9 @@ export default function RootLayout({ children }) {
     <html lang="tr">
       <body className={inter.className}>
         {children}
-        {/* 2. BURAYA KOY (Body kapanmadan hemen önce) */}
+        <CookieBanner /> {/* 3. Banner'ı Göster */}
         <SpeedInsights />
+        <GoogleAnalytics gaId="G-XYZ123456" /> {/* 4. Kendi ID'ni yaz */}
       </body>
     </html>
   );
