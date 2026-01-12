@@ -1,25 +1,40 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { GoogleAnalytics } from "@next/third-parties/google"; // 1. Ekle
-import CookieBanner from "@/components/CookieBanner"; // 2. Ekle
+import { GoogleAnalytics } from "@next/third-parties/google";
+import CookieBanner from "@/components/CookieBanner";
+import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "OCS Creative | Yeni Nesil Web Tasarım & Dijital Ajans",
-  description: "İstanbul merkezli dijital stüdyo...",
-  icons: { icon: '/favicon.ico' }, // Varsa favicon yolun
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`, // Örn: "Projeler | OCS Creative"
+  },
+  description: siteConfig.description,
+  keywords: ["Web Tasarım", "Dijital Ajans", "Next.js", "React", "Kurumsal Web Sitesi"],
+  authors: [{ name: siteConfig.name }],
+  icons: { icon: '/favicon.ico' },
+  openGraph: {
+    type: "website",
+    locale: "tr_TR",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="tr">
-      <body className={inter.className}>
+    <html lang="tr" className="scroll-smooth">
+      <body className={`${inter.className} bg-[#020202] text-white antialiased`}>
         {children}
-        <CookieBanner /> {/* 3. Banner'ı Göster */}
+        <CookieBanner />
         <SpeedInsights />
-        <GoogleAnalytics gaId="G-XYZ123456" /> {/* 4. Kendi ID'ni yaz */}
+        {/* Google Analytics ID'nizi buraya veya .env dosyasına ekleyebilirsiniz */}
+        <GoogleAnalytics gaId="G-XYZ123456" /> 
       </body>
     </html>
   );

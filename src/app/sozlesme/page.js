@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 import { 
   Printer, 
   CheckCircle2, 
@@ -110,6 +111,9 @@ export default function ContractPage() {
 
   const activePack = packages[selectedPackage];
 
+  // Marka isminin ilk kelimesini arka plan için al (Örn: "OCS")
+  const shortBrandName = siteConfig.name.split(" ")[0];
+
   return (
     <main className="bg-[#0a0a0a] min-h-screen text-gray-800 font-sans relative selection:bg-indigo-200 selection:text-indigo-900">
       <Navbar />
@@ -140,7 +144,9 @@ export default function ContractPage() {
         {/* --- KAĞIT BAŞLANGICI --- */}
         <div className="max-w-[210mm] mx-auto bg-white shadow-2xl rounded-sm min-h-[297mm] p-8 md:p-16 relative overflow-hidden print:shadow-none print:m-0 print:w-full transition-all duration-500">
           
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-100 font-bold text-9xl -rotate-45 pointer-events-none select-none z-0">OCS</div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-100 font-bold text-9xl -rotate-45 pointer-events-none select-none z-0">
+            {shortBrandName}
+          </div>
 
           {isSigned && (
             <div className="absolute top-10 right-10 z-50 border-4 border-green-600 text-green-600 px-6 py-2 rounded-lg font-bold text-xl -rotate-12 opacity-80 mix-blend-multiply pointer-events-none">ONAYLANDI</div>
@@ -154,14 +160,14 @@ export default function ContractPage() {
                 <p className="text-sm text-gray-500 mt-1 font-mono uppercase">PAKET: {activePack.name}</p>
               </div>
               <div className="text-right">
-                <div className="text-lg font-bold text-gray-900">OCS Creative Studio</div>
-                <div className="text-xs text-gray-500">İstanbul, Türkiye</div>
+                <div className="text-lg font-bold text-gray-900">{siteConfig.name}</div>
+                <div className="text-xs text-gray-500">{siteConfig.contact.address}</div>
                 <div className="text-xs text-gray-500 font-mono">{currentDate}</div>
               </div>
             </header>
 
             <section className="text-sm leading-relaxed text-gray-700 text-justify">
-              <p>İşbu sözleşme, OCS Creative Studio ("Yüklenici") ile Müşteri ("İşveren") arasında; projenin geliştirilmesi, hukuki sorumluluklar ve <strong>dijital varlığın sürdürülebilirliği</strong> şartlarını belirlemek üzere düzenlenmiştir.</p>
+              <p>İşbu sözleşme, {siteConfig.name} ("Yüklenici") ile Müşteri ("İşveren") arasında; projenin geliştirilmesi, hukuki sorumluluklar ve <strong>dijital varlığın sürdürülebilirliği</strong> şartlarını belirlemek üzere düzenlenmiştir.</p>
             </section>
 
             <section className="space-y-6">
@@ -338,7 +344,7 @@ export default function ContractPage() {
                <div className="flex-1">
                  <div className="border-t border-gray-400 pt-2 mb-1">
                    <p className="font-bold text-gray-900">YÜKLENİCİ</p>
-                   <p className="text-sm text-gray-600">OCS Creative Studio</p>
+                   <p className="text-sm text-gray-600">{siteConfig.name}</p>
                  </div>
                  <p className="text-xs text-gray-400 italic">İmza / Kaşe</p>
                </div>

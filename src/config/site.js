@@ -1,39 +1,36 @@
-// src/config/site.js
-
-import { Instagram, Linkedin, Twitter, Github } from "lucide-react";
+import { Instagram, Linkedin, Twitter } from "lucide-react";
 
 export const siteConfig = {
-  // GENEL BİLGİLER
+  // --- EKSİK OLAN KISIM BURASIYDI ---
   name: "OCS Creative",
   description: "Markalar için dijital dönüşüm ve yazılım çözümleri.",
-  url: "https://ocscreative.com",
+  url: "https://ocscreative.com.tr",
+  // ----------------------------------
 
-  // İLETİŞİM BİLGİLERİ (Burası değişince her yer değişir)
+  // İLETİŞİM (Telefon & Mail)
   contact: {
     email: "hello@ocscreative.com",
-    phone: "+90 (555) 123 45 67",
-    phoneCall: "+905551234567", // Tıklayınca arama yapması için boşluksuz
-    address: "Maslak, İstanbul / Türkiye",
-    workingHours: "Pzt - Cum: 09:00 - 18:00",
+    phoneDisplay: "+90 (505) 008 20 34", // Ekranda görünen
+    phoneCall: "+905050082034", // Tıklanınca arayan (boşluksuz)
+    address: "İstanbul / Türkiye"
   },
 
-  // SOSYAL MEDYA LİNKLERİ
+  // SOSYAL MEDYA (İkonlar ve Linkler)
   socials: [
-    {
-      name: "Instagram",
-      href: "https://instagram.com/ocscreative",
-      icon: Instagram,
-    },
     {
       name: "LinkedIn",
       href: "https://linkedin.com/company/ocscreative",
       icon: Linkedin,
     },
     {
+      name: "Instagram",
+      href: "https://instagram.com/ocscreative",
+      icon: Instagram,
+    },
+    {
       name: "Twitter",
       href: "https://twitter.com/ocscreative",
       icon: Twitter,
     },
-    // İstersen Github vb. ekleyebilirsin
   ],
 };

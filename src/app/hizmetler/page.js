@@ -3,12 +3,13 @@ import React, { useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Cta from "@/components/Cta";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion, AnimatePresence, useMotionTemplate, useMotionValue } from "framer-motion";
 import { 
   Monitor, Smartphone, Search, Check, X, ArrowRight, 
-  Zap, Rocket, ChevronDown, Layers, Code2, Cpu,
+  Rocket, ChevronDown, Layers, Code2, Cpu,
   CheckCircle2, Sparkles, Gem
 } from "lucide-react";
+import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
 // --- VERİ SETLERİ ---
 
@@ -157,12 +158,15 @@ function SpotlightCard({ children, className = "" }) {
 
 export default function ServicesPage() {
   const [openFaq, setOpenFaq] = useState(0);
+
+  // GÜVENLİ KOD: Config gelmezse varsayılan kullan
+  const brandName = siteConfig?.name || "OCS Creative";
   
   return (
     <main className="bg-[#020202] min-h-screen text-white selection:bg-indigo-500/30 overflow-x-hidden">
       <Navbar />
 
-      {/* --- 1. MASTERCLASS HERO --- */}
+      {/* --- 1. HERO --- */}
       <section className="relative pt-48 pb-32 px-6 overflow-hidden flex flex-col items-center text-center min-h-[80vh] justify-center">
         {/* Hareketli Arka Plan Izgarası */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
@@ -210,7 +214,7 @@ export default function ServicesPage() {
         </motion.div>
       </section>
 
-      {/* --- 2. HİZMET DETAYLARI (Spotlight Cards) --- */}
+      {/* --- 2. HİZMET DETAYLARI --- */}
       <section className="py-24 px-6 relative z-10">
          <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -227,9 +231,8 @@ export default function ServicesPage() {
          </div>
       </section>
 
-      {/* --- 3. MASTERCLASS PAKETLER (Fiyatlandırma) --- */}
+      {/* --- 3. PAKETLER --- */}
       <section id="paketler" className="py-32 px-6 bg-[#050505] border-y border-white/5 relative overflow-hidden">
-         {/* Arka Plan Işığı */}
          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-[1200px] bg-gradient-to-r from-indigo-900/10 to-purple-900/10 blur-[100px] pointer-events-none"></div>
 
          <div className="max-w-7xl mx-auto relative z-10">
@@ -248,7 +251,6 @@ export default function ServicesPage() {
                      transition={{ delay: i * 0.1 }}
                      className={`relative p-1 rounded-[2.5rem] transition-all duration-500 group hover:-translate-y-2 ${pkg.popular ? 'lg:-mt-8 lg:mb-8 z-10' : ''}`}
                   >
-                     {/* Gradient Border Effect */}
                      <div className={`absolute inset-0 rounded-[2.5rem] bg-gradient-to-b ${pkg.popular ? 'from-indigo-500 via-purple-500 to-indigo-500' : 'from-white/10 to-white/5'} opacity-100 group-hover:opacity-100 transition-opacity`}></div>
                      
                      <div className="relative h-full bg-[#0a0a0a] rounded-[2.4rem] p-8 md:p-10 flex flex-col">
@@ -303,7 +305,7 @@ export default function ServicesPage() {
          </div>
       </section>
 
-      {/* --- 4. KARŞILAŞTIRMA (Interactive Table) --- */}
+      {/* --- 4. KARŞILAŞTIRMA (Config ile Dinamik) --- */}
       <section className="py-32 px-6">
          <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
@@ -315,7 +317,8 @@ export default function ServicesPage() {
                <div className="grid grid-cols-3 bg-white/5 p-6 border-b border-white/10 text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest">
                   <div className="col-span-1">KRİTERLER</div>
                   <div className="col-span-1 text-center opacity-50">DİĞER AJANSLAR</div>
-                  <div className="col-span-1 text-center text-indigo-400">OCS CREATIVE</div>
+                  {/* GÜVENLİ KOD: brandName kullanıldı */}
+                  <div className="col-span-1 text-center text-indigo-400">{brandName.toUpperCase()}</div>
                </div>
                
                {[
@@ -339,7 +342,7 @@ export default function ServicesPage() {
          </div>
       </section>
 
-      {/* --- 5. MERAK EDİLENLER (Accordion) --- */}
+      {/* --- 5. MERAK EDİLENLER --- */}
       <section className="py-24 px-6 bg-[#050505] border-t border-white/5">
          <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Aklınızdaki Sorular</h2>

@@ -1,8 +1,9 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Play } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
 export default function Hero() {
   const mouseX = useMotionValue(0);
@@ -19,7 +20,7 @@ export default function Hero() {
       className="relative min-h-[100vh] flex items-center justify-center overflow-hidden bg-black group"
       onMouseMove={handleMouseMove}
     >
-      {/* --- 1. YILDIZ ALANI --- */}
+      {/* --- 1. YILDIZ ALANI (CSS Pattern) --- */}
       <div className="absolute inset-0 z-0 opacity-40"
            style={{
              backgroundImage: `radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
@@ -68,7 +69,7 @@ export default function Hero() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
             <span className="text-sm font-bold tracking-[0.2em] text-gray-300 uppercase">
-              OCS Creative Studio
+              {siteConfig.name} STUDIO
             </span>
           </div>
 
@@ -80,9 +81,9 @@ export default function Hero() {
             </span>
           </h1>
 
-          {/* YENİ PAZARLAMA METNİ (GİZEMLİ VE GÜÇLÜ) */}
+          {/* Açıklama (Config'den çekilir) */}
           <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed mb-12">
-            Markanızı dijital dünyada hak ettiği zirveye taşıyın. <span className="text-white font-medium">Stratejik kurgu</span> ve <span className="text-white font-medium">kusursuz tasarım</span> anlayışımızla, izleyicilerinizi etkileyen eşsiz deneyimler yaratıyoruz.
+            {siteConfig.description} <span className="text-white font-medium">Stratejik kurgu</span> ve <span className="text-white font-medium">kusursuz tasarım</span> anlayışımızla, izleyicilerinizi etkileyen eşsiz deneyimler yaratıyoruz.
           </p>
           
           {/* Butonlar */}

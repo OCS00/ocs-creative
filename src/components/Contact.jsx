@@ -1,73 +1,61 @@
 "use client";
-import { useState } from "react";
-import { Send, CheckCircle, AlertCircle } from "lucide-react";
+import React from "react";
+import { Mail, Phone, MapPin } from "lucide-react";
+import { siteConfig } from "@/config/site"; // ✅ Config eklendi
 
 export default function Contact() {
-  const [status, setStatus] = useState(null); // null, 'loading', 'success', 'error'
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('loading');
-    // Burada API işlemi simüle ediliyor
-    setTimeout(() => setStatus('success'), 1500);
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-gray-400 ml-1">Adınız Soyadınız</label>
-          <input 
-            type="text" 
-            required
-            className="w-full bg-dark-800 border border-dark-700 text-white p-4 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-            placeholder="Örn: Ahmet Yılmaz"
-          />
+    <section className="py-24 px-6 bg-[#050505]">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          
+          {/* Sol Taraf: Metin */}
+          <div>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
+              Bir Sonraki Projenizi <br />
+              <span className="text-indigo-500">Birlikte Planlayalım.</span>
+            </h2>
+            <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+              Dijital dünyadaki varlığınızı güçlendirmek için buradayız. 
+              Soru, görüş veya proje talepleriniz için bize ulaşın.
+            </p>
+
+            <div className="space-y-6">
+              <a href={`mailto:${siteConfig.contact.email}`} className="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-indigo-600 transition-colors">
+                  <Mail size={20} />
+                </div>
+                <span className="text-lg">{siteConfig.contact.email}</span>
+              </a>
+
+              <a href={`tel:${siteConfig.contact.phoneCall}`} className="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-indigo-600 transition-colors">
+                  <Phone size={20} />
+                </div>
+                <span className="text-lg">{siteConfig.contact.phone}</span>
+              </a>
+
+              <div className="flex items-center gap-4 text-gray-300 group">
+                <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center">
+                  <MapPin size={20} />
+                </div>
+                <span className="text-lg">{siteConfig.contact.address}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Sağ Taraf: Ofis Bilgisi (Yüklediğin dosyada burası farklı olabilir, mevcut yapıya sadık kaldım) */}
+          <div className="relative h-[400px] bg-[#111] rounded-3xl border border-white/10 overflow-hidden group">
+             <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 to-purple-900/20 flex items-center justify-center text-center p-8">
+                <div>
+                   <h3 className="text-2xl font-bold text-white mb-2">Ofisimize Bekleriz</h3>
+                   <p className="text-indigo-400">{siteConfig.contact.workingHours}</p>
+                </div>
+             </div>
+          </div>
+
         </div>
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-gray-400 ml-1">E-Posta Adresiniz</label>
-          <input 
-            type="email" 
-            required
-            className="w-full bg-dark-800 border border-dark-700 text-white p-4 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-            placeholder="ornek@sirket.com"
-          />
-        </div>
       </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-bold text-gray-400 ml-1">Konu</label>
-        <select className="w-full bg-dark-800 border border-dark-700 text-white p-4 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none">
-          <option>Web Tasarım Teklifi</option>
-          <option>SEO Danışmanlığı</option>
-          <option>E-Ticaret Projesi</option>
-          <option>Diğer</option>
-        </select>
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-bold text-gray-400 ml-1">Mesajınız</label>
-        <textarea 
-          rows="4"
-          required
-          className="w-full bg-dark-800 border border-dark-700 text-white p-4 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-          placeholder="Projenizden kısaca bahsedin..."
-        ></textarea>
-      </div>
-
-      <button 
-        disabled={status === 'loading' || status === 'success'}
-        type="submit" 
-        className={`w-full py-4 rounded-xl font-bold text-white transition-all flex items-center justify-center gap-2 shadow-lg ${status === 'success' ? 'bg-green-600' : 'bg-primary hover:bg-primary-dark'}`}
-      >
-        {status === 'loading' ? (
-          <span className="animate-pulse">Gönderiliyor...</span>
-        ) : status === 'success' ? (
-          <> <CheckCircle size={20} /> Mesaj Gönderildi! </>
-        ) : (
-          <> <Send size={20} /> Hemen Gönder </>
-        )}
-      </button>
-    </form>
+    </section>
   );
 }

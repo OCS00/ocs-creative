@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Scale, Lock, ShieldCheck, FileWarning, ScrollText } from "lucide-react";
+import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
 export default function LegalPage() {
   const [activeTab, setActiveTab] = useState("hizmet");
+  const currentYear = new Date().getFullYear();
 
   const renderContent = () => {
     switch (activeTab) {
@@ -14,7 +16,7 @@ export default function LegalPage() {
           <article className="space-y-8 text-gray-300 leading-relaxed text-sm md:text-base font-light">
             <div className="border-b border-white/10 pb-4 mb-6">
               <h2 className="text-2xl font-bold text-white mb-1">Mesafeli Satış ve Hizmet Sözleşmesi</h2>
-              <p className="text-xs text-gray-500 uppercase tracking-widest">Doküman No: OCS-LEGAL-2024/01 | Sürüm: 2.4</p>
+              <p className="text-xs text-gray-500 uppercase tracking-widest">Doküman No: OCS-LEGAL-{currentYear}/01 | Sürüm: 2.4</p>
             </div>
 
             <div className="bg-red-900/10 border-l-4 border-red-600 p-4 rounded-r-lg mb-8">
@@ -29,7 +31,7 @@ export default function LegalPage() {
             <section className="space-y-4">
               <h3 className="text-lg font-bold text-white border-l-2 border-indigo-500 pl-3">MADDE 1: TARAFLAR VE KONU</h3>
               <p>
-                İşbu sözleşme, OCS Creative Studio (bundan böyle "YÜKLENİCİ" olarak anılacaktır) ile dijital hizmet alımı yapan gerçek veya tüzel kişi ("MÜŞTERİ") arasında, web tasarım, yazılım geliştirme ve dijital danışmanlık hizmetlerinin kapsamını, ödeme şartlarını ve hukuki sorumlulukları belirlemek amacıyla akdedilmiştir.
+                İşbu sözleşme, {siteConfig.name} (bundan böyle "YÜKLENİCİ" olarak anılacaktır) ile dijital hizmet alımı yapan gerçek veya tüzel kişi ("MÜŞTERİ") arasında, web tasarım, yazılım geliştirme ve dijital danışmanlık hizmetlerinin kapsamını, ödeme şartlarını ve hukuki sorumlulukları belirlemek amacıyla akdedilmiştir.
               </p>
             </section>
 
@@ -75,7 +77,7 @@ export default function LegalPage() {
           <article className="space-y-8 text-gray-300 leading-relaxed text-sm md:text-base font-light">
              <div className="border-b border-white/10 pb-4 mb-6">
               <h2 className="text-2xl font-bold text-white mb-1">KVKK Aydınlatma Metni ve Gizlilik Politikası</h2>
-              <p className="text-xs text-gray-500 uppercase tracking-widest">Veri Sorumlusu: OCS Creative Studio</p>
+              <p className="text-xs text-gray-500 uppercase tracking-widest">Veri Sorumlusu: {siteConfig.name}</p>
             </div>
 
              <section className="space-y-4">
@@ -108,7 +110,7 @@ export default function LegalPage() {
                   <li>Verilerin düzeltilmesini veya silinmesini isteme,</li>
                   <li>Aleyhinize bir sonucun ortaya çıkmasına itiraz etme hakkına sahipsiniz.</li>
                </ul>
-               <p className="mt-2 text-sm text-gray-500">Bu haklarınızı kullanmak için <a href="mailto:info@ocscreative.com" className="text-indigo-400 hover:underline">info@ocscreative.com</a> adresine başvurabilirsiniz.</p>
+               <p className="mt-2 text-sm text-gray-500">Bu haklarınızı kullanmak için <a href={`mailto:${siteConfig.contact.email}`} className="text-indigo-400 hover:underline">{siteConfig.contact.email}</a> adresine başvurabilirsiniz.</p>
              </section>
           </article>
         );
@@ -123,14 +125,14 @@ export default function LegalPage() {
              <section className="space-y-4">
                <h3 className="text-lg font-bold text-white border-l-2 border-indigo-500 pl-3">1. GENEL HÜKÜMLER</h3>
                <p>
-                 Bu web sitesini ziyaret eden veya hizmet alan her kullanıcı, işbu Kullanım Koşullarını peşinen kabul etmiş sayılır. OCS Creative Studio, sitede yer alan bilgileri, hizmet kapsamını ve fiyatları önceden bildirmeksizin değiştirme hakkını saklı tutar.
+                 Bu web sitesini ziyaret eden veya hizmet alan her kullanıcı, işbu Kullanım Koşullarını peşinen kabul etmiş sayılır. {siteConfig.name}, sitede yer alan bilgileri, hizmet kapsamını ve fiyatları önceden bildirmeksizin değiştirme hakkını saklı tutar.
                </p>
              </section>
 
              <section className="space-y-4">
                <h3 className="text-lg font-bold text-white border-l-2 border-indigo-500 pl-3">2. SORUMLULUK REDDİ (DISCLAIMER)</h3>
                <p>
-                 <strong>2.1. Kesintisiz Hizmet Garantisi Yoktur:</strong> YÜKLENİCİ, web sitesinin veya geliştirdiği projelerin %100 kesintisiz çalışacağını garanti etmez. 3. parti servis sağlayıcılar (Hosting, Domain, API servisleri, Google vb.) kaynaklı erişim sorunlarından, veri kayıplarından veya siber saldırılardan OCS Creative Studio sorumlu tutulamaz.
+                 <strong>2.1. Kesintisiz Hizmet Garantisi Yoktur:</strong> YÜKLENİCİ, web sitesinin veya geliştirdiği projelerin %100 kesintisiz çalışacağını garanti etmez. 3. parti servis sağlayıcılar (Hosting, Domain, API servisleri, Google vb.) kaynaklı erişim sorunlarından, veri kayıplarından veya siber saldırılardan {siteConfig.name} sorumlu tutulamaz.
                </p>
                <p>
                  <strong>2.2. İçerik Sorumluluğu:</strong> Müşteri tarafından siteye eklenmesi için iletilen metin, görsel ve videoların telif hakkı sorumluluğu tamamen Müşteriye aittir. YÜKLENİCİ, içeriklerin hukuka uygunluğunu denetlemekle yükümlü değildir.
@@ -140,7 +142,7 @@ export default function LegalPage() {
              <section className="space-y-4">
                <h3 className="text-lg font-bold text-white border-l-2 border-indigo-500 pl-3">3. TELİF HAKLARI</h3>
                <p>
-                 Bu web sitesinin tasarımı, yazılım altyapısı, logo ve marka kimliği OCS Creative Studio'ya aittir. Siteden herhangi bir materyalin izinsiz kopyalanması, çoğaltılması veya ticari amaçla kullanılması durumunda, YÜKLENİCİ tüm hukuki ve cezai yollara başvurma hakkını saklı tutar.
+                 Bu web sitesinin tasarımı, yazılım altyapısı, logo ve marka kimliği {siteConfig.name}'e aittir. Siteden herhangi bir materyalin izinsiz kopyalanması, çoğaltılması veya ticari amaçla kullanılması durumunda, YÜKLENİCİ tüm hukuki ve cezai yollara başvurma hakkını saklı tutar.
                </p>
              </section>
 
@@ -227,8 +229,8 @@ export default function LegalPage() {
               {/* Footer Note */}
               <div className="mt-16 pt-8 border-t border-white/5 text-center">
                  <p className="text-xs text-gray-600">
-                   Bu sayfadaki bilgiler OCS Creative Studio'nun yasal çalışma prensiplerini oluşturur. Hizmet alan her müşteri bu şartları kabul etmiş sayılır.<br/>
-                   &copy; {new Date().getFullYear()} OCS Creative Studio. Tüm Hakları Saklıdır.
+                   Bu sayfadaki bilgiler {siteConfig.name}'in yasal çalışma prensiplerini oluşturur. Hizmet alan her müşteri bu şartları kabul etmiş sayılır.<br/>
+                   &copy; {currentYear} {siteConfig.name}. Tüm Hakları Saklıdır.
                  </p>
               </div>
             </div>

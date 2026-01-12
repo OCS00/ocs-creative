@@ -5,9 +5,10 @@ import Cta from "@/components/Cta";
 import { client } from "@/sanity/lib/client";
 import ProjectsGrid from "@/components/ProjectsGrid"; 
 import { CheckCircle2, Award, Zap, Users } from "lucide-react";
+import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
 export const metadata = {
-  title: "Projelerimiz & Başarı Hikayeleri | OCS Creative",
+  title: `Projelerimiz & Başarı Hikayeleri | ${siteConfig.name}`,
   description: "Markalar için geliştirdiğimiz web tasarım, yazılım ve mobil uygulama projelerimizi inceleyin.",
 };
 
@@ -59,7 +60,7 @@ export default async function ProjectsPage() {
              Sadece güzel görünen değil, <strong>ölçülebilir sonuçlar</strong> üreten dijital varlıklar tasarlıyoruz.
            </p>
 
-           {/* Mini İstatistikler (Güven Bandı) */}
+           {/* Mini İstatistikler */}
            <div className="flex flex-wrap justify-center gap-8 md:gap-20 border-t border-white/10 pt-12">
               {[
                   { label: "Teslim Edilen Proje", value: "50+", icon: Award },
@@ -76,10 +77,10 @@ export default async function ProjectsPage() {
            </div>
         </section>
 
-        {/* --- 2. PROJE IZGARASI (Interaktif) --- */}
+        {/* --- 2. PROJE IZGARASI --- */}
         <ProjectsGrid initialProjects={projects} />
         
-        {/* --- 3. METODOLOJİ (Nasıl Yapıyoruz?) --- */}
+        {/* --- 3. METODOLOJİ --- */}
         <section className="py-32 border-t border-white/10 bg-[#050505] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
             
@@ -89,7 +90,7 @@ export default async function ProjectsPage() {
                         Başarıyı Şansa <br/> <span className="text-gray-600">Bırakmıyoruz.</span>
                     </h2>
                     <p className="text-gray-400 text-lg leading-relaxed mb-10">
-                        Her projenin arkasında titizlikle kurgulanmış bir "OCS Standartları" süreci vardır. 
+                        Her projenin arkasında titizlikle kurgulanmış bir <strong>"{siteConfig.name} Standartları"</strong> süreci vardır. 
                         Veri odaklı analiz, modern tasarım prensipleri ve hatasız kodlama ile sürdürülebilir başarıyı hedefliyoruz.
                     </p>
                     

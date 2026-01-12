@@ -4,8 +4,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Cta from "@/components/Cta";
 import { motion, AnimatePresence } from "framer-motion";
-// DÜZELTME: Fingerprint ikonu import listesine eklendi
 import { Lightbulb, Heart, Target, Globe, Sparkles, Anchor, BrainCircuit, Award, ChevronDown, Gem, Fingerprint } from "lucide-react";
+import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
 // 1. İSTATİSTİKLER
 const STATS = [
@@ -47,11 +47,11 @@ const VALUES = [
   }
 ];
 
-// 3. SSS (Solo & Premium Avantajı)
+// 3. SSS (Solo & Premium Avantajı) - Config ile Dinamik
 const FAQS = [
   {
-    q: "Neden büyük bir ajans yerine OCS Creative?",
-    a: "Büyük ajanslarda projeniz stajyerlere devredilebilir veya iletişim kopuklukları yaşanabilir. OCS'de ise doğrudan 'mimar' ile çalışırsınız. Aracı yok, kulaktan kulağa değişen briefler yok. Vizyonunuz, kayıpsız bir şekilde ve çok daha hızlı hayata geçer."
+    q: `Neden büyük bir ajans yerine ${siteConfig.name}?`,
+    a: `Büyük ajanslarda projeniz stajyerlere devredilebilir veya iletişim kopuklukları yaşanabilir. ${siteConfig.name.split(" ")[0]}'de ise doğrudan 'mimar' ile çalışırsınız. Aracı yok, kulaktan kulağa değişen briefler yok. Vizyonunuz, kayıpsız bir şekilde ve çok daha hızlı hayata geçer.`
   },
   {
     q: "Teknoloji olarak ne kullanıyorsunuz?",
@@ -94,7 +94,7 @@ export default function AboutPage() {
           className="relative z-10 max-w-5xl mx-auto"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-indigo-300 mb-8 backdrop-blur-md">
-             <Sparkles size={14} /> EST. 2024 — İSTANBUL
+             <Sparkles size={14} /> EST. {new Date().getFullYear()} — İSTANBUL
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter text-white mb-8 leading-[0.95]">
@@ -105,7 +105,7 @@ export default function AboutPage() {
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed">
-            OCS Creative, karmaşık teknolojileri markalar için anlaşılır, estetik ve kârlı sanat eserlerine dönüştüren, 
+            {siteConfig.name}, karmaşık teknolojileri markalar için anlaşılır, estetik ve kârlı sanat eserlerine dönüştüren, 
             <span className="text-white font-medium"> yeni nesil bir tasarım stüdyosudur.</span>
           </p>
         </motion.div>

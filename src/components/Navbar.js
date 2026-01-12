@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image"; // ✅ Resim için gerekli
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { siteConfig } from "@/config/site";
 
 const NAV_LINKS = [
   { name: "Ana Sayfa", href: "/" },
@@ -36,12 +38,15 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         
-        {/* LOGO: OCS (Beyaz) Creative (İndigo/Mor) */}
-        <Link href="/" className="flex items-center gap-1 group">
-           <span className="text-2xl font-bold tracking-tight text-white">
-             OCS <span className="text-indigo-500">Creative</span>
-             <span className="text-indigo-500">.</span>
-           </span>
+        {/* LOGO: Görsel Kullanımı */}
+        <Link href="/" className="relative w-40 h-10 flex items-center">
+           <Image
+             src="/logo1.png" // public klasöründeki dosya
+             alt={siteConfig?.name || "Logo"}
+             fill
+             className="object-contain object-left" // Logoyu sola hizalar ve sığdırır
+             priority // Hızlı yüklenmesi için
+           />
         </Link>
 
         {/* DESKTOP MENU */}

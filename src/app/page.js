@@ -7,9 +7,10 @@ import Cta from "@/components/Cta";
 import Link from "next/link";
 import { client } from "@/sanity/lib/client"; 
 import { urlForImage } from "@/sanity/lib/image"; 
-import { ArrowRight, Code, Layout, Smartphone, TrendingUp, CheckCircle2, Quote, Zap } from "lucide-react";
+import { ArrowRight, Code, Layout, Smartphone, TrendingUp, CheckCircle2, Quote } from "lucide-react";
 import { motion } from "framer-motion";
 import Clients from "@/components/Clients"; 
+import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
 export default function Home() {
   const [latestProjects, setLatestProjects] = useState([]);
@@ -35,6 +36,9 @@ export default function Home() {
     fetchLatestProjects();
   }, []);
 
+  // HATA ÖNLEYİCİ: Eğer siteConfig yüklenemezse varsayılan değer kullan
+  const brandName = siteConfig?.name || "OCS Creative";
+
   return (
     <main className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30">
       <Navbar />
@@ -45,12 +49,15 @@ export default function Home() {
       {/* 2. LOGO ŞERİDİ */}
       <Clients />
 
-      {/* --- YENİ EKLENEN: GÜVEN VE FELSEFE BÖLÜMÜ --- */}
+      {/* --- 3. GÜVEN VE FELSEFE BÖLÜMÜ --- */}
       <section className="py-20 border-b border-white/5 bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6">
            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
-                 <h3 className="text-indigo-400 font-bold tracking-widest text-xs uppercase mb-4">NEDEN OCS CREATIVE?</h3>
+                 {/* GÜVENLİ KOD: toUpperCase hatası vermemesi için */}
+                 <h3 className="text-indigo-400 font-bold tracking-widest text-xs uppercase mb-4">
+                    NEDEN {brandName.toUpperCase()}?
+                 </h3>
                  <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
                     Sadece Kod Yazmıyoruz, <br/>
                     <span className="text-gray-500">İşinizi Büyüten Stratejiler Geliştiriyoruz.</span>
@@ -79,7 +86,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. BENTO GRID HİZMETLER (DETAYLANDIRILMIŞ) */}
+      {/* 4. HİZMETLER (BENTO GRID) */}
       <section className="py-32 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -90,7 +97,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[350px]"> {/* Yükseklik artırıldı */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[350px]">
             
             {/* Kart 1: Web Development */}
             <motion.div 
@@ -180,7 +187,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- YENİ EKLENEN: MÜŞTERİ YORUMLARI (Social Proof) --- */}
+      {/* 5. MÜŞTERİ YORUMLARI (SOCIAL PROOF) */}
       <section className="py-24 bg-[#0a0a0a] border-y border-white/5">
          <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
@@ -190,7 +197,7 @@ export default function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                {[
-                  { text: "OCS Creative ekibi, hayalimizdeki projeyi teknik mükemmellikle birleştirdi. Süreç boyunca şeffaf iletişimleri ve çözüm odaklı yaklaşımları bizi çok etkiledi.", author: "Ahmet Yılmaz", role: "CEO, TechOne Global" },
+                  { text: `${brandName} ekibi, hayalimizdeki projeyi teknik mükemmellikle birleştirdi. Süreç boyunca şeffaf iletişimleri ve çözüm odaklı yaklaşımları bizi çok etkiledi.`, author: "Ahmet Yılmaz", role: "CEO, TechOne Global" },
                   { text: "Sadece bir web sitesi değil, markamız için bir kimlik inşa ettiler. Tasarım detaylarına verdikleri önem ve hızları inanılmaz. Kesinlikle tavsiye ederim.", author: "Elif Demir", role: "Kurucu, Art Studio" },
                   { text: "SEO ve hız konusunda vaat ettiklerinin fazlasını yaptılar. Site yayına girdikten sonra müşteri dönüşlerimizde %40 artış gözlemledik.", author: "Mehmet Kaya", role: "Pazarlama Müdürü, SoftSys" }
                ].map((item, i) => (
@@ -207,7 +214,7 @@ export default function Home() {
          </div>
       </section>
 
-      {/* 4. DİNAMİK SON PROJELER VİTRİNİ */}
+      {/* 6. SON PROJELER (DİNAMİK) */}
       <section className="py-32 relative">
         <div className="max-w-7xl mx-auto px-6">
            
@@ -265,6 +272,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CTA ve Footer */}
       <Cta />
       <Footer />
     </main>
