@@ -30,6 +30,9 @@ export default function ContactPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [formStatus, setFormStatus] = useState(null);
 
+  // GÜVENLİ KOD: Config yüklenemezse hata verme
+  const contactInfo = siteConfig?.contact || {};
+
   // Hizmet Seçimi
   const toggleService = (service) => {
     const currentServices = formData.services;
@@ -94,50 +97,58 @@ export default function ContactPage() {
 
              <div className="space-y-8 border-t border-white/10 pt-10">
                 
-                {/* E-POSTA (Otomatik) */}
+                {/* E-POSTA */}
                 <div className="flex gap-6 group">
                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 text-white group-hover:bg-indigo-500/20 group-hover:border-indigo-500 transition-all">
                       <Mail size={20} />
                    </div>
                    <div>
                       <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">E-Posta</h4>
-                      <a href={`mailto:${siteConfig.contact.email}`} className="text-xl font-medium text-white hover:text-indigo-400 transition-colors">
-                        {siteConfig.contact.email}
+                      <a href={`mailto:${contactInfo.email}`} className="text-xl font-medium text-white hover:text-indigo-400 transition-colors">
+                        {contactInfo.email || "Bilgi Yok"}
                       </a>
                    </div>
                 </div>
 
-                {/* TELEFON (Otomatik) */}
+                {/* TELEFON (Düzeltildi) */}
                 <div className="flex gap-6 group">
                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 text-white group-hover:bg-indigo-500/20 group-hover:border-indigo-500 transition-all">
                       <Phone size={20} />
                    </div>
                    <div>
                       <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Telefon</h4>
-                      <a href={`tel:${siteConfig.contact.phoneCall}`} className="text-xl font-medium text-white hover:text-indigo-400 transition-colors">
-                        {siteConfig.contact.phone}
+                      <a href={`tel:${contactInfo.phoneCall}`} className="text-xl font-medium text-white hover:text-indigo-400 transition-colors">
+                        {contactInfo.phoneDisplay || "Bilgi Yok"}
                       </a>
                    </div>
                 </div>
 
-                {/* ADRES / SAATLER (Otomatik) */}
+                {/* ADRES (Düzeltildi) */}
+                <div className="flex gap-6 group">
+                   <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 text-white group-hover:bg-indigo-500/20 group-hover:border-indigo-500 transition-all">
+                      <MapPin size={20} />
+                   </div>
+                   <div>
+                      <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Adres</h4>
+                      <p className="text-lg text-white leading-snug">{contactInfo.address || "Bilgi Yok"}</p>
+                   </div>
+                </div>
+
+                {/* ÇALIŞMA SAATLERİ (Düzeltildi) */}
                 <div className="flex gap-6 group">
                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 text-white group-hover:bg-indigo-500/20 group-hover:border-indigo-500 transition-all">
                       <Clock size={20} />
                    </div>
                    <div>
                       <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Çalışma Saatleri</h4>
-                      <p className="text-lg text-white">{siteConfig.contact.workingHours}</p>
-                      <p className="text-sm text-gray-500 mt-1 flex items-center gap-1">
-                        <MapPin size={12}/> {siteConfig.contact.address}
-                      </p>
+                      <p className="text-lg text-white">Pzt - Cum: 09:00 - 18:00</p>
                    </div>
                 </div>
 
              </div>
           </div>
 
-          {/* SAĞ: MULTI-STEP FORM (Aynı kaldı) */}
+          {/* SAĞ: MULTI-STEP FORM */}
           <div className="lg:col-span-7">
              <div className="bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden min-h-[600px] flex flex-col justify-center shadow-2xl shadow-indigo-900/10">
                 
