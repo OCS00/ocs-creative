@@ -2,12 +2,12 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'project',
-  title: 'Projeler',
+  title: 'Projeler (Case Studies)',
   type: 'document',
   groups: [
     { name: 'main', title: 'Ana Bilgiler' },
-    { name: 'details', title: 'Detaylar & Hikaye' },
-    { name: 'media', title: 'Görseller & Galeri' },
+    { name: 'story', title: 'Hikaye & Süreç' },
+    { name: 'media', title: 'Medya & Galeri' },
     { name: 'seo', title: 'SEO & Meta' },
   ],
   fields: [
@@ -29,9 +29,17 @@ export default defineType({
     }),
     defineField({
       name: 'clientName',
-      title: 'Müşteri Adı (Firma)',
+      title: 'Müşteri / Marka Adı',
       type: 'string',
       group: 'main',
+    }),
+    defineField({
+      name: 'category',
+      title: 'Kategori',
+      description: 'Örn: Fintech, Sağlık, E-Ticaret',
+      type: 'string',
+      group: 'main',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'websiteUrl',
@@ -41,75 +49,66 @@ export default defineType({
     }),
     defineField({
       name: 'status',
-      title: 'Proje Durumu',
+      title: 'Durum',
       type: 'string',
       group: 'main',
       options: {
         list: [
-          { title: 'Yayında', value: 'published' },
-          { title: 'Geliştiriliyor', value: 'inProgress' },
+          { title: 'Yayında 🟢', value: 'published' },
+          { title: 'Geliştiriliyor 🟡', value: 'inProgress' },
         ],
         layout: 'radio',
       },
       initialValue: 'published',
     }),
-    // YENİ HALİ (Sınırsız Özgürlük)
-    defineField({
-       name: 'category',
-       title: 'Kategori / Sektör',
-       description: 'Örn: Yapay Zeka, Fintech, Sağlık (İstediğini yazabilirsin)',
-       type: 'string', // Sadece string dedik, options listesini kaldırdık.
-       group: 'main',
-         validation: (rule) => rule.required(),
-    }),
     defineField({
         name: 'tags',
-        title: 'Teknolojiler (Örn: Next.js, Sanity)',
+        title: 'Teknoloji Stack',
+        description: 'Örn: Next.js, Tailwind, Sanity, Framer Motion',
         type: 'array',
         group: 'main',
         of: [{ type: 'string' }],
     }),
 
-    // --- GRUP 2: DETAYLAR & HİKAYE (Case Study) ---
+    // --- GRUP 2: HİKAYE (Challenge & Solution) ---
     defineField({
         name: 'challenge',
-        title: 'Zorluk / Problem (Challenge)',
-        description: 'Müşterinin ana sorunu neydi?',
+        title: 'Zorluk (The Challenge)',
+        description: 'Müşterinin yaşadığı problem neydi?',
         type: 'text',
-        rows: 3,
-        group: 'details',
+        rows: 4,
+        group: 'story',
     }),
     defineField({
         name: 'solution',
-        title: 'Çözümümüz (Solution)',
-        description: 'Biz nasıl bir çözüm ürettik?',
+        title: 'Çözüm (The Solution)',
+        description: 'Biz nasıl bir teknolojik çözüm sunduk?',
         type: 'text',
-        rows: 3,
-        group: 'details',
+        rows: 4,
+        group: 'story',
     }),
-    // Rakamlarla Sonuçlar (Örn: %40 Artış)
     defineField({
         name: 'stats',
-        title: 'Proje İstatistikleri',
+        title: 'Başarı Metrikleri (Sonuçlar)',
         type: 'array',
-        group: 'details',
+        group: 'story',
         of: [
             {
                 type: 'object',
                 name: 'stat',
                 fields: [
-                    { name: 'value', title: 'Değer (Örn: %200)', type: 'string' },
-                    { name: 'label', title: 'Açıklama (Örn: Trafik Artışı)', type: 'string' }
+                    { name: 'value', title: 'Değer (Örn: %400)', type: 'string' },
+                    { name: 'label', title: 'Metrik (Örn: ROI Artışı)', type: 'string' }
                 ]
             }
         ]
     }),
     defineField({
         name: 'primaryColor',
-        title: 'Marka Ana Rengi (Hex Kodu)',
-        description: 'Örn: #4F46E5',
+        title: 'Marka Rengi (Hex)',
+        description: 'Proje detay sayfasında vurgu rengi olarak kullanılır. Örn: #6366F1',
         type: 'string',
-        group: 'details',
+        group: 'story',
     }),
 
     // --- GRUP 3: MEDYA ---
@@ -122,7 +121,7 @@ export default defineType({
     }),
     defineField({
         name: 'gallery',
-        title: 'Proje Galerisi (Ekran Görüntüleri)',
+        title: 'Proje İçi Ekran Görüntüleri',
         type: 'array',
         group: 'media',
         of: [{ type: 'image', options: { hotspot: true } }]
@@ -131,18 +130,11 @@ export default defineType({
     // --- GRUP 4: SEO ---
     defineField({
         name: 'seoDesc',
-        title: 'SEO Açıklaması (Meta Description)',
+        title: 'Meta Açıklama',
+        description: 'Google arama sonuçlarında çıkacak kısa açıklama.',
         type: 'text',
         rows: 2,
         group: 'seo',
     }),
   ],
-
-  preview: {
-    select: {
-      title: 'title',
-      subtitle: 'clientName',
-      media: 'mainImage',
-    },
-  },
 })

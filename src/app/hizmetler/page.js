@@ -1,421 +1,382 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Cta from "@/components/Cta"; 
+import Cta from "@/components/Cta";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate, useMotionValue } from "framer-motion";
 import { 
-  Check, X, Zap, Layers, ShieldCheck, BarChart3, Search, 
-  PenTool, Code, Rocket, ArrowRight, Star, ChevronRight, 
-  Globe, Smartphone, Database, Layout, Sparkles, ChevronDown 
+  Monitor, Smartphone, Search, Check, X, ArrowRight, 
+  Zap, Rocket, ChevronDown, Layers, Code2, Cpu,
+  CheckCircle2, Sparkles, Gem
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion"; 
 
-// --- GÜVENLİ ICON EŞLEŞTİRMESİ ---
-// Build hatası almamak için string isimlerini bileşenlere burada eşliyoruz
-const iconMap = {
-  Code: Code,
-  Layout: Layout,
-  Database: Database,
-  Smartphone: Smartphone,
-  PenTool: PenTool,
-  BarChart3: BarChart3
-};
+// --- VERİ SETLERİ ---
 
-export default function ServicesPage() {
-  const [showComparison, setShowComparison] = useState(false);
-  // SSS için hangi sorunun açık olduğunu tutan state
-  const [openFaq, setOpenFaq] = useState(null);
+const PACKAGES = [
+  {
+    id: "landing",
+    name: "Landing Page",
+    tagline: "Hızlı & Etkili Başlangıç",
+    desc: "Tek ürün, etkinlik veya portfolyo için yüksek dönüşüm odaklı, nokta atışı tasarım.",
+    price: "Başlangıç",
+    features: [
+      "Tek Sayfa (One-Page) Tasarım",
+      "Next.js ile Ultra Hızlı",
+      "Temel SEO Kurulumu",
+      "İletişim Formu Entegrasyonu",
+      "Mobil Uyumlu (Responsive)",
+      "1 Hafta Teslim Süresi"
+    ],
+    notIncluded: ["CMS (Yönetim Paneli)", "Blog Altyapısı", "Çoklu Dil Desteği"],
+    icon: Rocket,
+    popular: false,
+    gradient: "from-blue-500/20 to-cyan-500/20"
+  },
+  {
+    id: "corporate",
+    name: "Kurumsal Web",
+    tagline: "Prestij ve Otorite",
+    desc: "Şirketinizin dijitaldeki genel merkezi. Yönetim panelli, bloglu ve tam kapsamlı yapı.",
+    price: "Profesyonel",
+    features: [
+      "5-10 Alt Sayfa Tasarımı",
+      "Gelişmiş Sanity CMS Paneli",
+      "Blog & Haberler Modülü",
+      "Google Analytics & Console",
+      "Çoklu Dil Altyapısı (TR/EN)",
+      "Kurumsal E-Posta Kurulumu",
+      "Google Haritalar Kaydı"
+    ],
+    notIncluded: ["Özel Web Uygulaması (SaaS)"],
+    icon: Gem,
+    popular: true,
+    gradient: "from-indigo-500/20 to-purple-500/20"
+  },
+  {
+    id: "custom",
+    name: "Özel Yazılım / SaaS",
+    tagline: "Limitleri Kaldırın",
+    desc: "Standartların ötesinde. İş akışınıza özel geliştirilen web tabanlı yazılım çözümleri.",
+    price: "Enterprise",
+    features: [
+      "Sınırsız Sayfa & Özellik",
+      "Özel Veritabanı Mimarisi",
+      "Kullanıcı Giriş/Üyelik Sistemi",
+      "API Entegrasyonları (CRM, ERP)",
+      "Gelişmiş Admin Dashboard",
+      "Yüksek Güvenlik (WAF)",
+      "Özel Sunucu Optimizasyonu"
+    ],
+    notIncluded: [],
+    icon: Cpu,
+    popular: false,
+    gradient: "from-emerald-500/20 to-teal-500/20"
+  }
+];
 
-  const toggleFaq = (index) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
-  
-  // HİZMET VERİLERİ
-  const services = [
-    {
-      title: "High-End Web Development",
-      description: "Sıradan şablonlar yok. Next.js 15 mimarisi üzerinde, SEO uyumlu, ışık hızında açılan ve Google Core Web Vitals standartlarını %100 karşılayan özel yazılımlar.",
-      iconName: "Code"
-    },
-    {
-      title: "UI/UX & İnteraktif Tasarım",
-      description: "Kullanıcı deneyimini (UX) merkeze alan, Framer Motion ile zenginleştirilmiş mikro-animasyonlar ve 'Pixel-Perfect' arayüz tasarımları.",
-      iconName: "Layout"
-    },
-    {
-      title: "Headless CMS Entegrasyonu",
-      description: "Sanity.io altyapısı sayesinde içeriğinizi kod bilgisi gerekmeden, sürükle-bırak kolaylığında ve tam özgürlükle yönetin.",
-      iconName: "Database"
-    },
-    {
-      title: "Mobil Uygulama (React Native)",
-      description: "Tek kod tabanıyla hem iOS hem Android'de çalışan, native performansı sunan, ölçeklenebilir mobil uygulamalar geliştiriyoruz.",
-      iconName: "Smartphone"
-    },
-    {
-      title: "Marka & Kreatif Direktörlük",
-      description: "Sadece logo değil; markanızın dijital dünyadaki ses tonunu, renk paletini ve duruşunu stratejik olarak kurguluyoruz.",
-      iconName: "PenTool"
-    },
-    {
-      title: "Growth & SEO Mühendisliği",
-      description: "Sitenizi sadece yayına almıyoruz; teknik SEO optimizasyonları ve veri odaklı stratejilerle organik trafiğinizi artırıyoruz.",
-      iconName: "BarChart3"
-    }
-  ];
+const SERVICES_DETAILED = [
+  {
+    title: "Web Mimarisi",
+    desc: "Hazır şablon yok. Next.js ve React ile piksel hassasiyetinde, Google'ın aşık olduğu kodlar.",
+    icon: Code2,
+    color: "text-blue-400"
+  },
+  {
+    title: "Mobil Uygulama",
+    desc: "React Native ile hem iOS hem Android mağazalarında çalışan, native performanslı uygulamalar.",
+    icon: Smartphone,
+    color: "text-purple-400"
+  },
+  {
+    title: "UI/UX Tasarım",
+    desc: "Kullanıcı alışkanlıklarını analiz ediyor, sadece şık değil, satışı artıran arayüzler tasarlıyoruz.",
+    icon: Layers,
+    color: "text-pink-400"
+  },
+  {
+    title: "SEO & Growth",
+    desc: "Siteniz yayına girdiği an Google'da yarışa 1-0 önde başlar. Teknik SEO standarttır.",
+    icon: Search,
+    color: "text-emerald-400"
+  }
+];
 
-  // TEKNOLOJİ ROZETLERİ
-  const techStack = [
-    { name: "Next.js 15", icon: Globe },
-    { name: "React 19", icon: Code },
-    { name: "Tailwind CSS", icon: Layers },
-    { name: "Framer Motion", icon: Sparkles },
-    { name: "Sanity CMS", icon: Database },
-    { name: "Vercel", icon: Zap },
-  ];
+const FAQS = [
+  {
+    q: "Neden Wordpress değil de Özel Yazılım (Next.js)?",
+    a: "Wordpress hantaldır, güvensizdir ve sürekli bakım ister. Next.js ise Google, Netflix ve Nike'ın kullandığı teknolojidir. 3 kat daha hızlıdır, hacklenemez ve SEO başarısı çok daha yüksektir."
+  },
+  {
+    q: "Yönetim paneli olacak mı? İçeriği değiştirebilir miyim?",
+    a: "Kesinlikle. Sanity CMS entegrasyonu sayesinde, kod bilmenize gerek kalmadan metinleri, görselleri, blog yazılarını ve projelerinizi kolayca güncelleyebilirsiniz."
+  },
+  {
+    q: "Ödeme süreci nasıl işliyor?",
+    a: "Proje başlangıcında %50 ön ödeme alıyoruz. Tasarım onayı ve demo sunumundan sonra, proje tesliminde kalan %50'yi tahsil ediyoruz. Her şey şeffaf ve sözleşmeli ilerler."
+  },
+  {
+    q: "Hosting ve Domain desteği veriyor musunuz?",
+    a: "Evet. Projelerinizi dünyanın en hızlı sunucu altyapısı olan Vercel üzerinde barındırıyoruz. İlk yıl teknik bakım ve sunucu desteği bizden."
+  }
+];
 
-  // DETAYLI KARŞILAŞTIRMA TABLOSU VERİSİ
-  const comparisonData = [
-    {
-      category: "TEKNİK ALTYAPI & PERFORMANS",
-      items: [
-        { name: "Yazılım Dili / Altyapı", startup: "Next.js (Static)", kurumsal: "Next.js (SSR)", enterprise: "Next.js (Edge)" },
-        { name: "Sunucu & Hosting", startup: "Vercel Standart", kurumsal: "Vercel Pro CDN", enterprise: "AWS / Vercel Enterprise" },
-        { name: "Sayfa Açılış Hızı (Google)", startup: "90+ Puan", kurumsal: "95-100 Puan", enterprise: "100 Puan (Garanti)" },
-        { name: "Siber Güvenlik (SSL/DDoS)", startup: "Standart Koruma", kurumsal: "Gelişmiş Firewall", enterprise: "Enterprise Shield" },
-      ]
-    },
-    {
-      category: "TASARIM & DENEYİM (UI/UX)",
-      items: [
-        { name: "Tasarım Yaklaşımı", startup: "Modern UI Kit", kurumsal: "Özel Tasarım Sistem", enterprise: "Bespoke (Terzi İşi)" },
-        { name: "Mobil Uyumluluk", startup: "Tam Uyumlu", kurumsal: "Cihaza Özel UX", enterprise: "Mobile-First Mimari" },
-        { name: "Karanlık Mod", startup: "-", kurumsal: "Opsiyonel", enterprise: "Otomatik / Seçmeli" },
-        { name: "Animasyonlar", startup: "Temel Geçişler", kurumsal: "Framer Motion", enterprise: "WebGL / 3D Sahne" },
-      ]
-    },
-    {
-      category: "YÖNETİM PANELİ (CMS)",
-      items: [
-        { name: "İçerik Yönetim Sistemi", startup: "-", kurumsal: "Sanity Headless CMS", enterprise: "Sanity + Custom Dashboard" },
-        { name: "Blog / Haber Modülü", startup: "-", kurumsal: "Var", enterprise: "Gelişmiş (Kategorili)" },
-        { name: "Görsel Düzenleyici", startup: "-", kurumsal: "Sürükle-Bırak", enterprise: "Real-time Preview" },
-      ]
-    },
-    {
-      category: "DESTEK & SÜREÇ",
-      items: [
-        { name: "Teslim Süresi", startup: "3-5 İş Günü", kurumsal: "7-14 İş Günü", enterprise: "Proje Bazlı" },
-        { name: "Teknik Destek", startup: "1 Ay (E-mail)", kurumsal: "6 Ay (Öncelikli)", enterprise: "1 Yıl (7/24 VIP)" },
-        { name: "Eğitim", startup: "Dokümantasyon", kurumsal: "Online Toplantı", enterprise: "Yerinde / Ekip Eğitimi" },
-      ]
-    }
-  ];
+// --- ÖZEL SPOTLIGHT KART BİLEŞENİ ---
+function SpotlightCard({ children, className = "" }) {
+  const divRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  // SSS Verisi
-  const faqs = [
-    { question: "Ödeme süreci nasıl işliyor?", answer: "Proje başlangıcında %50 avans alıyoruz. Kalan ödemeyi proje tesliminde, tüm kontroller yapılıp onayınız alındıktan sonra talep ediyoruz." },
-    { question: "Teslim süresi ne kadar?", answer: "Startup paketleri ortalama 3-5 iş günü, Kurumsal paketler ise kapsamına göre 7-14 iş günü sürmektedir. Enterprise projeler için özel takvim oluşturulur." },
-    { question: "Hosting ve Domain dahil mi?", answer: "İlk yıl için yüksek hızlı Vercel hosting altyapısını hediye ediyoruz. Domain (alan adı) tescili müşteriye aittir, yönlendirme konusunda yardımcı oluyoruz." },
-    { question: "Site bittikten sonra destek veriyor musunuz?", answer: "Kesinlikle. Her paketimizin kendine ait bir ücretsiz destek süresi vardır. Bu sürede çıkabilecek teknik sorunlara anında müdahale ediyoruz." }
-  ];
-
-  // Animasyonlar
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-  };
+  function handleMouseMove({ currentTarget, clientX, clientY }) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
   return (
-    <main className="bg-[#050505] min-h-screen text-white selection:bg-indigo-500/30 relative">
-      
-      {/* GLOBAL ARKA PLAN */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
-      </div>
+    <div
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      className={`relative overflow-hidden rounded-3xl border border-white/10 bg-[#0a0a0a] group ${className}`}
+    >
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              650px circle at ${mouseX}px ${mouseY}px,
+              rgba(99, 102, 241, 0.15),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+      <div className="relative h-full">{children}</div>
+    </div>
+  );
+}
 
-      <div className="relative z-10">
-        <Navbar />
+export default function ServicesPage() {
+  const [openFaq, setOpenFaq] = useState(0);
+  
+  return (
+    <main className="bg-[#020202] min-h-screen text-white selection:bg-indigo-500/30 overflow-x-hidden">
+      <Navbar />
 
-        {/* 1. HERO ALANI */}
-        <section className="relative pt-40 pb-20 px-6 overflow-hidden text-center">
-          <motion.div 
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none" 
-          />
-          <div className="relative z-10 max-w-5xl mx-auto">
-            <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-              <span className="inline-block py-1 px-3 rounded-full bg-white/5 border border-white/10 text-indigo-400 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-md">
-                OCS CREATIVE STUDIO
+      {/* --- 1. MASTERCLASS HERO --- */}
+      <section className="relative pt-48 pb-32 px-6 overflow-hidden flex flex-col items-center text-center min-h-[80vh] justify-center">
+        {/* Hareketli Arka Plan Izgarası */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
+        
+        {/* Glow Efekti */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none opacity-50 animate-pulse"></div>
+
+        <motion.div 
+           initial={{ opacity: 0, scale: 0.9 }} 
+           animate={{ opacity: 1, scale: 1 }} 
+           transition={{ duration: 1, type: "spring" }}
+           className="relative z-10 max-w-5xl mx-auto"
+        >
+           <motion.div 
+             initial={{ y: 20, opacity: 0 }}
+             animate={{ y: 0, opacity: 1 }}
+             transition={{ delay: 0.2 }}
+             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-indigo-300 mb-8 backdrop-blur-xl hover:bg-white/10 transition-colors cursor-default"
+           >
+              <Sparkles size={14} className="text-yellow-400" />
+              <span>DİJİTAL MİMARİ & YAZILIM</span>
+           </motion.div>
+
+           <h1 className="text-5xl md:text-8xl font-black mb-8 leading-[0.9] tracking-tighter">
+              Sadece Site Değil, <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-300 to-gray-500">
+                 Geleceği Kodluyoruz.
               </span>
-              <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-tight">
-                Dijital Mükemmelliği <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 animate-gradient bg-300%">
-                  Sanatla Kodluyoruz.
-                </span>
-              </h1>
-              <p className="text-xl text-gray-400 leading-relaxed max-w-3xl mx-auto font-light">
-                Standart şablonları unutun. İşletmeniz için özel olarak tasarlanmış, 
-                <span className="text-white font-medium"> yüksek performanslı</span>, 
-                <span className="text-white font-medium"> güvenli</span> ve 
-                <span className="text-white font-medium"> ölçeklenebilir</span> dijital deneyimler inşa ediyoruz.
-              </p>
-            </motion.div>
-          </div>
-        </section>
+           </h1>
+           
+           <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-10">
+              Şablonları unutun. Markanız için terzi usulü, Google'ın sevdiği ve rakiplerinizin kıskanacağı dijital ekosistemler inşa ediyoruz.
+           </p>
 
-        {/* 2. HİZMETLER ALANI */}
-        <section className="py-16 px-6 relative">
-          <div className="max-w-7xl mx-auto">
-              <motion.div 
-                initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp}
-                className="mb-16 md:text-center max-w-4xl mx-auto"
-              >
-                  <h2 className="text-3xl font-bold mb-4">Uzmanlık Alanlarımız</h2>
-                  <p className="text-gray-400 text-lg mb-8">
-                    Teknolojiyi estetikle birleştiriyor, markanız için sürdürülebilir dijital varlıklar üretiyoruz.
-                  </p>
-                  <div className="flex flex-wrap justify-center gap-3">
-                    {techStack.map((tech, i) => (
-                      <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 hover:bg-white/10 hover:text-white hover:border-indigo-500/50 transition-all cursor-default group backdrop-blur-md">
-                        <tech.icon size={14} className="text-indigo-400 group-hover:text-indigo-300" />
-                        {tech.name}
-                      </div>
-                    ))}
-                  </div>
-              </motion.div>
-              
-              <motion.div 
-                initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
-              >
-                  {services.map((service, index) => {
-                      const IconComponent = iconMap[service.iconName] || Zap;
-                      return (
-                          <motion.div 
-                            key={index} 
-                            variants={fadeInUp}
-                            className="group relative flex flex-col h-full bg-[#0a0a0a]/80 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-indigo-500/50 hover:bg-[#111] transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/10"
-                          >
-                              <div className="w-14 h-14 bg-white/5 border border-white/5 rounded-xl flex items-center justify-center text-indigo-400 mb-6 group-hover:bg-indigo-600 group-hover:text-white group-hover:scale-110 transition-all duration-300 shrink-0 shadow-lg">
-                                  <IconComponent size={28} />
-                              </div>
-                              <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
-                              <div className="text-gray-400 text-sm leading-relaxed mb-6 flex-grow">
-                                  {service.description}
-                              </div>
-                          </motion.div>
-                      )
-                  })}
-              </motion.div>
-          </div>
-        </section>
+           <motion.div 
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: 0.4 }}
+             className="flex flex-col sm:flex-row gap-4 justify-center"
+           >
+              <a href="#paketler" className="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                 Paketleri İncele <ArrowRight size={18}/>
+              </a>
+           </motion.div>
+        </motion.div>
+      </section>
 
-        {/* 3. SÜREÇLER */}
-        <section className="py-24 px-6 bg-[#080808] border-y border-white/5 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto relative z-10">
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-16">
-                  <span className="text-indigo-400 font-bold tracking-widest text-xs uppercase">Metodoloji</span>
-                  <h2 className="text-3xl md:text-4xl font-bold mt-2">Geliştirme Süreci</h2>
-              </motion.div>
-
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                  {[
-                    { id:1, title:"Stratejik Analiz", desc:"Hedef kitlenizi ve rakiplerinizi analiz ederek dijital yol haritası çıkarıyoruz.", icon: Search, color:"text-blue-400", bg:"bg-blue-500/10", border:"hover:border-blue-500/30" },
-                    { id:2, title:"UI/UX Mimari", desc:"Wireframe ve prototiplerle kullanıcı deneyimini kusursuzlaştırıyoruz.", icon: Layout, color:"text-purple-400", bg:"bg-purple-500/10", border:"hover:border-purple-500/30" },
-                    { id:3, title:"Full-Stack Kodlama", desc:"Clean Code prensipleriyle güvenli, hızlı ve ölçeklenebilir geliştirme.", icon: Code, color:"text-pink-400", bg:"bg-pink-500/10", border:"hover:border-pink-500/30" },
-                    { id:4, title:"Test & Deploy", desc:"Çapraz tarayıcı testleri, hız optimizasyonu ve global CDN yayını.", icon: Rocket, color:"text-green-400", bg:"bg-green-500/10", border:"hover:border-green-500/30" }
-                  ].map((item, i) => (
-                     <motion.div key={item.id} variants={fadeInUp} className={`relative p-6 rounded-2xl bg-[#0a0a0a] border border-white/5 ${item.border} transition-all duration-300 hover:-translate-y-2 group h-full shadow-lg`}>
-                        <div className={`absolute -top-4 -left-4 w-10 h-10 bg-[#151515] border border-white/10 rounded-full flex items-center justify-center font-bold ${item.color} shadow-lg z-10`}>{item.id}</div>
-                        <div className={`w-12 h-12 ${item.bg} rounded-lg flex items-center justify-center ${item.color} mb-4`}>
-                            <item.icon size={24} />
-                        </div>
-                        <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                        <p className="text-sm text-gray-400">{item.desc}</p>
-                     </motion.div>
-                  ))}
-              </motion.div>
-          </div>
-        </section>
-
-        {/* 4. FİYAT PAKETLERİ (Entegre) */}
-        <section className="py-24 px-6 relative" id="pricing">
-          <div className="max-w-7xl mx-auto">
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-16">
-                  <h2 className="text-3xl font-bold text-white mb-4">Yatırım Planları</h2>
-                  <p className="text-gray-400">Şeffaf fiyatlandırma, sürpriz maliyet yok.</p>
-              </motion.div>
-              
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start mb-12">
-                   {/* STARTUP */}
-                   <motion.div variants={fadeInUp} className="relative p-8 rounded-3xl bg-[#0f0f0f] border border-orange-700/30 hover:border-orange-500/50 transition duration-300 flex flex-col h-full group hover:bg-[#151515]">
-                      <div className="mb-4">
-                          <div className="w-12 h-12 bg-orange-900/20 rounded-lg flex items-center justify-center text-orange-500 mb-4 group-hover:scale-110 transition">
-                              <Zap size={24} />
-                          </div>
-                          <h3 className="text-2xl font-bold text-white">STARTUP</h3>
-                      </div>
-                      <div className="text-4xl font-bold text-white mb-6">₺7.500<span className="text-sm font-normal text-gray-500">/proje</span></div>
-                      <div className="h-px w-full bg-white/10 mb-6"></div>
-                      <ul className="space-y-4 mb-8 flex-1">
-                          <li className="flex items-center gap-3 text-gray-300 text-sm"><Check size={18} className="text-orange-500"/> Single Page Application (SPA)</li>
-                          <li className="flex items-center gap-3 text-gray-300 text-sm"><Check size={18} className="text-orange-500"/> %100 Mobil Uyum (Responsive)</li>
-                          <li className="flex items-center gap-3 text-gray-300 text-sm"><Check size={18} className="text-orange-500"/> Temel SEO Yapılandırması</li>
-                      </ul>
-                      <button onClick={() => setShowComparison(true)} className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-sm font-semibold transition border border-white/10">Detayları İncele</button>
-                  </motion.div>
-
-                  {/* KURUMSAL */}
-                  <motion.div variants={fadeInUp} className="relative p-8 rounded-3xl bg-[#121212] border-2 border-indigo-500 shadow-2xl shadow-indigo-500/20 transform md:-translate-y-6 flex flex-col h-full z-10">
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full text-xs font-bold uppercase tracking-wider text-white shadow-lg flex items-center gap-2">
-                          <Star size={12} fill="white" /> Popüler Seçim
-                      </div>
-                      <div className="mb-4">
-                          <div className="w-12 h-12 bg-indigo-500/20 rounded-lg flex items-center justify-center text-indigo-400 mb-4">
-                              <Layers size={24} />
-                          </div>
-                          <h3 className="text-2xl font-bold text-white">KURUMSAL</h3>
-                      </div>
-                      <div className="text-4xl font-bold text-white mb-6">₺15.000<span className="text-sm font-normal text-gray-500">/proje</span></div>
-                      <div className="h-px w-full bg-indigo-500/30 mb-6"></div>
-                      <ul className="space-y-4 mb-8 flex-1">
-                          <li className="flex items-center gap-3 text-white text-sm"><Check size={18} className="text-indigo-400"/> <strong>5-8 Özel Sayfa Tasarımı</strong></li>
-                          <li className="flex items-center gap-3 text-white text-sm"><Check size={18} className="text-indigo-400"/> <strong>Sanity CMS Yönetim Paneli</strong></li>
-                          <li className="flex items-center gap-3 text-white text-sm"><Check size={18} className="text-indigo-400"/> Blog / Haberler Modülü</li>
-                      </ul>
-                      <a href="/iletisim" className="block w-full">
-                        <button className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold transition shadow-lg shadow-indigo-500/25 mb-4">Projeyi Başlat</button>
-                      </a>
-                      <button onClick={() => setShowComparison(true)} className="w-full text-xs text-center text-gray-400 hover:text-white underline decoration-gray-600 underline-offset-4">Teknik Karşılaştırma Tablosu</button>
-                  </motion.div>
-
-                  {/* ENTERPRISE */}
-                  <motion.div variants={fadeInUp} className="relative p-8 rounded-3xl bg-[#0f0f0f] border border-yellow-600/30 hover:border-yellow-500/50 transition duration-300 flex flex-col h-full group hover:bg-[#151515]">
-                       <div className="mb-4">
-                          <div className="w-12 h-12 bg-yellow-900/20 rounded-lg flex items-center justify-center text-yellow-500 mb-4 group-hover:scale-110 transition">
-                              <ShieldCheck size={24} />
-                          </div>
-                          <h3 className="text-2xl font-bold text-white">ENTERPRISE</h3>
-                      </div>
-                      <div className="text-4xl font-bold text-white mb-6">Teklif Al</div>
-                      <div className="h-px w-full bg-white/10 mb-6"></div>
-                      <ul className="space-y-4 mb-8 flex-1">
-                          <li className="flex items-center gap-3 text-gray-300 text-sm"><Check size={18} className="text-yellow-500"/> Sınırsız Sayfa Yapısı</li>
-                          <li className="flex items-center gap-3 text-gray-300 text-sm"><Check size={18} className="text-yellow-500"/> Çoklu Dil (i18n) Altyapısı</li>
-                          <li className="flex items-center gap-3 text-gray-300 text-sm"><Check size={18} className="text-yellow-500"/> Özel WebGL Animasyonlar</li>
-                      </ul>
-                      <a href="/iletisim" className="block w-full">
-                        <button className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white text-sm font-semibold transition border border-white/10">İletişime Geç</button>
-                      </a>
-                  </motion.div>
-              </motion.div>
-               {/* Tablo Butonu */}
-               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center">
-                  <button onClick={() => setShowComparison(true)} className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition text-white font-semibold group">
-                      <BarChart3 size={18} className="text-indigo-400"/> Tüm Özellikleri Kıyasla <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform"/>
-                  </button>
-              </motion.div>
-          </div>
-        </section>
-
-        {/* 5. MODAL - DETAYLI KARŞILAŞTIRMA TABLOSU */}
-        <AnimatePresence>
-          {showComparison && (
-            <div className="fixed inset-0 z-[999] flex items-center justify-center p-2 md:p-4">
-                <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={() => setShowComparison(false)}></motion.div>
-                <motion.div initial={{scale:0.95, opacity:0}} animate={{scale:1, opacity:1}} exit={{scale:0.95, opacity:0}} className="relative w-full max-w-6xl bg-[#111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden h-[90vh] flex flex-col">
-                    
-                    <div className="flex justify-between items-center p-6 border-b border-white/10 bg-[#161616]">
-                        <div>
-                          <h3 className="text-xl md:text-2xl font-bold text-white">Paket Karşılaştırması</h3>
-                          <p className="text-sm text-gray-400">Teknik özellikler ve kapsam detayları.</p>
-                        </div>
-                        <button onClick={() => setShowComparison(false)} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition hover:rotate-90"><X size={24} className="text-gray-400" /></button>
-                    </div>
-
-                    <div className="overflow-auto flex-1 p-0 md:p-6">
-                        <table className="w-full text-left border-collapse min-w-[800px]">
-                            <thead className="sticky top-0 bg-[#111] z-10 shadow-lg border-b border-white/10">
-                                <tr>
-                                    <th className="p-4 text-gray-400 font-medium w-1/4 bg-[#111]">Özellikler</th>
-                                    <th className="p-4 text-orange-400 font-bold text-center w-1/4 bg-[#111]">STARTUP</th>
-                                    <th className="p-4 text-indigo-400 font-bold text-center w-1/4 bg-[#1a1a1a] border-x border-indigo-500/20 relative">KURUMSAL</th>
-                                    <th className="p-4 text-yellow-400 font-bold text-center w-1/4 bg-[#111]">ENTERPRISE</th>
-                                </tr>
-                            </thead>
-                            <tbody className="text-sm">
-                                {comparisonData.map((category, index) => (
-                                  <React.Fragment key={index}>
-                                    <tr className="bg-white/[0.03] border-y border-white/5">
-                                      <td colSpan="4" className="p-3 text-xs font-bold text-gray-300 uppercase tracking-widest pl-6">
-                                        {category.category}
-                                      </td>
-                                    </tr>
-                                    {category.items.map((item, i) => (
-                                      <tr key={i} className="hover:bg-white/[0.02] border-b border-white/5 transition-colors">
-                                        <td className="p-4 text-gray-400 pl-6">{item.name}</td>
-                                        <td className="p-4 text-center text-white font-medium">{item.startup}</td>
-                                        <td className="p-4 text-center text-white font-medium bg-white/[0.02] border-x border-white/5">{item.kurumsal}</td>
-                                        <td className="p-4 text-center text-white font-medium">{item.enterprise}</td>
-                                      </tr>
-                                    ))}
-                                  </React.Fragment>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div className="p-6 border-t border-white/10 bg-[#161616] flex justify-end gap-4">
-                      <span className="text-xs text-gray-500 self-center hidden md:block">* Fiyatlara KDV dahil değildir. Hosting ilk yıl hediyedir.</span>
-                      <button onClick={() => setShowComparison(false)} className="px-8 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition">Kapat</button>
-                    </div>
-                </motion.div>
+      {/* --- 2. HİZMET DETAYLARI (Spotlight Cards) --- */}
+      <section className="py-24 px-6 relative z-10">
+         <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+               {SERVICES_DETAILED.map((service, i) => (
+                  <SpotlightCard key={i} className="p-8 h-full">
+                     <div className={`w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 border border-white/10`}>
+                        <service.icon size={28} className={service.color} />
+                     </div>
+                     <h3 className="text-2xl font-bold mb-3 text-white">{service.title}</h3>
+                     <p className="text-gray-400 text-sm leading-relaxed">{service.desc}</p>
+                  </SpotlightCard>
+               ))}
             </div>
-          )}
-        </AnimatePresence>
+         </div>
+      </section>
 
-        {/* 6. SSS - YENİLENMİŞ VE ANIMASYONLU */}
-        <section className="py-20 px-6 max-w-4xl mx-auto border-t border-white/5 mt-10">
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-3xl font-bold text-center mb-10">Sıkça Sorulan Sorular</motion.h2>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="space-y-4">
-              {faqs.map((faq, i) => (
-                <motion.div key={i} variants={fadeInUp} className="group bg-[#111] border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-colors">
-                  <button 
-                    onClick={() => toggleFaq(i)}
-                    className="w-full flex justify-between items-center p-6 text-left font-semibold text-lg focus:outline-none"
+      {/* --- 3. MASTERCLASS PAKETLER (Fiyatlandırma) --- */}
+      <section id="paketler" className="py-32 px-6 bg-[#050505] border-y border-white/5 relative overflow-hidden">
+         {/* Arka Plan Işığı */}
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-[1200px] bg-gradient-to-r from-indigo-900/10 to-purple-900/10 blur-[100px] pointer-events-none"></div>
+
+         <div className="max-w-7xl mx-auto relative z-10">
+            <div className="text-center mb-20">
+               <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Size Uygun Modeli Seçin</h2>
+               <p className="text-gray-400 text-lg">Şeffaf süreç, sürpriz faturalar yok. İhtiyacınız olan gücü seçin.</p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+               {PACKAGES.map((pkg, i) => (
+                  <motion.div 
+                     key={pkg.id}
+                     initial={{ opacity: 0, y: 30 }}
+                     whileInView={{ opacity: 1, y: 0 }}
+                     viewport={{ once: true }}
+                     transition={{ delay: i * 0.1 }}
+                     className={`relative p-1 rounded-[2.5rem] transition-all duration-500 group hover:-translate-y-2 ${pkg.popular ? 'lg:-mt-8 lg:mb-8 z-10' : ''}`}
                   >
-                    {faq.question}
-                    <ChevronDown size={20} className={`text-gray-500 transition-transform duration-300 ${openFaq === i ? 'rotate-180 text-white' : ''}`} />
-                  </button>
-                  <AnimatePresence>
-                    {openFaq === i && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                      >
-                        <div className="px-6 pb-6 text-gray-400 leading-relaxed text-sm md:text-base border-t border-white/5 pt-4">
-                          {faq.answer}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              ))}
-          </motion.div>
-        </section>
+                     {/* Gradient Border Effect */}
+                     <div className={`absolute inset-0 rounded-[2.5rem] bg-gradient-to-b ${pkg.popular ? 'from-indigo-500 via-purple-500 to-indigo-500' : 'from-white/10 to-white/5'} opacity-100 group-hover:opacity-100 transition-opacity`}></div>
+                     
+                     <div className="relative h-full bg-[#0a0a0a] rounded-[2.4rem] p-8 md:p-10 flex flex-col">
+                        {pkg.popular && (
+                           <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-[0_0_20px_rgba(99,102,241,0.5)] border border-white/20">
+                              En Çok Tercih Edilen
+                           </div>
+                        )}
 
-        <Cta />
-        <Footer />
-      </div>
+                        <div className="mb-8">
+                           <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${pkg.gradient} flex items-center justify-center mb-6 border border-white/10`}>
+                              <pkg.icon size={32} className="text-white" />
+                           </div>
+                           <h3 className="text-3xl font-bold mb-2">{pkg.name}</h3>
+                           <p className="text-sm font-medium text-indigo-400 mb-4 tracking-wide uppercase">{pkg.tagline}</p>
+                           <p className="text-gray-400 text-sm leading-relaxed min-h-[60px]">{pkg.desc}</p>
+                        </div>
+
+                        <div className="space-y-5 mb-10 flex-grow">
+                           {pkg.features.map((feature, idx) => (
+                              <div key={idx} className="flex items-start gap-3 text-sm text-gray-200">
+                                 <div className="mt-0.5 p-1 rounded-full bg-emerald-500/10 text-emerald-500">
+                                    <Check size={12} strokeWidth={4} />
+                                 </div>
+                                 <span>{feature}</span>
+                              </div>
+                           ))}
+                           {pkg.notIncluded.map((feature, idx) => (
+                              <div key={idx} className="flex items-start gap-3 text-sm text-gray-600 line-through decoration-gray-700/50">
+                                 <div className="mt-0.5 p-1 rounded-full bg-gray-800 text-gray-600">
+                                    <X size={12} strokeWidth={4} />
+                                 </div>
+                                 <span>{feature}</span>
+                              </div>
+                           ))}
+                        </div>
+
+                        <a 
+                           href="/iletisim" 
+                           className={`block w-full py-5 rounded-2xl text-center font-bold transition-all text-lg ${
+                              pkg.popular 
+                              ? "bg-white text-black hover:scale-[1.02] shadow-[0_0_30px_rgba(255,255,255,0.2)]" 
+                              : "bg-white/5 text-white hover:bg-white/10 border border-white/10"
+                           }`}
+                        >
+                           Teklif Al
+                        </a>
+                     </div>
+                  </motion.div>
+               ))}
+            </div>
+         </div>
+      </section>
+
+      {/* --- 4. KARŞILAŞTIRMA (Interactive Table) --- */}
+      <section className="py-32 px-6">
+         <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-16">
+               <h2 className="text-3xl md:text-5xl font-bold mb-6">Farkımız Ortada.</h2>
+               <p className="text-gray-400">Geleneksel ajansların hantal yapısına karşı, modern ve çevik yaklaşım.</p>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 overflow-hidden bg-[#0a0a0a]">
+               <div className="grid grid-cols-3 bg-white/5 p-6 border-b border-white/10 text-xs md:text-sm font-bold text-gray-400 uppercase tracking-widest">
+                  <div className="col-span-1">KRİTERLER</div>
+                  <div className="col-span-1 text-center opacity-50">DİĞER AJANSLAR</div>
+                  <div className="col-span-1 text-center text-indigo-400">OCS CREATIVE</div>
+               </div>
+               
+               {[
+                  { title: "İletişim", bad: "Asistanlar & Temsilciler", good: "Direkt Kurucu & Geliştirici" },
+                  { title: "Teknoloji", bad: "Wordpress (Hantal)", good: "Next.js (Ultra Hızlı)" },
+                  { title: "Süreç", bad: "Bitmeyen Toplantılar", good: "Çevik & Sonuç Odaklı" },
+                  { title: "Güvenlik", bad: "Eklenti Bağımlı", good: "Kurumsal Düzeyde Koruma" },
+                  { title: "Maliyet", bad: "Ofis Giderleri Eklenir", good: "Sadece Kaliteyi Ödersiniz" },
+               ].map((row, i) => (
+                  <div key={i} className="grid grid-cols-3 p-6 border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors items-center">
+                     <div className="col-span-1 font-bold text-white text-sm md:text-lg">{row.title}</div>
+                     <div className="col-span-1 text-center text-gray-600 text-xs md:text-sm border-r border-white/5 px-2 line-through decoration-red-500/30">
+                        {row.bad}
+                     </div>
+                     <div className="col-span-1 text-center text-white font-medium text-xs md:text-sm px-2 flex items-center justify-center gap-2">
+                        <CheckCircle2 size={14} className="text-emerald-500 hidden md:block" /> {row.good}
+                     </div>
+                  </div>
+               ))}
+            </div>
+         </div>
+      </section>
+
+      {/* --- 5. MERAK EDİLENLER (Accordion) --- */}
+      <section className="py-24 px-6 bg-[#050505] border-t border-white/5">
+         <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Aklınızdaki Sorular</h2>
+            <div className="space-y-4">
+               {FAQS.map((faq, i) => (
+                  <motion.div 
+                     key={i} 
+                     initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                     className="border border-white/10 rounded-2xl bg-[#0a0a0a] overflow-hidden group hover:border-indigo-500/30 transition-colors"
+                  >
+                     <button 
+                        onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
+                        className="flex items-center justify-between w-full p-6 text-left"
+                     >
+                        <span className="text-lg font-bold text-white pr-4 group-hover:text-indigo-400 transition-colors">{faq.q}</span>
+                        <ChevronDown className={`text-gray-500 transition-transform duration-300 shrink-0 ${openFaq === i ? 'rotate-180 text-white' : ''}`} />
+                     </button>
+                     <AnimatePresence>
+                        {openFaq === i && (
+                           <motion.div 
+                              initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                              className="overflow-hidden"
+                           >
+                              <div className="p-6 pt-0 text-gray-400 leading-relaxed border-t border-white/5 text-sm md:text-base">
+                                 {faq.a}
+                              </div>
+                           </motion.div>
+                        )}
+                     </AnimatePresence>
+                  </motion.div>
+               ))}
+            </div>
+         </div>
+      </section>
+
+      <Cta />
+      <Footer />
     </main>
   );
 }
