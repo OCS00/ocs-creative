@@ -13,9 +13,15 @@ export const metadata = {
     template: `%s | ${siteConfig.name}`, // Örn: "Projeler | OCS Creative"
   },
   description: siteConfig.description,
-  keywords: ["Web Tasarım", "Dijital Ajans", "Next.js", "React", "Kurumsal Web Sitesi"],
+  keywords: ["Web Tasarım", "Yazılım", "Mobil Uygulama", "SEO", "Dijital Ajans", "Next.js"],
   authors: [{ name: siteConfig.name }],
-  icons: { icon: '/favicon.ico' },
+  creator: siteConfig.name,
+  // ✅ FAVICON AYARLARI (logo.png kullanılıyor)
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png', // Apple cihazlar için ikon
+  },
   openGraph: {
     type: "website",
     locale: "tr_TR",
