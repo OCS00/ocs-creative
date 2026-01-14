@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Home, AlertTriangle, Mail } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
-// İçeriği ayrı bir bileşen yapıyoruz
+// İçeriği ayrı bir bileşen yaptık
 function NotFoundContent() {
   const supportEmail = siteConfig?.contact?.email || "info@ocscreative.com";
 
@@ -47,10 +47,10 @@ function NotFoundContent() {
   );
 }
 
-// ✅ ANA BİLEŞENİ SUSPENSE İLE SARIYORUZ
+// ✅ ANA EXPORT: İçeriği Suspense ile sarmaladık
 export default function NotFound() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Yükleniyor...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-white">Yükleniyor...</div>}>
       <NotFoundContent />
     </Suspense>
   );

@@ -1,3 +1,4 @@
+import React, { Suspense } from "react"; // ✅ Suspense import edildi
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next"; 
@@ -5,8 +6,8 @@ import { siteConfig } from "@/config/site";
 
 // --- BİLEŞENLER ---
 import Navbar from "@/components/Navbar"; 
-import Footer from "@/components/Footer"; // <-- EKLENDİ
-import Cta from "@/components/Cta";       // <-- EKLENDİ
+import Footer from "@/components/Footer"; 
+import Cta from "@/components/Cta";       
 import CookieBanner from "@/components/CookieBanner";
 import Analytics from "@/components/Analytics"; 
 
@@ -24,9 +25,9 @@ export const metadata = {
   authors: [{ name: "OCS Creative" }],
   creator: "OCS Creative",
   icons: {
-    icon: '/favicon.ico', // "/public" yazma, sadece "/" yaz.
+    icon: '/favicon.ico', 
     shortcut: '/favicon.ico',
-    apple: '/favicon.ico', // Apple için de şimdilik bunu kullanabilirsin
+    apple: '/favicon.ico',
   },
   openGraph: {
     type: "website",
@@ -58,21 +59,36 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} bg-[#020202] text-white antialiased selection:bg-indigo-500 selection:text-white`}>
         
         {/* 1. ÜST MENÜ (NAVBAR) */}
-        <Navbar />
+        {/* Navbar'da URL okuma ihtimaline karşı Suspense içine almak güvenlidir */}
+        <Suspense fallback={<div className="h-20 bg-black/50" />}>
+          <Navbar />
+        </Suspense>
 
-        {/* 2. ANA İÇERİK (Sayfaya özel kısımlar buraya gelir) */}
+        {/* 2. ANA İÇERİK */}
         <main className="min-h-screen relative z-0">
           {children}
         </main>
         
         {/* 3. CTA & FOOTER (GLOBAL ALAN) */}
-        {/* Buraya eklediğimiz için her sayfada otomatik çıkacak */}
-        <Cta />
+        {/* CTA'da ?paket=startup gibi query okumaları varsa Suspense şarttır */}
+        <Suspense fallback={null}>
+           <Cta />
+        </Suspense>
+
         <Footer />
         
         {/* --- EKLENTİLER & SCRIPTS --- */}
-        <CookieBanner />
-        <Analytics />
+        {/* Bu bileşenler URL parametrelerine (UTM vs) baktığı için HATA BUNLARDAN ÇIKAR */}
+        {/* Mutlaka Suspense içine alınmalı */}
+        
+        <Suspense fallback={null}>
+           <CookieBanner />
+        </Suspense>
+        
+        <Suspense fallback={null}>
+           <Analytics />
+        </Suspense>
+        
         <SpeedInsights />
         
       </body>
