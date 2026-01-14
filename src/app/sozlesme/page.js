@@ -1,7 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 import { 
   Printer, 
@@ -116,7 +114,7 @@ export default function ContractPage() {
 
   return (
     <main className="bg-[#0a0a0a] min-h-screen text-gray-800 font-sans relative selection:bg-indigo-200 selection:text-indigo-900">
-      <Navbar />
+     
 
       <div className="fixed inset-0 z-0 bg-[#050505]">
         <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-indigo-900/20 to-transparent"></div>

@@ -1,8 +1,5 @@
 "use client";
 import React, { useState, useRef } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import Cta from "@/components/Cta";
 import { motion, AnimatePresence, useMotionTemplate, useMotionValue } from "framer-motion";
 import { 
   Monitor, Smartphone, Search, Check, X, ArrowRight, 
@@ -164,7 +161,7 @@ export default function ServicesPage() {
   
   return (
     <main className="bg-[#020202] min-h-screen text-white selection:bg-indigo-500/30 overflow-x-hidden">
-      <Navbar />
+      
 
       {/* --- 1. HERO --- */}
       <section className="relative pt-48 pb-32 px-6 overflow-hidden flex flex-col items-center text-center min-h-[80vh] justify-center">

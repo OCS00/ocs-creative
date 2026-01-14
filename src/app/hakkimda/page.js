@@ -1,8 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import Cta from "@/components/Cta";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb, Heart, Target, Globe, Sparkles, Anchor, BrainCircuit, Award, ChevronDown, Gem, Fingerprint } from "lucide-react";
 import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
@@ -80,7 +77,7 @@ export default function AboutPage() {
 
   return (
     <main className="bg-[#020202] min-h-screen text-white selection:bg-indigo-500/30">
-      <Navbar />
+      
 
       {/* --- 1. SİNEMATİK HERO --- */}
       <section className="relative pt-48 pb-32 px-6 overflow-hidden flex flex-col items-center text-center">

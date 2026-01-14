@@ -1,9 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import Hero from "@/components/Hero"; 
-import Cta from "@/components/Cta";   
+import Hero from "@/components/Hero";  
 import Link from "next/link";
 import { client } from "@/sanity/lib/client"; 
 import { urlForImage } from "@/sanity/lib/image"; 
@@ -41,7 +39,7 @@ export default function Home() {
 
   return (
     <main className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30">
-      <Navbar />
+     
       
       {/* 1. HERO BÖLÜMÜ */}
       <Hero />

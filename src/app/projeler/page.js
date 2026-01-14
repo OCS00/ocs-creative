@@ -1,7 +1,4 @@
 import React from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import Cta from "@/components/Cta";
 import { client } from "@/sanity/lib/client";
 import ProjectsGrid from "@/components/ProjectsGrid"; 
 import { CheckCircle2, Award, Zap, Users } from "lucide-react";
@@ -30,7 +27,7 @@ export default async function ProjectsPage() {
 
   return (
     <main className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30 relative">
-      <Navbar />
+      
       
       {/* ARKA PLAN DOKUSU */}
       <div className="fixed inset-0 z-0 pointer-events-none">

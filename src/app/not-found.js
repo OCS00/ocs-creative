@@ -1,10 +1,11 @@
 "use client";
+import React, { Suspense } from "react"; // ✅ Suspense eklendi
 import Link from "next/link";
 import { Home, AlertTriangle, Mail } from "lucide-react";
-import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
+import { siteConfig } from "@/config/site";
 
-export default function NotFound() {
-  // GÜVENLİ KOD: Mail adresi yoksa varsayılanı kullan
+// İçeriği ayrı bir bileşen yapıyoruz
+function NotFoundContent() {
   const supportEmail = siteConfig?.contact?.email || "info@ocscreative.com";
 
   return (
@@ -43,5 +44,14 @@ export default function NotFound() {
         </div>
       </div>
     </div>
+  );
+}
+
+// ✅ ANA BİLEŞENİ SUSPENSE İLE SARIYORUZ
+export default function NotFound() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Yükleniyor...</div>}>
+      <NotFoundContent />
+    </Suspense>
   );
 }

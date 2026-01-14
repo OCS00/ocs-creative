@@ -1,7 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Scale, Lock, ShieldCheck, FileWarning, ScrollText } from "lucide-react";
 import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
@@ -161,7 +159,7 @@ export default function LegalPage() {
 
   return (
     <main className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30 flex flex-col font-sans">
-      <Navbar />
+     
       
       <div className="flex-1 pt-32 pb-20 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">

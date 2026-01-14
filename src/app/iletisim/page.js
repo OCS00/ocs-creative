@@ -1,7 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Mail, Phone, Check, Send, Loader2, ArrowRight, MessageSquare, MapPin, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -86,7 +84,7 @@ export default function ContactPage() {
 
   return (
     <main className="bg-[#020202] min-h-screen text-white selection:bg-indigo-500/30 overflow-x-hidden">
-      <Navbar />
+      
 
       <section className="relative pt-40 pb-20 px-6 min-h-screen flex flex-col justify-center">
         {/* Arka Plan Işığı */}
