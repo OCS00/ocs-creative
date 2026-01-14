@@ -360,7 +360,7 @@ export default function ContractPage() {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </main>
   );
 }

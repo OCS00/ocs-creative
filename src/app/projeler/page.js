@@ -127,8 +127,7 @@ export default async function ProjectsPage() {
             </div>
         </section>
 
-        <Cta />
-        <Footer />
+      
       </div>
     </main>
   );

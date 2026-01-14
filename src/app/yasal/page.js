@@ -238,7 +238,7 @@ export default function LegalPage() {
         </div>
       </div>
 
-      <Footer />
+     
     </main>
   );
 }

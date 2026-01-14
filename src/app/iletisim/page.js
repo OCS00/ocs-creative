@@ -28,7 +28,7 @@ export default function ContactPage() {
     phone: "" 
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [formStatus, setFormStatus] = useState(null);
+  const [formStatus, setFormStatus] = useState(null); // null, 'success', 'error'
 
   // GÜVENLİ KOD: Config yüklenemezse hata verme
   const contactInfo = siteConfig?.contact || {};
@@ -48,17 +48,33 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Form Gönderme
+  // ✅ GÜNCELLENEN KISIM: Gerçek API'ye Bağlantı
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setFormStatus(null);
     
-    // API Simülasyonu
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000)); 
-      setFormStatus("success");
+      // API Route'a veriyi gönder
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setFormStatus("success");
+        // Başarılıysa formu temizle (İsteğe bağlı)
+        // setFormData({ services: [], projectDetails: "", name: "", email: "", phone: "" });
+      } else {
+        throw new Error(result.message || "Bir hata oluştu");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Form Hatası:", error);
       setFormStatus("error");
     } finally {
       setIsLoading(false);
@@ -78,7 +94,7 @@ export default function ContactPage() {
 
         <div className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
           
-          {/* --- SOL: İLETİŞİM BİLGİLERİ (CONFIG'DEN GELİYOR) --- */}
+          {/* --- SOL: İLETİŞİM BİLGİLERİ --- */}
           <div className="lg:col-span-5 space-y-12">
              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
                 <span className="text-indigo-400 font-bold tracking-widest text-xs uppercase mb-4 inline-block bg-white/5 px-3 py-1 rounded-full border border-white/10">
@@ -105,7 +121,7 @@ export default function ContactPage() {
                    <div>
                       <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">E-Posta</h4>
                       <a href={`mailto:${contactInfo.email}`} className="text-xl font-medium text-white hover:text-indigo-400 transition-colors">
-                        {contactInfo.email || "Bilgi Yok"}
+                        {contactInfo.email || "info@ocscreative.com"}
                       </a>
                    </div>
                 </div>
@@ -118,7 +134,8 @@ export default function ContactPage() {
                    <div>
                       <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Telefon</h4>
                       <a href={`tel:${contactInfo.phoneCall}`} className="text-xl font-medium text-white hover:text-indigo-400 transition-colors">
-                        {contactInfo.phoneDisplay || "Bilgi Yok"}
+                        {/* phoneDisplay yoksa phoneCall göster, o da yoksa varsayılan */}
+                        {contactInfo.phoneDisplay || contactInfo.phoneCall || "+90 555 000 00 00"}
                       </a>
                    </div>
                 </div>
@@ -130,11 +147,11 @@ export default function ContactPage() {
                    </div>
                    <div>
                       <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Adres</h4>
-                      <p className="text-lg text-white leading-snug">{contactInfo.address || "Bilgi Yok"}</p>
+                      <p className="text-lg text-white leading-snug">{contactInfo.address || "İstanbul, Türkiye"}</p>
                    </div>
                 </div>
 
-                {/* ÇALIŞMA SAATLERİ (Düzeltildi) */}
+                {/* ÇALIŞMA SAATLERİ (Manuel Ayarlandı) */}
                 <div className="flex gap-6 group">
                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 text-white group-hover:bg-indigo-500/20 group-hover:border-indigo-500 transition-all">
                       <Clock size={20} />
@@ -310,6 +327,13 @@ export default function ContactPage() {
                                Mesajınız harika bir şekilde bize ulaştı! En kısa sürede dönüş yapacağız. 🚀
                             </motion.div>
                          )}
+                         
+                         {/* Hata Mesajı */}
+                         {formStatus === "error" && (
+                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-center font-medium">
+                               Bir sorun oluştu. Lütfen tekrar deneyin.
+                            </motion.div>
+                         )}
                       </motion.div>
                    )}
 
@@ -320,7 +344,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <Footer />
+   
     </main>
   );
 }

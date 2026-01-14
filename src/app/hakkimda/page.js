@@ -299,8 +299,7 @@ export default function AboutPage() {
          </div>
       </section>
 
-      <Cta />
-      <Footer />
+    
     </main>
   );
 }

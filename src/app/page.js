@@ -272,9 +272,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA ve Footer */}
-      <Cta />
-      <Footer />
+      
     </main>
   );
 }

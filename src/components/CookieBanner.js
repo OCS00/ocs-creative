@@ -1,39 +1,85 @@
 "use client";
-import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { Cookie, X, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { siteConfig } from "@/config/site";
 
 export default function CookieBanner() {
-  const [show, setShow] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const consent = localStorage.getItem("cookieConsent");
-    if (!consent) setShow(true);
+    if (!consent) {
+      const timer = setTimeout(() => setIsVisible(true), 1500);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
-  const accept = () => {
+  const handleAccept = () => {
+    // 1. Onayı kaydet
     localStorage.setItem("cookieConsent", "true");
-    setShow(false);
+    
+    // 2. Analytics bileşenine "Uyan!" sinyali gönder (Custom Event)
+    window.dispatchEvent(new Event("cookie-consent-updated"));
+    
+    // 3. Banner'ı kapat
+    setIsVisible(false);
   };
 
-  if (!show) return null;
+  const handleDecline = () => {
+    localStorage.setItem("cookieConsent", "false");
+    // Reddedilirse sinyal göndermeye gerek yok, Analytics zaten çalışmıyor.
+    setIsVisible(false);
+  };
+
+  const brandName = siteConfig?.name || "Sitemiz";
 
   return (
-    <div className="fixed bottom-4 right-4 max-w-sm bg-[#111] border border-white/10 p-6 rounded-2xl shadow-2xl z-[9999] animate-in slide-in-from-bottom-10 fade-in duration-700">
-      <div className="flex justify-between items-start mb-3">
-        <h4 className="font-bold text-white">🍪 Çerez Tercihleri</h4>
-        <button onClick={() => setShow(false)}><X size={18} className="text-gray-500 hover:text-white" /></button>
-      </div>
-      <p className="text-sm text-gray-400 mb-4 leading-relaxed">
-        Size daha iyi bir deneyim sunmak için çerezleri (cookies) kullanıyoruz. Devam ederek KVKK politikamızı kabul etmiş sayılırsınız.
-      </p>
-      <div className="flex gap-2">
-        <button onClick={accept} className="flex-1 py-2 bg-white text-black text-sm font-bold rounded-lg hover:bg-gray-200">
-          Kabul Et
-        </button>
-        <a href="/yasal" className="flex-1 py-2 bg-white/5 text-white text-sm font-medium rounded-lg hover:bg-white/10 text-center border border-white/10">
-          İncele
-        </a>
-      </div>
-    </div>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 100, opacity: 0 }}
+          transition={{ duration: 0.5, type: "spring" }}
+          className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-[400px] z-[9999]"
+        >
+          <div className="bg-[#111]/90 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl shadow-black/50 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+
+            <div className="relative z-10">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="p-3 bg-indigo-500/10 rounded-xl text-indigo-400 border border-indigo-500/20">
+                  <Cookie size={24} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white text-lg mb-1">Çerez Tercihleri</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">
+                    {brandName} olarak, deneyiminizi iyileştirmek için çerezler kullanıyoruz.
+                    Detaylı bilgi için <Link href="/yasal" className="text-indigo-400 hover:underline">Gizlilik Politikası</Link>'nı inceleyebilirsiniz.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={handleDecline}
+                  className="flex-1 py-2.5 rounded-lg border border-white/10 text-gray-400 text-sm font-medium hover:bg-white/5 hover:text-white transition-colors flex items-center justify-center gap-2"
+                >
+                  <X size={16} /> Reddet
+                </button>
+                <button
+                  onClick={handleAccept}
+                  className="flex-1 py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2"
+                >
+                  <Check size={16} /> Kabul Et
+                </button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
