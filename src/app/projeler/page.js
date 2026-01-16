@@ -61,8 +61,8 @@ export default async function ProjectsPage() {
            <div className="flex flex-wrap justify-center gap-8 md:gap-20 border-t border-white/10 pt-12">
               {[
                   { label: "Teslim Edilen Proje", value: "50+", icon: Award },
-                  { label: "Müşteri Memnuniyeti", value: "%100", icon: Users },
-                  { label: "Sektör Deneyimi", value: "5 Yıl", icon: Zap }
+                  { label: "Müşteri Memnuniyeti", value: "%99", icon: Users },
+                  { label: "Farklı Sektör", value: "12", icon: Zap }
               ].map((stat, i) => (
                   <div key={i} className="text-center group">
                       <div className="flex items-center justify-center gap-2 text-3xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">

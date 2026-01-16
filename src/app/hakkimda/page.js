@@ -6,10 +6,9 @@ import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
 // 1. İSTATİSTİKLER
 const STATS = [
-  { value: "5+", label: "Yıl Deneyim" },
-  { value: "50+", label: "Global Proje" },
-  { value: "12", label: "Sektörel Başarı" },
-  { value: "%100", label: "Müşteri Sadakati" },
+  { value: "50+", label: "Tamamlanan Proje" },
+  { value: "12", label: "Farklı Sektör" },
+  { value: "%99", label: "Müşteri Memnuniyeti" },
 ];
 
 // 2. DEĞERLER (BENTO GRID)

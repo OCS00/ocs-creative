@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
-import { ArrowRight, MessageCircle } from "lucide-react"; // MessageCircle eklendi
+import { ArrowRight, MessageCircle, Loader2, Check } from "lucide-react"; 
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
 export default function Footer() {
@@ -10,9 +10,46 @@ export default function Footer() {
   const socials = siteConfig?.socials || [];
   const fullBrandName = (siteConfig?.name || "OCS Creative") + ".";
 
-  // --- WHATSAPP NUMARASI (Burayı kendi numaranla değiştir) ---
-  const whatsappNumber = "905050082034"; // Başında + olmadan bitişik yaz
-  const whatsappMessage = "Merhaba, projemiz hakkında görüşmek istiyorum."; // Varsayılan mesaj
+  // --- WHATSAPP NUMARASI ---
+  const whatsappNumber = "905050082034"; 
+  const whatsappMessage = "Merhaba, projemiz hakkında görüşmek istiyorum."; 
+
+  // --- FORM DURUM YÖNETİMİ ---
+  const [emailStatus, setEmailStatus] = useState("idle"); // idle | loading | success | error
+
+  // --- BÜLTEN KAYIT FONKSİYONU ---
+  const handleQuickSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target.elements.email.value;
+    
+    if (!email) return;
+    
+    setEmailStatus("loading");
+    
+    try {
+      // API'ye istek atıyoruz
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          email, 
+          subject: "Bülten Kaydı", 
+          message: "Kullanıcı footer alanından bültene kaydolmak istiyor." 
+        }),
+      });
+
+      if (res.ok) {
+        setEmailStatus("success");
+        e.target.reset(); // Input'u temizle
+        // 3 saniye sonra butonu eski haline getir
+        setTimeout(() => setEmailStatus("idle"), 3000);
+      } else {
+        setEmailStatus("error");
+      }
+    } catch (err) {
+      setEmailStatus("error");
+    }
+  };
 
   // --- İÇERİK AYARLARI ---
   const footerLinks = {
@@ -128,26 +165,41 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* KOLON 4: WHATSAPP & SOSYAL (GÜNCELLENDİ) */}
+          {/* KOLON 4: WHATSAPP & BÜLTEN (DÜZELTİLDİ) */}
           <div className="px-8 md:px-12 flex flex-col justify-between h-full">
             <div>
               <p className="text-[11px] font-bold text-[#666] uppercase tracking-widest mb-8 font-mono">Hızlı İletişim</p>
               
-              {/* E-Bülten Formu (Opsiyonel, durabilir) */}
-              <form className="mb-6 w-full group" onSubmit={(e) => e.preventDefault()}>
-                <div className="relative flex items-center border-b border-white/20 pb-4 transition-colors group-focus-within:border-white">
+              {/* E-Bülten Formu (ARTIK ÇALIŞIYOR) */}
+              <form className="mb-6 w-full group" onSubmit={handleQuickSubmit}>
+                <div className={`relative flex items-center border-b pb-4 transition-colors group-focus-within:border-white ${emailStatus === "error" ? "border-red-500" : "border-white/20"}`}>
                   <input 
+                    name="email"
                     type="email" 
-                    placeholder="E-posta adresiniz" 
-                    className="w-full bg-transparent text-white placeholder:text-[#555] text-sm focus:outline-none"
+                    placeholder="E-posta adresiniz"
+                    required
+                    disabled={emailStatus === "loading" || emailStatus === "success"}
+                    className="w-full bg-transparent text-white placeholder:text-[#555] text-sm focus:outline-none disabled:opacity-50"
                   />
-                  <button type="submit" className="text-[#666] hover:text-white transition-colors px-2">
-                    <ArrowRight size={18} />
+                  <button 
+                    type="submit" 
+                    disabled={emailStatus === "loading" || emailStatus === "success"}
+                    className="text-[#666] hover:text-white transition-colors px-2 disabled:opacity-50"
+                  >
+                    {emailStatus === "loading" ? (
+                      <Loader2 size={18} className="animate-spin text-white" />
+                    ) : emailStatus === "success" ? (
+                      <Check size={18} className="text-emerald-500" />
+                    ) : (
+                      <ArrowRight size={18} />
+                    )}
                   </button>
                 </div>
+                {emailStatus === "success" && <p className="text-xs text-emerald-500 mt-2">Kaydınız başarıyla alındı!</p>}
+                {emailStatus === "error" && <p className="text-xs text-red-500 mt-2">Bir hata oluştu, tekrar deneyin.</p>}
               </form>
 
-              {/* --- YENİ WHATSAPP BUTONU --- */}
+              {/* --- WHATSAPP BUTONU --- */}
               <a 
                 href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
                 target="_blank"
