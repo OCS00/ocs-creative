@@ -1,38 +1,53 @@
-export default {
+import { defineField, defineType } from 'sanity'
+
+export default defineType({
   name: 'profile',
-  title: 'Profil Ayarları',
+  title: 'Profil & Hakkımda',
   type: 'document',
   fields: [
-    {
+    defineField({
       name: 'fullName',
       title: 'Ad Soyad',
       type: 'string',
-    },
-    {
-      name: 'headline',
-      title: 'Unvan (Örn: Creative Developer)',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'role',
+      title: 'Unvan',
       type: 'string',
-    },
-    {
+      description: 'Örn: Senior Full Stack Developer',
+    }),
+    defineField({
       name: 'bio',
-      title: 'Biyografi (Hakkımda Yazısı)',
-      type: 'array',
-      of: [{type: 'block'}]
-    },
-    {
-      name: 'email',
-      title: 'E-posta Adresi',
-      type: 'string',
-    },
-    {
-      name: 'socials',
-      title: 'Sosyal Medya Linkleri',
-      type: 'object',
-      fields: [
-        {name: 'instagram', type: 'url', title: 'Instagram'},
-        {name: 'linkedin', type: 'url', title: 'LinkedIn'},
-        {name: 'github', type: 'url', title: 'GitHub'},
-      ]
-    }
+      title: 'Biyografi',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
+      name: 'avatar',
+      title: 'Profil Fotoğrafı',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'resume',
+      title: 'CV / Özgeçmiş (PDF)',
+      type: 'file',
+    }),
+    defineField({
+        name: 'socials',
+        title: 'Sosyal Medya Linkleri',
+        type: 'array',
+        of: [
+            {
+                type: 'object',
+                name: 'social',
+                fields: [
+                    { name: 'platform', title: 'Platform (Linkedin, GitHub)', type: 'string' },
+                    { name: 'url', title: 'Link', type: 'url' }
+                ]
+            }
+        ]
+    })
   ],
-}
+})

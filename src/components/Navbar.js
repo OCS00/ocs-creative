@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image"; // ✅ Resim için gerekli
+import Image from "next/image"; 
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,6 +19,11 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  // ✅ KRİTİK EKLEME: Eğer Sanity Yönetim Panelindeysek (/studio), Navbar'ı gizle!
+  if (pathname && pathname.startsWith('/studio')) {
+    return null;
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,8 +49,8 @@ export default function Navbar() {
              src="/logo1.png" // public klasöründeki dosya
              alt={siteConfig?.name || "Logo"}
              fill
-             className="object-contain object-left" // Logoyu sola hizalar ve sığdırır
-             priority // Hızlı yüklenmesi için
+             className="object-contain object-left" 
+             priority 
            />
         </Link>
 

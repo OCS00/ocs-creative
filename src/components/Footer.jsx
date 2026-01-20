@@ -1,11 +1,21 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+// ✅ 1. IMPORT EKLENDİ
+import { usePathname } from "next/navigation"; 
 import { siteConfig } from "@/config/site";
 import { ArrowRight, MessageCircle, Loader2, Check } from "lucide-react"; 
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
 export default function Footer() {
+  // ✅ 2. PATHNAME TANIMLANDI
+  const pathname = usePathname();
+
+  // ✅ 3. GİZLEME MANTIĞI: Eğer Sanity panelindeysek footer'ı gösterme
+  if (pathname && pathname.startsWith('/studio')) {
+    return null;
+  }
+
   const currentYear = new Date().getFullYear();
   const socials = siteConfig?.socials || [];
   const fullBrandName = (siteConfig?.name || "OCS Creative") + ".";

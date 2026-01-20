@@ -1,24 +1,26 @@
-export default {
+import { defineField, defineType } from 'sanity'
+
+export default defineType({
   name: 'service',
   title: 'Hizmetler',
   type: 'document',
   fields: [
-    {
+    defineField({
       name: 'title',
-      title: 'Hizmet Başlığı',
+      title: 'Hizmet Adı',
       type: 'string',
-    },
-    // 👇 BURAYI DEĞİŞTİRDİK (Zengin Metin Oldu)
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'description',
-      title: 'Detaylı Açıklama',
-      type: 'array', 
-      of: [{type: 'block'}] 
-    },
-    {
-      name: 'iconName',
-      title: 'İkon İsmi (Örn: Code2, Zap)',
-      type: 'string',
-    }
+      title: 'Kısa Açıklama',
+      type: 'text',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'icon',
+      title: 'İkon (Opsiyonel)',
+      type: 'image',
+    }),
   ],
-}
+})

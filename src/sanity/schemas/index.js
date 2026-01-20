@@ -1,6 +1,8 @@
 import service from './service'
 import project from './projects'
-import profile from './profile' // 👈 Bak bunu ekledik!
+import profile from './profile'
 import contract from './contract'
 
-export const schemaTypes = [service, contract, project, profile]
+
+// DİKKAT: Burada 'schemaTypes' adıyla dışa aktarıyoruz
+export const schemaTypes = [service, project, profile, contract]

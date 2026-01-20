@@ -1,58 +1,42 @@
-export default {
+import { defineField, defineType } from 'sanity'
+
+export default defineType({
   name: 'contract',
   title: 'Sözleşmeler',
   type: 'document',
   fields: [
-    {
+    defineField({
       name: 'clientName',
-      title: 'Müşteri Adı / Firma',
+      title: 'Müşteri Adı',
       type: 'string',
-    },
-    {
-      name: 'packageType',
-      title: 'Seçilen Paket',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'title',
+      title: 'Sözleşme Başlığı',
       type: 'string',
-      options: {
-        list: [
-          { title: 'Startup', value: 'startup' },
-          { title: 'Kurumsal', value: 'growth' },
-          { title: 'Enterprise', value: 'enterprise' },
-        ],
-      },
-    },
-    {
-      name: 'price',
-      title: 'Anlaşılan Fiyat',
-      type: 'string',
-    },
-    {
+    }),
+    defineField({
+      name: 'startDate',
+      title: 'Başlangıç Tarihi',
+      type: 'datetime',
+    }),
+    defineField({
       name: 'status',
       title: 'Durum',
       type: 'string',
-      initialValue: 'pending',
       options: {
         list: [
-          { title: 'Bekliyor', value: 'pending' },
-          { title: 'Onaylandı', value: 'approved' },
+          { title: 'Aktif', value: 'active' },
+          { title: 'Tamamlandı', value: 'completed' },
           { title: 'İptal', value: 'cancelled' },
         ],
       },
-    },
-    {
-      name: 'approvedAt',
-      title: 'Onay Tarihi',
-      type: 'datetime',
-    },
-    {
-      name: 'ipAddress',
-      title: 'IP Adresi (Log)',
-      type: 'string',
-    }
+    }),
+    defineField({
+      name: 'contractFile',
+      title: 'Sözleşme Dosyası (PDF)',
+      type: 'file',
+    }),
   ],
-  preview: {
-    select: {
-      title: 'clientName',
-      subtitle: 'packageType',
-    },
-  },
-}
+})

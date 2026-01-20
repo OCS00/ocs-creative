@@ -1,10 +1,20 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+// ✅ 1. IMPORT EKLENDİ
+import { usePathname } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
 export default function Cta() {
+  // ✅ 2. PATHNAME TANIMLANDI
+  const pathname = usePathname();
+
+  // ✅ 3. GİZLEME MANTIĞI: Eğer Sanity panelindeysek bu bölümü gösterme
+  if (pathname && pathname.startsWith('/studio')) {
+    return null;
+  }
+
   // --- MOUSE IŞIK MEKANİZMASI ---
   let mouseX = useMotionValue(0);
   let mouseY = useMotionValue(0);
