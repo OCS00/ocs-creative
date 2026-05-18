@@ -57,7 +57,7 @@ export default function CookieBanner() {
                   <h3 className="font-bold text-white text-lg mb-1">Çerez Tercihleri</h3>
                   <p className="text-gray-400 text-xs leading-relaxed">
                     {brandName} olarak, deneyiminizi iyileştirmek için çerezler kullanıyoruz.
-                    Detaylı bilgi için <Link href="/yasal" className="text-indigo-400 hover:underline">Gizlilik Politikası</Link>'nı inceleyebilirsiniz.
+                    Detaylı bilgi için <Link href="/yasal" className="text-indigo-400 hover:underline">Gizlilik Politikası</Link>&apos;nı inceleyebilirsiniz.
                   </p>
                 </div>
               </div>

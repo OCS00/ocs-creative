@@ -20,11 +20,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
-  // ✅ KRİTİK EKLEME: Eğer Sanity Yönetim Panelindeysek (/studio), Navbar'ı gizle!
-  if (pathname && pathname.startsWith('/studio')) {
-    return null;
-  }
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -32,6 +27,10 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (pathname && pathname.startsWith('/studio')) {
+    return null;
+  }
 
   return (
     <nav

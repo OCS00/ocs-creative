@@ -63,9 +63,9 @@ export default function Projects() {
                    fill 
                    className="object-cover transform group-hover:scale-110 transition-transform duration-700"
                  />
-                 
+
               </div>
-""
+
               {/* İçerik */}
               <div className="p-8 relative z-20 -mt-10">
                 <div className="bg-dark-800 rounded-xl p-6 border border-dark-700 shadow-xl">

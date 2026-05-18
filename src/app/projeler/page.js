@@ -1,6 +1,7 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import { client } from "@/sanity/lib/client";
-import ProjectsGrid from "@/components/ProjectsGrid"; 
+import ProjectsGrid from "@/components/ProjectsGrid";
 import { CheckCircle2, Award, Zap, Users } from "lucide-react";
 import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
 
@@ -9,8 +10,10 @@ export const metadata = {
   description: "Markalar için geliştirdiğimiz web tasarım, yazılım ve mobil uygulama projelerimizi inceleyin.",
 };
 
+export const revalidate = 60; // 60 saniyede bir Sanity'den taze veri çek
+
 async function getProjects() {
-  const query = `*[_type == "project"] | order(publishedAt desc){
+  const query = `*[_type == "project"] | order(coalesce(publishedAt, _createdAt) desc){
     _id,
     title,
     category,

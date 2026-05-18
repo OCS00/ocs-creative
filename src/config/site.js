@@ -1,11 +1,10 @@
 import { Instagram, Linkedin, Twitter } from "lucide-react";
 
 export const siteConfig = {
-  // --- EKSİK OLAN KISIM BURASIYDI ---
   name: "OCS Creative",
   description: "Markalar için dijital dönüşüm ve yazılım çözümleri.",
   url: "https://ocscreative.com.tr",
-  // ----------------------------------
+  ogImage: "https://ocscreative.com.tr/og-image.jpg",
 
   // İLETİŞİM (Telefon & Mail)
   contact: {

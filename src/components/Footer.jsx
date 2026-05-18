@@ -8,10 +8,13 @@ import { ArrowRight, MessageCircle, Loader2, Check } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
 export default function Footer() {
-  // ✅ 2. PATHNAME TANIMLANDI
   const pathname = usePathname();
+  const [emailStatus, setEmailStatus] = useState("idle");
+  let mouseX = useMotionValue(0);
+  let mouseY = useMotionValue(0);
+  const ambientLight = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(79, 70, 229, 0.03), transparent 80%)`;
+  const textRevealMask = useMotionTemplate`radial-gradient(250px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
 
-  // ✅ 3. GİZLEME MANTIĞI: Eğer Sanity panelindeysek footer'ı gösterme
   if (pathname && pathname.startsWith('/studio')) {
     return null;
   }
@@ -20,12 +23,8 @@ export default function Footer() {
   const socials = siteConfig?.socials || [];
   const fullBrandName = (siteConfig?.name || "OCS Creative") + ".";
 
-  // --- WHATSAPP NUMARASI ---
-  const whatsappNumber = "905050082034"; 
-  const whatsappMessage = "Merhaba, projemiz hakkında görüşmek istiyorum."; 
-
-  // --- FORM DURUM YÖNETİMİ ---
-  const [emailStatus, setEmailStatus] = useState("idle"); // idle | loading | success | error
+  const whatsappNumber = "905050082034";
+  const whatsappMessage = "Merhaba, projemiz hakkında görüşmek istiyorum.";
 
   // --- BÜLTEN KAYIT FONKSİYONU ---
   const handleQuickSubmit = async (e) => {
@@ -64,39 +63,28 @@ export default function Footer() {
   // --- İÇERİK AYARLARI ---
   const footerLinks = {
     hizmetler: [
-      { name: "Web Tasarım & Yazılım", href: "/hizmetler/web-tasarim" },
-      { name: "Mobil Uygulama", href: "/hizmetler/mobil-uygulama" },
-      { name: "UI/UX Tasarım", href: "/hizmetler/ui-ux" },
-      { name: "E-Ticaret Çözümleri", href: "/hizmetler/e-ticaret" },
-      { name: "SEO & Dijital Pazarlama", href: "/hizmetler/seo" },
+      { name: "Web Tasarım & Yazılım", href: "/hizmetler" },
+      { name: "Mobil Uygulama", href: "/hizmetler" },
+      { name: "UI/UX Tasarım", href: "/hizmetler" },
+      { name: "E-Ticaret Çözümleri", href: "/hizmetler" },
+      { name: "SEO & Dijital Pazarlama", href: "/hizmetler" },
     ],
     kurumsal: [
-      { name: "Hakkımızda", href: "/hakkimizda" },
+      { name: "Hakkımızda", href: "/hakkimda" },
       { name: "Projelerimiz", href: "/projeler" },
-      { name: "Kariyer", href: "/kariyer" },
       { name: "İletişim", href: "/iletisim" },
     ],
     yasal: [
       { name: "Hizmet Sözleşmesi", href: "/sozlesme" },
-      { name: "Gizlilik Politikası", href: "/gizlilik" },
-      { name: "Çerez Politikası", href: "/cerez-politikasi" },
-      { name: "KVKK Aydınlatma Metni", href: "/kvkk" },
+      { name: "Yasal Bilgiler", href: "/yasal" },
     ]
   };
-
-  // --- MOUSE TAKİP MEKANİZMASI ---
-  let mouseX = useMotionValue(0);
-  let mouseY = useMotionValue(0);
 
   function handleMouseMove({ currentTarget, clientX, clientY }) {
     let { left, top } = currentTarget.getBoundingClientRect();
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   }
-
-  // Işık Efektleri
-  const ambientLight = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(79, 70, 229, 0.03), transparent 80%)`;
-  const textRevealMask = useMotionTemplate`radial-gradient(250px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
 
   return (
     <footer 

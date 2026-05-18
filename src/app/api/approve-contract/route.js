@@ -11,6 +11,11 @@ const writeClient = createClient({
 });
 
 export async function POST(req) {
+  const secret = req.headers.get("x-api-secret");
+  if (!secret || secret !== process.env.APPROVE_CONTRACT_SECRET) {
+    return NextResponse.json({ success: false, error: "Yetkisiz istek." }, { status: 401 });
+  }
+
   try {
     const body = await req.json();
     const { clientName, packageType, price } = body;

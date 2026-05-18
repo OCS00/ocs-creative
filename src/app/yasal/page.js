@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useState } from "react";
 import { Scale, Lock, ShieldCheck, FileWarning, ScrollText } from "lucide-react";

@@ -1,5 +1,7 @@
 import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
+
+export const revalidate = 60;
 // Az önce oluşturduğumuz görsel bileşeni çağırıyoruz
 import ProjectDetailContent from "@/components/ProjectDetailContent";
 

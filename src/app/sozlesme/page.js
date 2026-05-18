@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useState, useEffect } from "react";
 import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
@@ -43,7 +44,10 @@ export default function ContractPage() {
       try {
         const response = await fetch("/api/approve-contract", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-secret": process.env.NEXT_PUBLIC_APPROVE_CONTRACT_SECRET || "",
+          },
           body: JSON.stringify({
             clientName: clientName,
             packageType: packages[selectedPackage].name,
@@ -108,6 +112,43 @@ export default function ContractPage() {
   };
 
   const activePack = packages[selectedPackage];
+
+  const colorMap = {
+    startup: {
+      sectionBg: "bg-orange-50/50",
+      sectionBorder: "border-orange-100",
+      titleText: "text-orange-900",
+      borderB: "border-orange-100",
+      badgeBg: "bg-orange-600",
+      checkText: "text-orange-500",
+      priceBg: "bg-orange-900",
+      iconBg: "bg-orange-800",
+      signBtn: "bg-orange-600 hover:opacity-90",
+    },
+    growth: {
+      sectionBg: "bg-indigo-50/50",
+      sectionBorder: "border-indigo-100",
+      titleText: "text-indigo-900",
+      borderB: "border-indigo-100",
+      badgeBg: "bg-indigo-600",
+      checkText: "text-indigo-500",
+      priceBg: "bg-indigo-900",
+      iconBg: "bg-indigo-800",
+      signBtn: "bg-indigo-600 hover:opacity-90",
+    },
+    enterprise: {
+      sectionBg: "bg-emerald-50/50",
+      sectionBorder: "border-emerald-100",
+      titleText: "text-emerald-900",
+      borderB: "border-emerald-100",
+      badgeBg: "bg-emerald-600",
+      checkText: "text-emerald-500",
+      priceBg: "bg-emerald-900",
+      iconBg: "bg-emerald-800",
+      signBtn: "bg-emerald-600 hover:opacity-90",
+    },
+  };
+  const c = colorMap[selectedPackage];
 
   // Marka isminin ilk kelimesini arka plan için al (Örn: "OCS")
   const shortBrandName = siteConfig.name.split(" ")[0];
@@ -208,12 +249,12 @@ export default function ContractPage() {
               </div>
 
               {/* MADDE 4: DETAYLI VE İKNA EDİCİ BAKIM ALANI */}
-              <div className={`bg-${activePack.color}-50/50 p-6 rounded-xl border border-${activePack.color}-100 print:bg-white print:border-gray-300 transition-colors duration-500`}>
-                <div className={`flex justify-between items-start mb-4 border-b border-${activePack.color}-100 pb-2`}>
-                  <h3 className={`text-base font-bold text-${activePack.color}-900 uppercase flex items-center gap-2`}>
+              <div className={`${c.sectionBg} p-6 rounded-xl border ${c.sectionBorder} print:bg-white print:border-gray-300 transition-colors duration-500`}>
+                <div className={`flex justify-between items-start mb-4 border-b ${c.borderB} pb-2`}>
+                  <h3 className={`text-base font-bold ${c.titleText} uppercase flex items-center gap-2`}>
                     <ShieldAlert size={18} /> 4. Sürdürülebilirlik & Bakım (SLA)
                   </h3>
-                  <span className={`bg-${activePack.color}-600 text-white text-[10px] font-bold px-2 py-1 rounded tracking-wide transition-colors duration-500`}>
+                  <span className={`${c.badgeBg} text-white text-[10px] font-bold px-2 py-1 rounded tracking-wide transition-colors duration-500`}>
                     {activePack.name}
                   </span>
                 </div>
@@ -251,15 +292,15 @@ export default function ContractPage() {
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                     {activePack.features.map((feature, i) => (
                       <li key={i} className="flex items-center gap-2 text-xs font-semibold text-gray-700 bg-white p-2 rounded border border-gray-100 shadow-sm">
-                        <Check size={14} className={`text-${activePack.color}-500`} />
+                        <Check size={14} className={c.checkText} />
                         {feature}
                       </li>
                     ))}
                   </ul>
 
-                  <div className={`flex flex-col md:flex-row items-center justify-between bg-${activePack.color}-900 p-4 rounded-lg text-white shadow-lg print:bg-gray-900 print:text-black print:border print:border-black transition-colors duration-500`}>
+                  <div className={`flex flex-col md:flex-row items-center justify-between ${c.priceBg} p-4 rounded-lg text-white shadow-lg print:bg-gray-900 print:text-black print:border print:border-black transition-colors duration-500`}>
                     <div className="flex items-center gap-3">
-                       <div className={`p-2 bg-${activePack.color}-800 rounded-full print:bg-gray-200 print:text-black transition-colors duration-500`}><CreditCard size={20}/></div>
+                       <div className={`p-2 ${c.iconBg} rounded-full print:bg-gray-200 print:text-black transition-colors duration-500`}><CreditCard size={20}/></div>
                        <div>
                          <p className="text-xs opacity-80 font-bold uppercase tracking-wider print:text-gray-600">Periyodik Bakım Bedeli</p>
                          <p className="text-[10px] opacity-60 print:text-gray-500">3 Aylık dönemlerde faturalandırılır.</p>
@@ -309,7 +350,7 @@ export default function ContractPage() {
                   <button 
                     onClick={handleSign}
                     disabled={clientName.length < 3 || isLoading}
-                    className={`w-full px-8 py-3 rounded text-white font-bold tracking-wide transition shadow-lg flex items-center justify-center gap-2 ${clientName.length < 3 ? 'bg-gray-300 cursor-not-allowed' : `bg-${activePack.color}-600 hover:opacity-90`}`}
+                    className={`w-full px-8 py-3 rounded text-white font-bold tracking-wide transition shadow-lg flex items-center justify-center gap-2 ${clientName.length < 3 ? 'bg-gray-300 cursor-not-allowed' : c.signBtn}`}
                   >
                     {isLoading ? (
                       <>

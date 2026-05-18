@@ -110,6 +110,13 @@ export default defineType({
         type: 'string',
         group: 'story',
     }),
+    defineField({
+        name: 'publishedAt',
+        title: 'Yayın Tarihi',
+        description: 'Projenin sıralanmasında kullanılır. Yoksa eklenme tarihine göre sıralanır.',
+        type: 'datetime',
+        group: 'main',
+    }),
 
     // --- GRUP 3: MEDYA ---
     defineField({

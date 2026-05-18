@@ -1,12 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import Cta from "@/components/Cta";
 import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ExternalLink, Target, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -35,15 +33,14 @@ export default function ProjectDetailContent() {
   const accentColor = project.primaryColor || "#6366F1";
 
   return (
-    <main className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30">
-      <Navbar />
+    <div className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30">
 
       {/* 1. CINEMATIC HERO */}
       <div className="relative h-[70vh] w-full overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#030303]/50 via-transparent to-[#030303] z-10" />
         {project.mainImage && (
-            <motion.div initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.5, ease: "easeOut" }} className="w-full h-full">
-               <img src={urlForImage(project.mainImage).url()} className="w-full h-full object-cover" alt={project.title} />
+            <motion.div initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.5, ease: "easeOut" }} className="w-full h-full relative">
+               <Image src={urlForImage(project.mainImage).url()} fill sizes="100vw" className="object-cover" alt={project.title} />
             </motion.div>
         )}
         <div className="absolute bottom-0 left-0 w-full z-20 p-6 md:p-12 pb-20">
@@ -180,16 +177,18 @@ export default function ProjectDetailContent() {
                         <h3 className="text-2xl font-bold border-b border-white/10 pb-6">Proje Galerisi</h3>
                         <div className="grid grid-cols-1 gap-12">
                             {project.gallery.map((image, i) => (
-                                <motion.div 
-                                    key={i} 
-                                    initial={{ opacity: 0, y: 40 }} 
-                                    whileInView={{ opacity: 1, y: 0 }} 
-                                    transition={{ duration: 0.8 }} 
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 40 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.8 }}
                                     className="rounded-[2rem] overflow-hidden border border-white/10 bg-[#0a0a0a]"
                                 >
-                                    <img 
-                                        src={urlForImage(image).url()} 
-                                        alt={`Project Shot ${i}`} 
+                                    <Image
+                                        src={urlForImage(image).url()}
+                                        alt={`Project Shot ${i + 1}`}
+                                        width={1200}
+                                        height={800}
                                         className="w-full h-auto object-cover hover:scale-105 transition-transform duration-1000"
                                     />
                                 </motion.div>
@@ -201,9 +200,6 @@ export default function ProjectDetailContent() {
          </div>
       </section>
       
-      {/* 3. NEXT PROJECT CTA */}
-      <Cta />
-      <Footer />
-    </main>
+    </div>
   );
 }

@@ -23,6 +23,7 @@ export default function Analytics() {
   }, [pathname, searchParams]);
 
   if (!consent) return null;
+  if (!process.env.NEXT_PUBLIC_GA_ID) return null;
 
-  return <GoogleAnalytics gaId="G-XYZ123456" />; // Kendi GA ID'ni yazmayı unutma
+  return <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />;
 }

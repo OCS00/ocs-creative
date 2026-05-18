@@ -1,8 +1,8 @@
 import { client } from "@/sanity/lib/client";
+import { siteConfig } from "@/config/site";
 
 export default async function sitemap() {
-  // ⚠️ GÜNCELLENDİ: Senin yeni domainin
-  const baseUrl = "https://www.ocscreative.com.tr"; 
+  const baseUrl = siteConfig.url;
 
   // 1. Statik Sayfalar
   const routes = [

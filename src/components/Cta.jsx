@@ -7,26 +7,20 @@ import { ArrowRight } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
 export default function Cta() {
-  // ✅ 2. PATHNAME TANIMLANDI
   const pathname = usePathname();
+  let mouseX = useMotionValue(0);
+  let mouseY = useMotionValue(0);
+  const maskImage = useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
 
-  // ✅ 3. GİZLEME MANTIĞI: Eğer Sanity panelindeysek bu bölümü gösterme
   if (pathname && pathname.startsWith('/studio')) {
     return null;
   }
-
-  // --- MOUSE IŞIK MEKANİZMASI ---
-  let mouseX = useMotionValue(0);
-  let mouseY = useMotionValue(0);
 
   function handleMouseMove({ currentTarget, clientX, clientY }) {
     let { left, top } = currentTarget.getBoundingClientRect();
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   }
-
-  // Mouse'u takip eden dinamik maske
-  const maskImage = useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
 
   return (
     <section 

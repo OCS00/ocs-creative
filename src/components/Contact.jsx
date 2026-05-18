@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Mail, MapPin, Phone, Send, Loader2, CheckCircle } from "lucide-react";
+import { siteConfig } from "@/config/site";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -68,7 +69,7 @@ export default function Contact() {
                    <div className="p-3 bg-white/5 rounded-lg text-indigo-500"><MapPin size={24} /></div>
                    <div>
                       <h4 className="text-white font-bold text-lg">Ofis</h4>
-                      <p className="text-gray-400">Maslak Mah. Büyükdere Cad. No:123<br/>Sarıyer, İstanbul</p>
+                      <p className="text-gray-400">{siteConfig.contact.address}</p>
                    </div>
                 </div>
 
@@ -76,7 +77,7 @@ export default function Contact() {
                    <div className="p-3 bg-white/5 rounded-lg text-indigo-500"><Mail size={24} /></div>
                    <div>
                       <h4 className="text-white font-bold text-lg">E-Posta</h4>
-                      <p className="text-gray-400">info@ocscreative.com</p>
+                      <p className="text-gray-400">{siteConfig.contact.email}</p>
                       <p className="text-gray-500 text-sm">7/24 Destek</p>
                    </div>
                 </div>
@@ -85,7 +86,9 @@ export default function Contact() {
                    <div className="p-3 bg-white/5 rounded-lg text-indigo-500"><Phone size={24} /></div>
                    <div>
                       <h4 className="text-white font-bold text-lg">Telefon</h4>
-                      <p className="text-gray-400">+90 (212) 555 00 00</p>
+                      <a href={`tel:${siteConfig.contact.phoneCall}`} className="text-gray-400 hover:text-white transition-colors">
+                        {siteConfig.contact.phoneDisplay}
+                      </a>
                       <p className="text-gray-500 text-sm">Hafta içi: 09:00 - 18:00</p>
                    </div>
                 </div>
