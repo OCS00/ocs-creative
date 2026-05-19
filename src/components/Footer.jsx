@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-// ✅ 1. IMPORT EKLENDİ
-import { usePathname } from "next/navigation"; 
+import { usePathname } from "next/navigation";
+import emailjs from "@emailjs/browser";
 import { siteConfig } from "@/config/site";
-import { ArrowRight, MessageCircle, Loader2, Check } from "lucide-react"; 
+import { ArrowRight, MessageCircle, Loader2, Check } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
 export default function Footer() {
@@ -30,31 +30,27 @@ export default function Footer() {
   const handleQuickSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.elements.email.value;
-    
-    if (!email) return;
-    
-    setEmailStatus("loading");
-    
-    try {
-      // API'ye istek atıyoruz
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          email, 
-          subject: "Bülten Kaydı", 
-          message: "Kullanıcı footer alanından bültene kaydolmak istiyor." 
-        }),
-      });
 
-      if (res.ok) {
-        setEmailStatus("success");
-        e.target.reset(); // Input'u temizle
-        // 3 saniye sonra butonu eski haline getir
-        setTimeout(() => setEmailStatus("idle"), 3000);
-      } else {
-        setEmailStatus("error");
-      }
+    if (!email) return;
+
+    setEmailStatus("loading");
+
+    try {
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: "Bülten Kaydı",
+          from_email: email,
+          phone: "-",
+          services: "Bülten",
+          message: "Kullanıcı footer alanından bültene kaydolmak istiyor.",
+        },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      );
+      setEmailStatus("success");
+      e.target.reset();
+      setTimeout(() => setEmailStatus("idle"), 3000);
     } catch (err) {
       setEmailStatus("error");
     }

@@ -57,7 +57,7 @@ export default function Cta() {
       
       {/* 4. ZEMİN GÜRÜLTÜSÜ (Texture) */}
       <div className="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-overlay" 
-           style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }}>
+           style={{ backgroundImage: "url('/noise.svg')" }}>
       </div>
 
       {/* 5. İÇERİK */}
