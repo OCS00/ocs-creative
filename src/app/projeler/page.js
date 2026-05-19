@@ -116,7 +116,7 @@ export default async function ProjectsPage() {
                 
                 {/* Soyut Görsel Alan */}
                 <div className="relative h-[500px] bg-[#0a0a0a] border border-white/10 rounded-[2rem] overflow-hidden flex items-center justify-center group">
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+                    <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
                     <div className="text-center p-8 relative z-10">
                         <div className="text-7xl font-black text-white/5 mb-4 group-hover:text-indigo-500/20 transition-colors duration-500">PROCESS</div>
                         <p className="text-indigo-400 font-mono text-sm tracking-widest border border-indigo-500/30 px-4 py-2 rounded-full inline-block bg-indigo-900/10">

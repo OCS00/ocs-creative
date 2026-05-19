@@ -1,6 +1,7 @@
-"use client"; 
+"use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { urlForImage } from "@/sanity/lib/image";
@@ -59,13 +60,19 @@ export default function ProjectsGrid({ initialProjects }) {
                     
                     {/* Görsel */}
                     {project.mainImage ? (
-                        <motion.img 
+                        <motion.div
                           whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.7 }}
-                          src={urlForImage(project.mainImage).url()} 
-                          alt={project.title}
-                          className="h-full w-full object-cover opacity-90 group-hover:opacity-100"
-                        />
+                          className="relative h-full w-full"
+                        >
+                          <Image
+                            fill
+                            src={urlForImage(project.mainImage).url()}
+                            alt={project.title}
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            className="object-cover opacity-90 group-hover:opacity-100"
+                          />
+                        </motion.div>
                     ) : (
                         <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 text-gray-600 font-mono">
                             <Layers size={48} className="mb-4 opacity-50"/>

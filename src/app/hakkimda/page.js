@@ -119,7 +119,7 @@ export default function AboutPage() {
                viewport={{ once: true }}
                className="relative h-[600px] rounded-[2rem] overflow-hidden bg-[#0a0a0a] border border-white/10 group"
             >
-               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+               <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500/20 rounded-full blur-[100px] group-hover:bg-purple-500/30 transition-all duration-1000"></div>
                <div className="absolute bottom-12 left-12 right-12">
                   <Fingerprint size={64} className="text-white/20 mb-6" />
@@ -156,7 +156,7 @@ export default function AboutPage() {
                </div>
 
                {/* İstatistik Bandı */}
-               <div className="grid grid-cols-4 gap-4 mt-16 pt-12 border-t border-white/10">
+               <div className="grid grid-cols-2 gap-4 mt-16 pt-12 border-t border-white/10">
                   {STATS.map((stat, i) => (
                      <div key={i} className="text-center">
                         <div className="text-2xl md:text-4xl font-black text-white mb-1">{stat.value}</div>

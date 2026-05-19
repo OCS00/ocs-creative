@@ -1,5 +1,5 @@
 {
-  "name": "avukat-websitesi",
+  "name": "ocs-creative",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,25 +11,18 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@next/third-parties": "^16.1.0",
-    "@portabletext/react": "^6.0.0",
     "@sanity/vision": "^3.37.1",
     "@tailwindcss/typography": "^0.5.19",
     "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "^1.3.1",
-    "clsx": "^2.1.1",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.344.0",
     "next": "^15.1.3",
     "next-sanity": "^9.8.56",
-    "nodemailer": "^7.0.12",
     "react": "^18",
     "react-dom": "^18",
     "react-fast-marquee": "^1.6.5",
-    "resend": "^6.6.0",
-    "rss-parser": "^3.13.0",
-    "sanity": "^3.37.1",
-    "styled-components": "^6.1.19",
-    "tailwind-merge": "^3.4.0"
+    "sanity": "^3.37.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",

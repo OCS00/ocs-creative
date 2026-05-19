@@ -1,35 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { client } from "@/sanity/lib/client";
+import React from "react";
 import { urlForImage } from "@/sanity/lib/image";
-import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ExternalLink, Target, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, Target, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function ProjectDetailContent() {
-  const { slug } = useParams();
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProject = async () => {
-      const query = `*[_type == "project" && slug.current == $slug][0]{
-        title, mainImage, gallery, "category": category, clientName, websiteUrl, tags, publishedAt, challenge, solution, stats, primaryColor,
-        "relatedProjects": *[_type == "project" && slug.current != $slug][0...2]{ title, slug, mainImage }
-      }`;
-      const data = await client.fetch(query, { slug });
-      setProject(data);
-      setLoading(false);
-    };
-    if (slug) fetchProject();
-  }, [slug]);
-
-  if (loading) return <div className="bg-[#030303] min-h-screen flex items-center justify-center text-white font-mono">Yükleniyor...</div>;
-  if (!project) return <div className="bg-[#030303] min-h-screen flex items-center justify-center text-white font-mono">Proje bulunamadı.</div>;
-
-  // Marka rengi yoksa varsayılan indigo kullan
+export default function ProjectDetailContent({ project }) {
   const accentColor = project.primaryColor || "#6366F1";
 
   return (
@@ -196,10 +173,31 @@ export default function ProjectDetailContent() {
                         </div>
                     </div>
                 )}
+
+                {/* DÖNÜŞÜM CTA */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="p-10 rounded-[2rem] bg-[#0a0a0a] border border-white/10 text-center"
+                >
+                  <h3 className="text-2xl font-bold text-white mb-3">
+                    Buna Benzer Bir Proje İster Misiniz?
+                  </h3>
+                  <p className="text-gray-400 mb-8 max-w-md mx-auto">
+                    Bu projeyi beğendiyseniz, sizin için de aynı kalitede bir çalışma yapabiliriz.
+                  </p>
+                  <Link
+                    href="/iletisim"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.15)]"
+                  >
+                    Ücretsiz Teklif Al <ArrowRight size={18} />
+                  </Link>
+                </motion.div>
             </div>
          </div>
       </section>
-      
+
     </div>
   );
 }

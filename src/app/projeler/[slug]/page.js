@@ -1,16 +1,20 @@
 import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
-
-export const revalidate = 60;
-// Az önce oluşturduğumuz görsel bileşeni çağırıyoruz
+import { notFound } from "next/navigation";
 import ProjectDetailContent from "@/components/ProjectDetailContent";
 
-// 1. DİNAMİK SEO AYARLARI (Sunucuda Çalışır)
+export const revalidate = 60;
+
+const PROJECT_QUERY = `*[_type == "project" && slug.current == $slug][0]{
+  title, mainImage, gallery, "category": category, clientName, websiteUrl, tags, publishedAt, challenge, solution, stats, primaryColor
+}`;
+
 export async function generateMetadata({ params }) {
-  const { slug } = await params; // Next.js 15+ için params await edilmeli
-  
-  const query = `*[_type == "project" && slug.current == $slug][0]{ title, seoDesc, mainImage }`;
-  const project = await client.fetch(query, { slug });
+  const { slug } = await params;
+  const project = await client.fetch(
+    `*[_type == "project" && slug.current == $slug][0]{ title, seoDesc, mainImage }`,
+    { slug }
+  );
 
   if (!project) return { title: "Proje Bulunamadı | OCS Creative" };
 
@@ -23,9 +27,11 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// 2. SAYFA GÖRÜNÜMÜ
-export default function ProjectPage() {
-  // Burası sunucu tarafı. Client bileşeni çağırıyoruz.
-  // URL parametresini (slug) client bileşen kendisi 'useParams' ile alacak.
-  return <ProjectDetailContent />;
+export default async function ProjectPage({ params }) {
+  const { slug } = await params;
+  const project = await client.fetch(PROJECT_QUERY, { slug });
+
+  if (!project) notFound();
+
+  return <ProjectDetailContent project={project} />;
 }

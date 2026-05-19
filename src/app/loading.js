@@ -1,12 +1,13 @@
-import { Loader2 } from "lucide-react";
-
 export default function Loading() {
   return (
-    <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-[9999] flex items-center justify-center">
+    <div className="fixed inset-0 bg-[#020202] z-[9999] flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <span className="text-primary font-bold tracking-widest text-sm animate-pulse">
-          YÜKLENİYOR...
+        <div className="relative w-10 h-10">
+          <div className="absolute inset-0 rounded-full border-2 border-white/10" />
+          <div className="absolute inset-0 rounded-full border-2 border-t-indigo-500 animate-spin" />
+        </div>
+        <span className="text-white/40 font-mono text-xs tracking-[0.3em] uppercase animate-pulse">
+          Yükleniyor
         </span>
       </div>
     </div>
