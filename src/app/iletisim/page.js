@@ -2,9 +2,8 @@
 import React, { useState } from "react";
 import { Mail, Phone, Check, Send, Loader2, ArrowRight, MessageSquare, MapPin, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-// --- 1. KONFİGÜRASYONU İÇERİ ALIYORUZ ---
-import { siteConfig } from "@/config/site"; 
+import emailjs from "@emailjs/browser";
+import { siteConfig } from "@/config/site";
 
 // Hizmet Seçenekleri
 const SERVICES = [
@@ -46,33 +45,27 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ GÜNCELLENEN KISIM: Gerçek API'ye Bağlantı
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setFormStatus(null);
-    
+
     try {
-      // API Route'a veriyi gönder
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          phone: formData.phone,
+          services: formData.services.join(", "),
+          message: formData.projectDetails,
         },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        setFormStatus("success");
-        // Başarılıysa formu temizle (İsteğe bağlı)
-        // setFormData({ services: [], projectDetails: "", name: "", email: "", phone: "" });
-      } else {
-        throw new Error(result.message || "Bir hata oluştu");
-      }
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      );
+      setFormStatus("success");
     } catch (error) {
-      console.error("Form Hatası:", error);
+      console.error("EmailJS Hatası:", error);
       setFormStatus("error");
     } finally {
       setIsLoading(false);
