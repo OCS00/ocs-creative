@@ -1,31 +1,17 @@
-/**
- * OCS Creative - Yönetim Paneli (Dark Mode)
- */
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { schemaTypes } from './src/sanity/schemas'
+import { ProjectImporterTool } from './src/sanity/plugins/ProjectImporter'
 
 const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
 
-// --- ÖZEL LOGO BİLEŞENİ ---
 const OCSLogo = () => (
   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-    {/* Logo Görseli */}
-    <img 
-      src="/logo1.png" 
-      alt="OCS" 
-      style={{ height: '28px', width: 'auto', objectFit: 'contain' }} 
-    />
-    {/* Yanındaki Yazı */}
-    <span style={{ 
-      fontWeight: '800', 
-      color: '#ffffff', // Beyaz Yazı
-      fontSize: '18px',
-      letterSpacing: '-0.5px'
-    }}>
+    <img src="/logo1.png" alt="OCS" style={{ height: '28px', width: 'auto', objectFit: 'contain' }} />
+    <span style={{ fontWeight: '800', color: '#ffffff', fontSize: '18px', letterSpacing: '-0.5px' }}>
       OCS <span style={{ color: '#6366f1' }}>Panel</span>
     </span>
   </div>
@@ -40,22 +26,18 @@ export default defineConfig({
   
   studio: {
     components: {
-      logo: OCSLogo, // Logoyu buraya bağlıyoruz
+      logo: OCSLogo,
     }
   },
 
-  // --- DARK MODE RENK AYARLARI ---
   theme: {
-    /* Ana Renkler (Mor/Indigo) */
     '--default-button-primary-color': '#4F46E5',
     '--focus-color': '#4F46E5',
     '--state-info-color': '#4F46E5',
-    
-    /* Arka Planları Siyah Yap */
-    '--main-navigation-color': '#09090b', // Sol menü arka planı
-    '--main-navigation-color--inverted': '#ffffff', // Yazı rengi
-    '--component-bg': '#09090b', // İçerik arka planı
-    '--component-text-color': '#ffffff', // Genel yazı rengi
+    '--main-navigation-color': '#09090b',
+    '--main-navigation-color--inverted': '#ffffff',
+    '--component-bg': '#09090b',
+    '--component-text-color': '#ffffff',
   },
 
   schema: {
@@ -65,5 +47,16 @@ export default defineConfig({
   plugins: [
     structureTool(),
     visionTool({ defaultApiVersion: apiVersion }),
+    {
+      name: 'project-importer',
+      tools: [
+        {
+          name: 'project-importer',
+          title: 'Hızlı Giriş',
+          icon: () => '⚡',
+          component: ProjectImporterTool,
+        },
+      ],
+    },
   ],
 })

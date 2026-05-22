@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 
 // İçeriği ayrı bir bileşen yaptık
 function NotFoundContent() {
-  const supportEmail = siteConfig?.contact?.email || "info@ocscreative.com";
+  const supportEmail = siteConfig?.contact?.email || "ocscreative.tr@gmail.com";
 
   return (
     <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center text-center p-4 overflow-hidden relative selection:bg-indigo-500/30">

@@ -2,14 +2,17 @@
 import { usePathname } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { siteConfig } from "@/config/site";
 
 export default function WhatsAppBtn() {
   const pathname = usePathname();
   if (pathname?.startsWith("/studio")) return null;
 
+  const waNumber = siteConfig.contact.phoneCall.replace("+", "");
+
   return (
     <motion.a
-      href={`https://wa.me/905050082034?text=${encodeURIComponent("Merhaba, projemiz hakkında görüşmek istiyorum.")}`}
+      href={`https://wa.me/${waNumber}?text=${encodeURIComponent("Merhaba, projemiz hakkında görüşmek istiyorum.")}`}
       target="_blank"
       rel="noopener noreferrer"
       initial={{ scale: 0, opacity: 0 }}

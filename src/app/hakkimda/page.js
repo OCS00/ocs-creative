@@ -3,16 +3,14 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb, Heart, Target, Globe, Sparkles, Anchor, BrainCircuit, Award, ChevronDown, Gem, Fingerprint } from "lucide-react";
-import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
+import { siteConfig } from "@/config/site";
 
-// 1. İSTATİSTİKLER
 const STATS = [
   
    { value: "12", label: "Farklı Sektör" },
    { value: "%99", label: "Müşteri Memnuniyeti" },
 ];
 
-// 2. DEĞERLER (BENTO GRID)
 const VALUES = [
   {
     title: "Yaratıcı Strateji",
@@ -44,7 +42,6 @@ const VALUES = [
   }
 ];
 
-// 3. SSS (Solo & Premium Avantajı) - Config ile Dinamik
 const FAQS = [
   {
     q: `Neden büyük bir ajans yerine ${siteConfig.name}?`,
@@ -64,7 +61,6 @@ const FAQS = [
   }
 ];
 
-// 4. SÜREÇ
 const PROCESS = [
   { step: "01", title: "Keşif & Empati", desc: "Sizi dinliyor, markanızı ve hedeflerinizi kendi işimiz gibi benimsiyoruz." },
   { step: "02", title: "Stratejik Tasarım", desc: "Rakiplerden ayrışan, markanızın ruhunu yansıtan görsel dünyayı inşa ediyoruz." },
@@ -79,7 +75,6 @@ export default function AboutPage() {
     <main className="bg-[#020202] min-h-screen text-white selection:bg-indigo-500/30">
       
 
-      {/* --- 1. SİNEMATİK HERO --- */}
       <section className="relative pt-48 pb-32 px-6 overflow-hidden flex flex-col items-center text-center">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none"></div>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none"></div>
@@ -91,7 +86,7 @@ export default function AboutPage() {
           className="relative z-10 max-w-5xl mx-auto"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-indigo-300 mb-8 backdrop-blur-md">
-             <Sparkles size={14} /> EST. {new Date().getFullYear()} — İSTANBUL
+             <Sparkles size={14} /> EST. 2024 — İSTANBUL
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter text-white mb-8 leading-[0.95]">
@@ -108,7 +103,6 @@ export default function AboutPage() {
         </motion.div>
       </section>
 
-      {/* --- 2. VİZYON (STORYTELLING) --- */}
       <section className="py-24 px-6 border-y border-white/5 bg-[#050505]">
          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             
@@ -168,7 +162,6 @@ export default function AboutPage() {
          </div>
       </section>
 
-      {/* --- 3. DNA & FELSEFE (BENTO GRID) --- */}
       <section className="py-32 px-6 bg-[#020202]">
          <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20 max-w-3xl mx-auto">
@@ -199,7 +192,6 @@ export default function AboutPage() {
          </div>
       </section>
 
-      {/* --- 4. MANİFESTO (YENİLENEN BÖLÜM) --- */}
       <section className="py-24 px-6 border-y border-white/5 bg-[#050505] relative overflow-hidden">
          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[150px] -z-10"></div>
          
@@ -218,7 +210,6 @@ export default function AboutPage() {
          </div>
       </section>
 
-      {/* --- 5. MERAK EDİLENLER (FAQ) --- */}
       <section className="py-32 px-6 bg-[#020202]">
          <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
@@ -258,7 +249,6 @@ export default function AboutPage() {
          </div>
       </section>
 
-      {/* --- 6. SÜREÇ (Modern Liste) --- */}
       <section className="py-32 px-6 border-t border-white/5 bg-[#050505]">
          <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16">

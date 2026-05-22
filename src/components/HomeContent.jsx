@@ -9,19 +9,24 @@ import { motion } from "framer-motion";
 import Clients from "@/components/Clients";
 import { siteConfig } from "@/config/site";
 
+const PROJECT_TYPE_LABELS = {
+  website:   "Web Sitesi",
+  mobile:    "Mobil Uygulama",
+  saas:      "SaaS Yazılım",
+  ecommerce: "E-Ticaret",
+  uiux:      "UI/UX Tasarım",
+};
+
 export default function HomeContent({ latestProjects }) {
   const brandName = siteConfig?.name || "OCS Creative";
 
   return (
     <main className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30">
 
-      {/* 1. HERO BÖLÜMÜ */}
       <Hero />
 
-      {/* 2. LOGO ŞERİDİ */}
       <Clients />
 
-      {/* 3. GÜVEN VE FELSEFE BÖLÜMÜ */}
       <section className="py-20 border-b border-white/5 bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -57,7 +62,6 @@ export default function HomeContent({ latestProjects }) {
         </div>
       </section>
 
-      {/* 4. HİZMETLER (BENTO GRID) */}
       <section className="py-32 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
@@ -154,7 +158,6 @@ export default function HomeContent({ latestProjects }) {
         </div>
       </section>
 
-      {/* 5. MÜŞTERİ YORUMLARI */}
       <section className="py-24 bg-[#0a0a0a] border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -164,7 +167,7 @@ export default function HomeContent({ latestProjects }) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { text: `${brandName} ekibi, hayalimizdeki projeyi teknik mükemmellikle birleştirdi. Süreç boyunca şeffaf iletişimleri ve çözüm odaklı yaklaşımları bizi çok etkiledi.`, author: "Ahmet Yılmaz", role: "CEO, TechOne Global" },
+              { text: `${brandName}, hayalimizdeki projeyi teknik mükemmellikle hayata geçirdi. Süreç boyunca şeffaf iletişim ve çözüm odaklı yaklaşım bizi çok etkiledi.`, author: "Ahmet Yılmaz", role: "CEO, TechOne Global" },
               { text: "Sadece bir web sitesi değil, markamız için bir kimlik inşa ettiler. Tasarım detaylarına verdikleri önem ve hızları inanılmaz. Kesinlikle tavsiye ederim.", author: "Elif Demir", role: "Kurucu, Art Studio" },
               { text: "SEO ve hız konusunda vaat ettiklerinin fazlasını yaptılar. Site yayına girdikten sonra müşteri dönüşlerimizde %40 artış gözlemledik.", author: "Mehmet Kaya", role: "Pazarlama Müdürü, SoftSys" }
             ].map((item, i) => (
@@ -181,7 +184,6 @@ export default function HomeContent({ latestProjects }) {
         </div>
       </section>
 
-      {/* 6. SON PROJELER (DİNAMİK) */}
       <section className="py-32 relative">
         <div className="max-w-7xl mx-auto px-6">
 
@@ -224,7 +226,7 @@ export default function HomeContent({ latestProjects }) {
                     </div>
                   </div>
                   <h3 className="text-3xl font-bold mb-2 group-hover:text-indigo-400 transition-colors">{project.title}</h3>
-                  <p className="text-gray-400 text-lg font-light">{project.category || "Genel"}</p>
+                  <p className="text-gray-400 text-lg font-light">{PROJECT_TYPE_LABELS[project.projectType] || "Genel"}</p>
                 </Link>
               ))}
             </div>

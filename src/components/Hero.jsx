@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
-import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
+import { siteConfig } from "@/config/site";
 
 export default function Hero() {
   const mouseX = useMotionValue(0);
@@ -20,7 +20,6 @@ export default function Hero() {
       className="relative min-h-[100vh] flex items-center justify-center overflow-hidden bg-black group"
       onMouseMove={handleMouseMove}
     >
-      {/* --- 1. YILDIZ ALANI (CSS Pattern) --- */}
       <div className="absolute inset-0 z-0 opacity-40"
            style={{
              backgroundImage: `radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
@@ -33,7 +32,6 @@ export default function Hero() {
            }}
       ></div>
 
-      {/* --- 2. MOUSE SPOTLIGHT --- */}
       <motion.div
         className="pointer-events-none absolute -inset-px opacity-0 transition duration-500 group-hover:opacity-100 z-1"
         style={{
@@ -47,14 +45,11 @@ export default function Hero() {
         }}
       />
       
-      {/* --- 3. PRO GRID DOKUSU --- */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-1"></div>
 
-      {/* --- 4. HAREKETLİ IŞIK ŞERİTLERİ --- */}
       <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-indigo-500/20 to-transparent opacity-20"></div>
       <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-purple-500/20 to-transparent opacity-20"></div>
       
-      {/* --- İÇERİK --- */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center mt-[-50px]">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -62,7 +57,6 @@ export default function Hero() {
           transition={{ duration: 1, ease: "easeOut" }}
         >
           
-          {/* Rozet */}
           <div className="inline-flex items-center gap-2 py-2 px-6 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-2xl mb-12 shadow-2xl shadow-indigo-500/10 cursor-default">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
@@ -73,7 +67,6 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* Başlık */}
           <h1 className="text-6xl md:text-8xl lg:text-[110px] font-bold tracking-tighter text-white mb-8 leading-[0.9] drop-shadow-2xl">
             Beyond <br />
             <span className="bg-gradient-to-b from-white via-white to-gray-500 bg-clip-text text-transparent">
@@ -81,15 +74,11 @@ export default function Hero() {
             </span>
           </h1>
 
-          {/* Açıklama (Config'den çekilir) */}
           <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed mb-12">
             {siteConfig.description} <span className="text-white font-medium">Stratejik kurgu</span> ve <span className="text-white font-medium">kusursuz tasarım</span> anlayışımızla, izleyicilerinizi etkileyen eşsiz deneyimler yaratıyoruz.
           </p>
           
-          {/* Butonlar */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            
-            {/* Primary Button */}
             <Link href="/projeler">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -102,7 +91,6 @@ export default function Hero() {
               </motion.button>
             </Link>
 
-            {/* Secondary Button */}
             <Link href="/iletisim">
               <motion.button
                  whileHover={{ scale: 1.05 }}
@@ -118,7 +106,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Alt Dekorasyon */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-indigo-600/10 blur-[150px] pointer-events-none rounded-t-full"></div>
     </section>
   );

@@ -42,10 +42,9 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         
-        {/* LOGO: Görsel Kullanımı */}
         <Link href="/" className="relative w-40 h-10 flex items-center">
            <Image
-             src="/logo1.png" // public klasöründeki dosya
+             src="/logo1.png"
              alt={siteConfig?.name || "Logo"}
              fill
              className="object-contain object-left" 
@@ -53,7 +52,6 @@ export default function Navbar() {
            />
         </Link>
 
-        {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (
             <Link
@@ -74,7 +72,6 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* CTA BUTTON */}
         <div className="hidden md:block">
           <Link
             href="/iletisim"
@@ -84,13 +81,11 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* MOBILE MENU BUTTON */}
         <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* MOBILE MENU */}
       <AnimatePresence>
         {isOpen && (
           <motion.div

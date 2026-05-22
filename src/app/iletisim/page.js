@@ -112,7 +112,7 @@ export default function ContactPage() {
                    <div>
                       <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">E-Posta</h4>
                       <a href={`mailto:${contactInfo.email}`} className="text-xl font-medium text-white hover:text-indigo-400 transition-colors">
-                        {contactInfo.email || "info@ocscreative.com"}
+                        {contactInfo.email || "ocscreative.tr@gmail.com"}
                       </a>
                    </div>
                 </div>

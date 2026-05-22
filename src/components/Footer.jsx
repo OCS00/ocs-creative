@@ -23,7 +23,7 @@ export default function Footer() {
   const socials = siteConfig?.socials || [];
   const fullBrandName = (siteConfig?.name || "OCS Creative") + ".";
 
-  const whatsappNumber = "905050082034";
+  const whatsappNumber = siteConfig.contact.phoneCall.replace("+", "");
   const whatsappMessage = "Merhaba, projemiz hakkında görüşmek istiyorum.";
 
   // --- BÜLTEN KAYIT FONKSİYONU ---
