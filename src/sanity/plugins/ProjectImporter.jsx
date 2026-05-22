@@ -252,7 +252,7 @@ export function ProjectImporterTool() {
           <span style={S.badge}>Beta</span>
         </div>
         <span style={{ fontSize: "12px", color: "#3f3f46" }}>
-          JSON şablonu doldur → tek tıkla Sanity'ye kaydet
+          JSON şablonu doldur → tek tıkla Sanity&apos;ye kaydet
         </span>
       </div>
 

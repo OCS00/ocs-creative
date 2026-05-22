@@ -3,20 +3,20 @@ import React from "react";
 import { client } from "@/sanity/lib/client";
 import ProjectsGrid from "@/components/ProjectsGrid";
 import { CheckCircle2, Award, Zap, Users } from "lucide-react";
-import { siteConfig } from "@/config/site"; // ✅ Config Bağlantısı
+import { siteConfig } from "@/config/site";
 
 export const metadata = {
   title: `Projelerimiz & Başarı Hikayeleri | ${siteConfig.name}`,
   description: "Markalar için geliştirdiğimiz web tasarım, yazılım ve mobil uygulama projelerimizi inceleyin.",
 };
 
-export const revalidate = 60; // 60 saniyede bir Sanity'den taze veri çek
+export const revalidate = 3600;
 
 async function getProjects() {
-  const query = `*[_type == "project"] | order(coalesce(publishedAt, _createdAt) desc){
+  const query = `*[_type == "project"] | order(coalesce(order, publishedAt, _createdAt) asc){
     _id,
     title,
-    category,
+    projectType,
     status,
     mainImage,
     tags,
@@ -30,9 +30,6 @@ export default async function ProjectsPage() {
 
   return (
     <main className="bg-[#030303] min-h-screen text-white selection:bg-indigo-500/30 relative">
-      
-      
-      {/* ARKA PLAN DOKUSU */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
@@ -40,9 +37,7 @@ export default async function ProjectsPage() {
 
       <div className="relative z-10">
         
-        {/* --- 1. HERO BÖLÜMÜ --- */}
         <section className="pt-48 pb-20 px-6 text-center max-w-5xl mx-auto">
-           {/* Etiket */}
            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-indigo-400 mb-8 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
               PORTFOLYO & REFERANSLAR
@@ -60,7 +55,6 @@ export default async function ProjectsPage() {
              Sadece güzel görünen değil, <strong>ölçülebilir sonuçlar</strong> üreten dijital varlıklar tasarlıyoruz.
            </p>
 
-           {/* Mini İstatistikler */}
            <div className="flex flex-wrap justify-center gap-8 md:gap-20 border-t border-white/10 pt-12">
               {[
                   { label: "Teslim Edilen Proje", value: "50+", icon: Award },
@@ -77,10 +71,8 @@ export default async function ProjectsPage() {
            </div>
         </section>
 
-        {/* --- 2. PROJE IZGARASI --- */}
         <ProjectsGrid initialProjects={projects} />
-        
-        {/* --- 3. METODOLOJİ --- */}
+
         <section className="py-32 border-t border-white/10 bg-[#050505] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
             
@@ -114,7 +106,6 @@ export default async function ProjectsPage() {
                     </ul>
                 </div>
                 
-                {/* Soyut Görsel Alan */}
                 <div className="relative h-[500px] bg-[#0a0a0a] border border-white/10 rounded-[2rem] overflow-hidden flex items-center justify-center group">
                     <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
                     <div className="text-center p-8 relative z-10">
