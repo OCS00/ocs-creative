@@ -57,15 +57,7 @@ export default function Hero() {
           transition={{ duration: 1, ease: "easeOut" }}
         >
           
-          <div className="inline-flex items-center gap-2 py-2 px-6 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-2xl mb-12 shadow-2xl shadow-indigo-500/10 cursor-default">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-            </span>
-            <span className="text-sm font-bold tracking-[0.2em] text-gray-300 uppercase">
-              {siteConfig.name} STUDIO
-            </span>
-          </div>
+          
 
           <h1 className="text-6xl md:text-8xl lg:text-[110px] font-bold tracking-tighter text-white mb-8 leading-[0.9] drop-shadow-2xl">
             Dijitalde <br />
