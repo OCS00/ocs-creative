@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import Link from "next/link";
 import Image from "next/image";
 import { urlForImage } from "@/sanity/lib/image";
-import { ArrowRight, Code, Layout, Smartphone, TrendingUp, CheckCircle2, Quote } from "lucide-react";
+import { ArrowRight, Code, Layout, Smartphone, TrendingUp, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Clients from "@/components/Clients";
 import { siteConfig } from "@/config/site";
@@ -154,32 +154,6 @@ export default function HomeContent({ latestProjects }) {
                 </Link>
               </div>
             </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-24 bg-[#0a0a0a] border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="text-indigo-400 font-bold tracking-widest text-xs uppercase mb-2 inline-block">REFERANSLAR</span>
-            <h2 className="text-3xl md:text-4xl font-bold">Müşterilerimiz Ne Diyor?</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { text: `${brandName}, hayalimizdeki projeyi teknik mükemmellikle hayata geçirdi. Süreç boyunca şeffaf iletişim ve çözüm odaklı yaklaşım bizi çok etkiledi.`, author: "Ahmet Yılmaz", role: "CEO, TechOne Global" },
-              { text: "Sadece bir web sitesi değil, markamız için bir kimlik inşa ettiler. Tasarım detaylarına verdikleri önem ve hızları inanılmaz. Kesinlikle tavsiye ederim.", author: "Elif Demir", role: "Kurucu, Art Studio" },
-              { text: "SEO ve hız konusunda vaat ettiklerinin fazlasını yaptılar. Site yayına girdikten sonra müşteri dönüşlerimizde %40 artış gözlemledik.", author: "Mehmet Kaya", role: "Pazarlama Müdürü, SoftSys" }
-            ].map((item, i) => (
-              <div key={i} className="bg-[#050505] p-8 rounded-3xl border border-white/5 relative">
-                <Quote className="text-indigo-500 mb-6 opacity-50" size={32} />
-                <p className="text-gray-300 mb-6 leading-relaxed italic">&ldquo;{item.text}&rdquo;</p>
-                <div>
-                  <h4 className="font-bold text-white">{item.author}</h4>
-                  <p className="text-xs text-gray-500 uppercase tracking-wider">{item.role}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

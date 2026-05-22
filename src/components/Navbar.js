@@ -10,7 +10,7 @@ import { siteConfig } from "@/config/site";
 const NAV_LINKS = [
   { name: "Ana Sayfa", href: "/" },
   { name: "Projeler", href: "/projeler" },
-  { name: "Hakkımda", href: "/hakkimda" },
+  { name: "Hakkımızda", href: "/hakkimda" },
   { name: "Hizmetler", href: "/hizmetler" }, 
   { name: "İletişim", href: "/iletisim" },
 ];

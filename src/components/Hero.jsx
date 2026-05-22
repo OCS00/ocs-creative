@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { siteConfig } from "@/config/site";
 
@@ -68,9 +68,9 @@ export default function Hero() {
           </div>
 
           <h1 className="text-6xl md:text-8xl lg:text-[110px] font-bold tracking-tighter text-white mb-8 leading-[0.9] drop-shadow-2xl">
-            Beyond <br />
+            Dijitalde <br />
             <span className="bg-gradient-to-b from-white via-white to-gray-500 bg-clip-text text-transparent">
-              Boundaries.
+              Sınır Tanımıyoruz.
             </span>
           </h1>
 
@@ -97,7 +97,7 @@ export default function Hero() {
                  whileTap={{ scale: 0.95 }}
                  className="px-10 py-5 rounded-full border border-white/10 bg-white/[0.05] backdrop-blur-xl text-white font-medium text-lg hover:bg-white/10 transition-colors flex items-center gap-3"
               >
-                <Play size={16} fill="currentColor" />
+                <MessageCircle size={16} />
                 Tanışalım
               </motion.button>
             </Link>
