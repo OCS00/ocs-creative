@@ -11,6 +11,22 @@ const nextConfig = {
       },
     ],
   },
+  // Instagram bio linki — tıklama ölçümü.
+  // /bio, OCS Studio'nun sayacından geçip buraya UTM etiketleriyle geri döner.
+  // Amaç "Instagram kaç ziyaretçi getirdi" sorusunu ölçebilmek; doğrudan ana
+  // sayfaya link verilirse o bilgi hiç oluşmuyor.
+  // permanent: false BİLEREK — kalıcı (308) yönlendirmeyi tarayıcı süresiz
+  // önbelleğe alır ve hedefi sonradan değiştirmek imkânsızlaşır.
+  async redirects() {
+    return [
+      {
+        source: "/bio",
+        destination: "https://ocscreativestudio.up.railway.app/bio",
+        permanent: false,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {
